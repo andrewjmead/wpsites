@@ -6,7 +6,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.2.0"
+        "php": "^8.0"
     },
     "require-dev": {
         "cuyz/valinor": "^1.12",
