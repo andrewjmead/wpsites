@@ -212,7 +212,7 @@ class Template
             return $this->defaults->enable_error_logging;
         }
 
-        return false;
+        return true;
     }
 
     public function enable_automatic_login(): bool
@@ -225,7 +225,7 @@ class Template
             return $this->defaults->enable_error_logging;
         }
 
-        return false;
+        return true;
     }
 
     public function get_theme(): string
