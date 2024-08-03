@@ -29,6 +29,7 @@ abstract class SiteCommand extends Command
             }
         } catch (\Exception $e) {
             error('Unable to create configuration file');
+            exit(1);
         }
 
         info('Configuration file created. Opening...');
