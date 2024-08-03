@@ -6,6 +6,7 @@ use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Config;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
@@ -18,8 +19,14 @@ abstract class SiteCommand extends Command
             return ConfigFile::get_config();
         }
 
-        note('No configuration file found');
-        note('Creating ' . ConfigFile::file_path());
+        $path = ConfigFile::file_path();
+        $confirm_creation = confirm("No config file found. Create \"{$path}\"?");
+
+        if(!$confirm_creation) {
+            exit(1);
+        }
+
+        info('Creating configuration file...');
 
         try {
             $bytesWritten = File::put(ConfigFile::file_path(), ConfigFile::default_configuration());
@@ -32,9 +39,10 @@ abstract class SiteCommand extends Command
             exit(1);
         }
 
-        info('Configuration file created. Opening...');
-        sleep(2);
-        exec('open -e ' . ConfigFile::file_path());
+        info('Configuration file created! Edit to customize:');
+
+        note(ConfigFile::file_path());
+
         exit(0);
     }
 }
