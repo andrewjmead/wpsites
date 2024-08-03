@@ -2,7 +2,7 @@
     "name": "andrewmead/wpsites",
     "description": "Local WordPress site management",
     "keywords": ["herd", "wordpress"],
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "require": {
         "php": "^8.0"
