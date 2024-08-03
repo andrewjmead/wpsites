@@ -1,7 +1,6 @@
 {
     "name": "andrewmead/wpsites",
     "description": "Local WordPress site management",
-    "version": "1.0.0",
     "keywords": ["herd", "wordpress"],
     "type": "project",
     "license": "MIT",
