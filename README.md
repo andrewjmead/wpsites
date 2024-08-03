@@ -7,5 +7,9 @@ I built this tool to automate a lot of the things I'd end up doing as a full-tim
 First, make sure that you have [WP-CLI](https://wp-cli.org/) installed. From there you can install WPSite by running:
 
 ```
-
+composer global require andrewmead/wpsites
 ```
+
+## Documentation
+
+In the works...
