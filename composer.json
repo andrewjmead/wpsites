@@ -1,17 +1,18 @@
 {
     "name": "andrewmead/wpsites",
     "description": "Local WordPress site management",
+    "version": "1.0.0",
     "keywords": ["herd", "wordpress"],
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.2.0",
-        "cuyz/valinor": "^1.12",
-        "laravel-zero/framework": "^11.0.0",
-        "laravel/prompts": "^0.1.24"
+        "php": "^8.2.0"
     },
     "require-dev": {
+        "cuyz/valinor": "^1.12",
         "laravel/pint": "^1.15.2",
+        "laravel/prompts": "^0.1.24",
+        "laravel-zero/framework": "^11.0.0",
         "mockery/mockery": "^1.6.11",
         "pestphp/pest": "^2.34.7"
     },
@@ -37,5 +38,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "bin": ["wpsites"]
+    "bin": ["builds/wpsites"]
 }
