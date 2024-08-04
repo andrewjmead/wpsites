@@ -1,15 +1,14 @@
 <?php
 
-
 // TODO - Need to support multisite
 
 return [
-    'sites_directory' => '/Users/andrewmead/Herd',
+    'sites_directory' => '~/Herd',
     'defaults'        => [
         'wordpress_version' => 'nightly',
         // Default: 'latest', '6.0.0', 'nightly'
 
-        'database_host' => '127.0.0.1:3406',
+        'database_host' => '127.0.0.1:3306',
         // Default: '127.0.0.1'
         // 'database_username' => null, // Default: 'root'
         // 'database_password' => null, // Default: no password
@@ -19,7 +18,7 @@ return [
         // 'admin_password' => null, // Default: 'password'
         // 'admin_email'    => null, // Default: 'admin@example.com'
 
-        'enable_error_logging'   => true,
+        'enable_error_logging' => true,
         // Default: true
         'enable_automatic_login' => true,
         // Default: true
@@ -28,22 +27,22 @@ return [
 
         // 'plugins' => null, // Default: null
     ],
-    'templates'       => [
+    'templates' => [
         [
-            'name' => 'Empty WordPress',
+            'name' => 'Basic WordPress',
         ],
         [
-            'name'             => 'Empty Multisite WordPress',
+            'name'             => 'Basic multisite WordPress',
             'enable_multisite' => true,
         ],
         [
-            'name'    => 'IAWP Dev',
+            'name'    => 'Symlink plugin example',
             'plugins' => [
-                '/Users/andrewmead/Projects/independent-analytics/independent-analytics',
+                '/path/to/symlink/folder',
             ],
         ],
         [
-            'name'    => 'IAWP Latest Stable',
+            'name'    => 'Repository plugin example',
             'plugins' => [
                 'independent-analytics',
             ],
