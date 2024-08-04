@@ -35,13 +35,18 @@ abstract class SiteCommand extends Command
                 throw new \Exception('Unable to create configuration file');
             }
         } catch (\Exception $e) {
-            error('Unable to create configuration file');
+            error("Unable to create configuration file! Please manually create {$path} using the following command:");
+
+            note("curl -o ~/.wpsites.php https://raw.githubusercontent.com/andrewjmead/wpsites/main/config/wpsites.php");
+
             exit(1);
         }
 
         info('Configuration file created! Edit to customize:');
 
         note(ConfigFile::file_path());
+
+        info('Run "wpsites create" to get started!');
 
         exit(0);
     }
