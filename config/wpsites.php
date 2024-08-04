@@ -3,7 +3,7 @@
 // TODO - Need to support multisite
 
 return [
-    'sites_directory' => '~/Herd',
+    'sites_directory' => '$HOME/Herd',
     'defaults'        => [
         'wordpress_version' => 'nightly',
         // Default: 'latest', '6.0.0', 'nightly'
