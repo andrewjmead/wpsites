@@ -15,3 +15,7 @@ composer global require andrewmead/wpsites
 ## Documentation
 
 In the works...
+
+Cover Herd config
+
+Cover Mamp Pro config
