@@ -122,9 +122,10 @@ class Create extends SiteCommand
             $site->execute_alt("Enabling error log...", "wp config set WP_DEBUG_DISPLAY false", [
                 'raw' => true,
             ], true);
-            $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
-                'activate' => true,
-            ], true);
+            // There are issues with this plugin. I need to fine one that doesn't try to manipulate the values, but just shows the file...
+            // $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
+            //     'activate' => true,
+            // ], true);
         }
 
         if ($template->enable_automatic_login()) {
