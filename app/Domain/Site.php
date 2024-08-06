@@ -56,7 +56,9 @@ class Site
         $output    = [];
         $exit_code = 1;
 
-        exec("{$command} {$string_arguments}", $output, $exit_code);
+        // TODO - Add --verbose option
+        exec("{$command} {$string_arguments} &>/dev/null", $output, $exit_code);
+        // exec("{$command} {$string_arguments}", $output, $exit_code);
 
         $output = collect($output)->filter(function ($value) {
             // Remove empty lines

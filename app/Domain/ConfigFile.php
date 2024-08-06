@@ -22,8 +22,6 @@ class ConfigFile
             foreach ($config->templates as $template) {
                 $template->set_defaults($config->defaults);
             }
-
-            return $config;
         } catch (\CuyZ\Valinor\Mapper\MappingError $error) {
             // Handle the error…
             echo "invalid mapping";
@@ -31,6 +29,13 @@ class ConfigFile
             dump($error);
             exit(1);
         }
+
+        if(!File::isDirectory($config->get_sites_directory())) {
+            echo "missing sites directory {$config->get_sites_directory()}";
+            exit(1);
+        }
+
+        return $config;
     }
 
     public static function exists(): bool

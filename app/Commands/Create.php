@@ -62,7 +62,7 @@ class Create extends SiteCommand
             return $template->name === $selected_template_name;
         });
 
-        $site = new Site($config->sites_directory, $slug);
+        $site = new Site($config->get_sites_directory(), $slug);
 
         // if ($site->template_validation_errors()) {
         //     error("The template for {$site->name()} is invalid!");

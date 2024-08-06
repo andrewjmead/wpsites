@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
 
 use LaravelZero\Framework\Commands\Command;
@@ -34,7 +35,7 @@ class Destroy extends SiteCommand
     {
         $config = $this->get_config();
 
-        $sites_directory = $config->sites_directory;
+        $sites_directory = $config->get_sites_directory();
 
         info('Checking which sites are WordPress sites...');
 
@@ -46,6 +47,11 @@ class Destroy extends SiteCommand
         })->map(function ($directory) {
             return basename($directory);
         });
+
+        if($options->count() === 0) {
+            info("There are no WordPress sites to destroy");
+            exit(0);
+        }
 
         $selected_slug = select(
             label: 'Which site would you like to destroy?',
