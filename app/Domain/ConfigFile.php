@@ -4,11 +4,16 @@ namespace App\Domain;
 
 use App\Domain\ConfigTypes\Config;
 use Illuminate\Support\Facades\File;
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\note;
 
 class ConfigFile
 {
     public static function get_config(): Config
     {
+        $config_file_path = ConfigFile::file_path();
+        note("Loading config file at \"{$config_file_path}\"");
+
         $config_file_contents = require ConfigFile::file_path();
 
         try {
@@ -23,15 +28,16 @@ class ConfigFile
                 $template->set_defaults($config->defaults);
             }
         } catch (\CuyZ\Valinor\Mapper\MappingError $error) {
-            // Handle the error…
-            echo "invalid mapping";
-            echo $error->getMessage();
-            dump($error);
+            error("Invalid configuration file!");
+            error($error->getMessage());
+            exit(1);
+        } catch (\Throwable $error) {
+            error("Invalid configuration file! Configuration file must be a PHP file that returns an associative array.");
             exit(1);
         }
 
         if(!File::isDirectory($config->get_sites_directory())) {
-            echo "missing sites directory {$config->get_sites_directory()}";
+            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_sites_directory()}\"");
             exit(1);
         }
 
