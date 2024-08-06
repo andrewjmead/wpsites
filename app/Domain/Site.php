@@ -11,6 +11,8 @@ use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
 
+use Phar;
+
 class Site
 {
     public function __construct(private readonly string $sites_directory, private readonly string $slug)
@@ -41,6 +43,10 @@ class Site
         $string_arguments = "";
 
         $arguments['path'] = $this->folder_path();
+
+        $command = Str::replaceStart("wp ", $this->wp_cli_phar_path() . " ", $command);
+
+        dump($command);
 
         foreach ($arguments as $name => $value) {
             if ($value === true) {
@@ -75,6 +81,17 @@ class Site
         })->join("\n");
 
         return [$exit_code === 0, $output];
+    }
+
+    private function wp_cli_phar_path(): string
+    {
+        if ($phar_path = Phar::running(false)) {
+            $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
+
+            return $phar_directory . "/wpsites-wp-cli";
+        } else {
+            return base_path('builds/wpsites-wp-cli');
+        }
     }
 
     // public function template_validation_errors(): ?array
