@@ -46,8 +46,6 @@ class Site
 
         $command = Str::replaceStart("wp ", $this->wp_cli_phar_path() . " ", $command);
 
-        dump($command);
-
         foreach ($arguments as $name => $value) {
             if ($value === true) {
                 $string_arguments .= " --{$name}";
@@ -88,9 +86,9 @@ class Site
         if ($phar_path = Phar::running(false)) {
             $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
 
-            return $phar_directory . "/wpsites-wp-cli";
+            return $phar_directory . "/wpsites-wp-cli.phar";
         } else {
-            return base_path('builds/wpsites-wp-cli');
+            return base_path('builds/wpsites-wp-cli.phar');
         }
     }
 
