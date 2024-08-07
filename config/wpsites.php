@@ -180,6 +180,10 @@ return [
     | template. In addition, all templates must define a template name which
     | is used as the WordPress sites name.
     |
+    | It's worth mentioning that the default plugins and the template plugins
+    | will be merged. So you can define plugins to use for every site, as
+    | well as plugins to use only for a specific template.
+    |
     | Using `wpsites create`, you'll be able to quickly spin up a version of
     | any of your templates.
     |
