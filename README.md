@@ -8,28 +8,34 @@ Now I have a robot do all that for me.
 
 I run `wpsites create`, select the template I want to use, and 6 seconds later I'm looking at the admin dashboard for my new site.
 
-## It's not a server
+If that sounds interesting to you, give WPSites a try and let me know what you think.
 
-WPSites does not include a web server or database server. It's designed to work with your existing localhost tooling. This could be Herd, MAMP PRO, Local, or something else.
+## What you'll need
 
-## What is it?
+WPSites doesn't include a web server or database.
 
-WPSites is a wrapper around [WP-CLI](https://wp-cli.org/). WP-CLI is bundeled with WPSites, so there's no need to have it installed.
+It's designed to work with your existing localhost tools. This might be Herd, MAMP PRO, Local, or something else entirely. Regardless of what you use, make sure you have a way to server up a localhost WordPress site.
+
+## What exactly is it?
+
+WPSites is a wrapper around [WP-CLI](https://wp-cli.org/). WP-CLI is bundled with WPSites, so there's no need to have it installed.
+
+WP-CLI is a powerful tool that allows you to interact with a WordPress sites using a set of commands. These are pretty specific actions such as downloading WordPress core, installing a plugin, or checking a database connection.
+
+WPSites puts these together to do something high-level.
 
 ## Installing
 
-You can install WPSites as a global package. This will install the executable into `~/.composer/vendor/bin/`, so make sure that folder is part of your path.
+You can install WPSites as a global package. 
 
 ```
 composer global require andrewmead/wpsites
 ```
 
-```
-wpsites --version
-```
+This will install the executable into `~/.composer/vendor/bin/`, so make sure that folder is part of your path. You can run `wpsites --version` to check if it's accessible or not.
 
 ## Getting started
 
-To get started, run `wpsites create`. You won't have a configuration file yet, but this command will detect that and will setup the default config file at `~/.wpsites`.
+To get started, run `wpsites create`. You won't have a configuration file yet, but this command will detect that and will set up the default config file at `~/.wpsites`.
 
 
