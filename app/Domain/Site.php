@@ -6,32 +6,29 @@ use App\Domain\ConfigTypes\Template;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Phar;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
 
-use Phar;
-
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug)
-    {
-    }
+    public function __construct(private readonly string $sites_directory, private readonly string $slug) {}
 
     public function folder_path(): string
     {
-        return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
+        return Str::rtrim($this->sites_directory, '/').'/'.$this->slug;
     }
 
     public function execute_alt(string $message, string $command, array $arguments = [], bool $silent = false): void
     {
-        if (!$silent) {
+        if (! $silent) {
             info($message);
         }
-        list($success, $output) = $this->execute($command, $arguments);
-        if (!$success) {
-            error("Error " . strtolower($message));
+        [$success, $output] = $this->execute($command, $arguments);
+        if (! $success) {
+            error('Error '.strtolower($message));
             File::deleteDirectory($this->folder_path());
             exit(1);
         }
@@ -40,15 +37,16 @@ class Site
 
     public function execute(string $command, array $arguments = []): array
     {
-        $string_arguments = "";
+        $string_arguments = '';
 
         $arguments['path'] = $this->folder_path();
 
-        $command = Str::replaceStart("wp ", $this->wp_cli_phar_path() . " ", $command);
+        $command = Str::replaceStart('wp ', $this->wp_cli_phar_path().' ', $command);
 
         foreach ($arguments as $name => $value) {
             if ($value === true) {
                 $string_arguments .= " --{$name}";
+
                 continue;
             } elseif ($value === false || $value === '' || $value === null) {
                 continue;
@@ -57,7 +55,7 @@ class Site
             $string_arguments .= " --{$name}=\"{$value}\"";
         }
 
-        $output    = [];
+        $output = [];
         $exit_code = 1;
 
         // TODO - Add --verbose option
@@ -86,7 +84,7 @@ class Site
         if ($phar_path = Phar::running(false)) {
             $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
 
-            return $phar_directory . "/wpsites-wp-cli.phar";
+            return $phar_directory.'/wpsites-wp-cli.phar';
         } else {
             return base_path('builds/wpsites-wp-cli.phar');
         }

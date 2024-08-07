@@ -4,13 +4,11 @@ namespace App\Commands;
 
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
+use LaravelZero\Framework\Commands\Command;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
-use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
-
-use LaravelZero\Framework\Commands\Command;
 
 class Destroy extends SiteCommand
 {
@@ -40,16 +38,16 @@ class Destroy extends SiteCommand
         info('Checking which sites are WordPress sites...');
 
         $options = collect(File::directories($sites_directory))->filter(function ($directory) use ($sites_directory) {
-            $site                   = new Site($sites_directory, basename($directory));
-            list($success, $output) = $site->execute("wp core is-installed");
+            $site = new Site($sites_directory, basename($directory));
+            [$success, $output] = $site->execute('wp core is-installed');
 
             return $success;
         })->map(function ($directory) {
             return basename($directory);
         });
 
-        if($options->count() === 0) {
-            info("There are no WordPress sites to destroy");
+        if ($options->count() === 0) {
+            info('There are no WordPress sites to destroy');
             exit(0);
         }
 
@@ -65,13 +63,13 @@ class Destroy extends SiteCommand
             no: 'No'
         );
 
-        if (!$confirmed) {
+        if (! $confirmed) {
             exit(0);
         }
 
         $site = new Site($sites_directory, $selected_slug);
 
-        $site->execute_alt("Dropping database...", "wp db drop", [
+        $site->execute_alt('Dropping database...', 'wp db drop', [
             'yes' => true,
         ]);
 

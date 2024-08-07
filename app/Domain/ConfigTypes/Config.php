@@ -4,7 +4,8 @@ namespace App\Domain\ConfigTypes;
 
 use Illuminate\Support\Str;
 
-class Config {
+class Config
+{
     public function __construct(
         /** @var string */
         protected readonly string $sites_directory,
@@ -12,10 +13,10 @@ class Config {
         public readonly Defaults $defaults,
         /** @var list<Template> */
         public readonly array $templates,
-    ) {
-    }
+    ) {}
 
-    public function get_sites_directory(): string {
+    public function get_sites_directory(): string
+    {
         return Str::trim(
             shell_exec("echo {$this->sites_directory}")
         );

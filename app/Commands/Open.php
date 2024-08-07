@@ -3,9 +3,8 @@
 namespace App\Commands;
 
 use App\Domain\Site;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
-use function Laravel\Prompts\confirm;
+
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 
@@ -37,16 +36,16 @@ class Open extends SiteCommand
         info('Checking which sites are WordPress sites...');
 
         $options = collect(File::directories($sites_directory))->filter(function ($directory) use ($sites_directory) {
-            $site                   = new Site($sites_directory, basename($directory));
-            list($success, $output) = $site->execute("wp core is-installed");
+            $site = new Site($sites_directory, basename($directory));
+            [$success, $output] = $site->execute('wp core is-installed');
 
             return $success;
         })->map(function ($directory) {
             return basename($directory);
         });
 
-        if($options->count() === 0) {
-            info("There are no WordPress sites to open");
+        if ($options->count() === 0) {
+            info('There are no WordPress sites to open');
             exit(0);
         }
 

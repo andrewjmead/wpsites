@@ -6,6 +6,7 @@ use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Config;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
@@ -22,7 +23,7 @@ abstract class SiteCommand extends Command
         $path = ConfigFile::file_path();
         $confirm_creation = confirm("No config file found. Create \"{$path}\"?");
 
-        if(!$confirm_creation) {
+        if (! $confirm_creation) {
             exit(1);
         }
 
@@ -37,7 +38,7 @@ abstract class SiteCommand extends Command
         } catch (\Exception $e) {
             error("Unable to create configuration file! Please manually create {$path} using the following command:");
 
-            note("curl -o ~/.wpsites.php https://raw.githubusercontent.com/andrewjmead/wpsites/main/config/wpsites.php");
+            note('curl -o ~/.wpsites.php https://raw.githubusercontent.com/andrewjmead/wpsites/main/config/wpsites.php');
 
             exit(1);
         }

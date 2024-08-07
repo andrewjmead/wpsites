@@ -77,49 +77,49 @@ class Create extends SiteCommand
             exit(1);
         }
 
-        $site->execute_alt("Downloading core files...", "wp core download", [
+        $site->execute_alt('Downloading core files...', 'wp core download', [
             'skip-content' => true,
-            'version'      => $template->get_wordpress_version(),
+            'version' => $template->get_wordpress_version(),
         ]);
 
-        $site->execute_alt("Creating site...", "wp config create", [
+        $site->execute_alt('Creating site...', 'wp config create', [
             'dbhost' => $template->get_database_host(),
             'dbname' => $template->get_database_name() ?? $slug,
             'dbuser' => $template->get_database_username(),
             'dbpass' => $template->get_database_password(),
         ]);
 
-        $site->execute_alt("Creating database...", "wp db create");
+        $site->execute_alt('Creating database...', 'wp db create');
 
         if ($template->enable_multisite()) {
-            $site->execute_alt("Running installation...", "wp core multisite-install", [
-                'url'            => "http://{$slug}.test",
-                'title'          => $template->get_site_title() ?? $selected_template_name,
-                'admin_user'     => $template->get_admin_username(),
+            $site->execute_alt('Running installation...', 'wp core multisite-install', [
+                'url' => "http://{$slug}.test",
+                'title' => $template->get_site_title() ?? $selected_template_name,
+                'admin_user' => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
-                'admin_email'    => $template->get_admin_email(),
+                'admin_email' => $template->get_admin_email(),
             ]);
-            $site->execute_alt("Creating a second site...", "wp site create", [
+            $site->execute_alt('Creating a second site...', 'wp site create', [
                 'slug' => 'second-site',
                 'title' => 'A second site',
                 'email' => $template->get_admin_email(),
             ]);
         } else {
-            $site->execute_alt("Running installation...", "wp core install", [
-                'url'            => "http://{$slug}.test",
-                'title'          => $template->get_site_title() ?? $selected_template_name,
-                'admin_user'     => $template->get_admin_username(),
+            $site->execute_alt('Running installation...', 'wp core install', [
+                'url' => "http://{$slug}.test",
+                'title' => $template->get_site_title() ?? $selected_template_name,
+                'admin_user' => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
-                'admin_email'    => $template->get_admin_email(),
+                'admin_email' => $template->get_admin_email(),
             ]);
         }
 
         if ($template->enable_error_logging()) {
-            $site->execute_alt("Enabling error log...", "wp config set WP_DEBUG true");
-            $site->execute_alt("Enabling error log...", "wp config set WP_DEBUG_LOG true", [
+            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG true');
+            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG_LOG true', [
                 'raw' => true,
             ], true);
-            $site->execute_alt("Enabling error log...", "wp config set WP_DEBUG_DISPLAY false", [
+            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG_DISPLAY false', [
                 'raw' => true,
             ], true);
             // There are issues with this plugin. I need to fine one that doesn't try to manipulate the values, but just shows the file...
@@ -129,20 +129,20 @@ class Create extends SiteCommand
         }
 
         if ($template->enable_automatic_login()) {
-            $site->execute_alt("Enabling automatic login...", "wp config set WP_ENVIRONMENT_TYPE local");
-            $site->execute_alt("Enabling automatic login...", "wp plugin install automatic-login", [
+            $site->execute_alt('Enabling automatic login...', 'wp config set WP_ENVIRONMENT_TYPE local');
+            $site->execute_alt('Enabling automatic login...', 'wp plugin install automatic-login', [
                 'activate' => true,
             ], true);
         }
 
-        $site->execute_alt("Installing default theme...", "wp theme install {$template->get_theme()}", [
+        $site->execute_alt('Installing default theme...', "wp theme install {$template->get_theme()}", [
             'activate' => true,
         ]);
 
         $template->get_symlinked_plugins()->each(function ($plugin) use ($site) {
             info("Linking \"{$plugin}\"...");
             $symlink_name = basename($plugin);
-            symlink($plugin, $site->folder_path() . '/wp-content/plugins/' . $symlink_name);
+            symlink($plugin, $site->folder_path().'/wp-content/plugins/'.$symlink_name);
 
             $site->execute_alt("Linking \"{$plugin}\"...", "wp plugin activate {$symlink_name}", [], true);
         });

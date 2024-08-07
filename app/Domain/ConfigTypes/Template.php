@@ -47,7 +47,7 @@ class Template
         /** @var ?bool */
         public readonly ?bool $enable_multisite = null,
     ) {
-        $this->defaults = new Defaults();
+        $this->defaults = new Defaults;
     }
 
     public function set_defaults(Defaults $defaults): void
@@ -65,7 +65,7 @@ class Template
     public function get_repository_plugins(): Collection
     {
         return $this->get_all_plugins()->filter(function ($plugin) {
-            return !Str::startsWith($plugin, '/');
+            return ! Str::startsWith($plugin, '/');
         });
     }
 

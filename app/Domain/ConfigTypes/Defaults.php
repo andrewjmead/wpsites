@@ -33,6 +33,5 @@ class Defaults
         public readonly ?string $theme = null,
         /** @var ?bool */
         public readonly ?bool $enable_multisite = null,
-    ) {
-    }
+    ) {}
 }
