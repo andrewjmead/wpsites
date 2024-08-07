@@ -2,11 +2,11 @@
 
 WPSites is a CLI that lets you quickly spin up WordPress sites based on templates that you've defined.
 
-I built WPSites for myself. I'm a full-time WordPress plugin developer and during development, I found I was creating new WordPress sites via Local/Mamp/Etc and then configuring them the same way.
+As a full-time plugin developer, I found I'd often create a new WordPress site just to configure it with the same tools I always use. I'd symlink my local plugin folder. I'd install `woocommerce`. I'd enable debugging mode. The list goes on.
 
-It was getting a bit old.
+Now I have a robot do all that for me.
 
-Now I can run `wpsites create`, select the template to use, and get access to my configured WordPress site about 8 seconds later.
+I run `wpsites create`, select the template I want to use, and 6 seconds later I'm looking at the admin dashboard for my new site.
 
 ## It's not a server
 
