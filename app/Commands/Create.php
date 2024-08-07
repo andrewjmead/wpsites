@@ -129,6 +129,7 @@ class Create extends SiteCommand
         }
 
         if ($template->enable_automatic_login()) {
+            // TODO - Set the username and password as this wont work if they customize those values
             $site->execute_alt('Enabling automatic login...', 'wp config set WP_ENVIRONMENT_TYPE local');
             $site->execute_alt('Enabling automatic login...', 'wp plugin install automatic-login', [
                 'activate' => true,
