@@ -61,19 +61,6 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Database Name
-        |--------------------------------------------------------------------------
-        |
-        | The name of the database to create. It doesn't make sense to set a
-        | default value for the database name. Instead, it's recommend to
-        | fall back to the default value which is the sites slug.
-        |
-        */
-
-        'database_name' => null,
-
-        /*
-        |--------------------------------------------------------------------------
         | Admin Username
         |--------------------------------------------------------------------------
         |
@@ -115,7 +102,7 @@ return [
         |
         */
 
-        'enable_multisite' => true,
+        'enable_multisite' => false,
 
         /*
         |--------------------------------------------------------------------------
@@ -164,7 +151,7 @@ return [
         |
         */
 
-        'plugins' => []
+        'plugins' => [],
     ],
 
     /*
@@ -194,18 +181,19 @@ return [
             'name' => 'Basic WordPress',
         ],
         [
-            'name' => 'Basic Multisite WordPress',
+            'name'             => 'Basic Multisite WordPress',
             'enable_multisite' => true,
         ],
         [
-            'name' => 'Symlink plugin example',
+            'name'    => 'Symlink plugin example',
             'plugins' => [
                 '/path/to/symlink/folder',
             ],
         ],
         [
-            'name' => 'Repository plugin example',
-            'plugins' => [
+            'name'              => 'Bug recreation example',
+            'wordpress_version' => '5.9.10',
+            'plugins'           => [
                 'independent-analytics',
             ],
         ],

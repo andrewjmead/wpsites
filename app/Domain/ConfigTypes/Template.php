@@ -25,8 +25,6 @@ class Template
         /** @var ?string */
         public readonly ?string $database_host = null,
         /** @var ?string */
-        public readonly ?string $database_name = null,
-        /** @var ?string */
         public readonly ?string $database_username = null,
         /** @var ?string */
         public readonly ?string $database_password = null,
@@ -108,20 +106,6 @@ class Template
         }
 
         return '127.0.0.1';
-    }
-
-    public function get_database_name(): ?string
-    {
-
-        if (is_string($this->database_name)) {
-            return $this->database_name;
-        }
-
-        if (is_string($this->defaults->database_name)) {
-            return $this->defaults->database_name;
-        }
-
-        return null;
     }
 
     public function get_database_username(): string

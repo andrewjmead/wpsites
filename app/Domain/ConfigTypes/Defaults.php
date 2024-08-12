@@ -12,8 +12,6 @@ class Defaults
         /** @var ?string */
         public readonly ?string $database_host = null,
         /** @var ?string */
-        public readonly ?string $database_name = null,
-        /** @var ?string */
         public readonly ?string $database_username = null,
         /** @var ?string */
         public readonly ?string $database_password = null,

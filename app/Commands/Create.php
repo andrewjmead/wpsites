@@ -84,7 +84,7 @@ class Create extends SiteCommand
 
         $site->execute_alt('Creating site...', 'wp config create', [
             'dbhost' => $template->get_database_host(),
-            'dbname' => $template->get_database_name() ?? $slug,
+            'dbname' => $slug,
             'dbuser' => $template->get_database_username(),
             'dbpass' => $template->get_database_password(),
         ]);
