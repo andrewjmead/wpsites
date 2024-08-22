@@ -4,11 +4,14 @@ namespace App\Commands;
 
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
-use LaravelZero\Framework\Commands\Command;
+use Illuminate\Support\Str;
 
 use function Laravel\Prompts\confirm;
+
 use function Laravel\Prompts\info;
-use function Laravel\Prompts\select;
+use function Laravel\Prompts\multiselect;
+
+use LaravelZero\Framework\Commands\Command;
 
 class Destroy extends SiteCommand
 {
@@ -38,7 +41,7 @@ class Destroy extends SiteCommand
         info('Checking which sites are WordPress sites...');
 
         $options = collect(File::directories($sites_directory))->filter(function ($directory) use ($sites_directory) {
-            $site = new Site($sites_directory, basename($directory));
+            $site               = new Site($sites_directory, basename($directory));
             [$success, $output] = $site->execute('wp core is-installed');
 
             return $success;
@@ -51,29 +54,37 @@ class Destroy extends SiteCommand
             exit(0);
         }
 
-        $selected_slug = select(
-            label: 'Which site would you like to destroy?',
+        $selected_slugs = multiselect(
+            label: 'Which sites would you like to destroy?',
             options: array_values($options->toArray()),
+            scroll: 20,
+            required: true,
         );
+        $sites_term = Str::plural('site', count($selected_slugs));
 
         $confirmed = confirm(
-            label: "Are you sure yuo want to destroy \"{$selected_slug}\"?",
+            label: "Are you sure you want to destroy the {$sites_term} listed above?",
             default: false,
             yes: 'Yes',
-            no: 'No'
+            no: 'No',
         );
 
         if (! $confirmed) {
             exit(0);
         }
 
-        $site = new Site($sites_directory, $selected_slug);
+        foreach ($selected_slugs as $slug) {
+            info("Deleting site \"{$slug}\"");
 
-        $site->execute_alt('Dropping database...', 'wp db drop', [
-            'yes' => true,
-        ]);
+            $site = new Site($sites_directory, $slug);
 
-        info('Deleting site folder...');
-        File::deleteDirectory($site->folder_path());
+            $site->execute_alt('Dropping database...', 'wp db drop', [
+                'yes' => true,
+            ], true);
+
+            File::deleteDirectory($site->folder_path());
+        }
+
+        exit(1);
     }
 }
