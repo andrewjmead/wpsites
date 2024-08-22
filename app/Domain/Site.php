@@ -6,15 +6,19 @@ use App\Domain\ConfigTypes\Template;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Phar;
 
 use function Laravel\Prompts\error;
+
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
 
+use Phar;
+
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug) {}
+    public function __construct(private readonly string $sites_directory, private readonly string $slug)
+    {
+    }
 
     public function folder_path(): string
     {
@@ -32,7 +36,9 @@ class Site
             File::deleteDirectory($this->folder_path());
             exit(1);
         }
-        note($output);
+        if (is_string($output)) {
+            note($output);
+        }
     }
 
     public function execute(string $command, array $arguments = []): array
@@ -55,7 +61,7 @@ class Site
             $string_arguments .= " --{$name}=\"{$value}\"";
         }
 
-        $output = [];
+        $output    = [];
         $exit_code = 1;
 
         // TODO - Add --verbose option
@@ -75,6 +81,10 @@ class Site
 
             return true;
         })->join("\n");
+
+        if ($output === "") {
+            $output = null;
+        }
 
         return [$exit_code === 0, $output];
     }
