@@ -10,6 +10,8 @@ It was getting old.
 
 Now I can run `wpsites create`, select the template I want to use, and be (almost) instantly redirected to the admin panel for the new site.
 
+https://github.com/user-attachments/assets/5d747b41-1ae2-40d4-b38a-5386352e22d4
+
 ## Getting started
 
 Install WPSites as a global composer package.
