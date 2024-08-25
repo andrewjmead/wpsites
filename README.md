@@ -1,18 +1,30 @@
 # WPSites
 
-WPSites is a CLI that lets you quickly spin up WordPress sites based on templates that you've defined.
+WPSites is the fastest way to create a localhost WordPress website.
 
-While it was designed for myself, a full-time plugin developer, it can be used to create WordPress sites for whatever your needs happen to be.
+Just run `wpsites create`, select a site template, and give your site a name. Boom. Done.
 
-While building Independent Analytics, I'd find myself creating a new WordPress site only to configure it the same way I've configured hundreds of my disposable development sites before.
-
-It was getting old.
-
-Now I can run `wpsites create`, select the template I want to use, and be (almost) instantly redirected to the admin panel for the new site.
+Check it out:
 
 https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a
 
-## Getting started
+# Why?
+
+I've been building [Independent Analytics](https://wordpress.org/plugins/independent-analytics/) for the last 2 years, and during that time I've created hundreds (thousands?) of temporary WordPress sites.
+
+I'd create new sites for development. I'd create new sites to test customer issues. I'd create new sites to track down regression.
+
+**It was the same process over and over again. I'd create a new site only to configure it exactly the same way as I'd done countless times before. Enable debug mode. Symlink the local build. Install the plugins we integrate with. The list goes on and on.**
+
+No more.
+
+Now I run `wpsites create`, select which of my templates I want to use, and wait 10 seconds as the new site is created.
+
+It's sublime.
+
+This has been the most genuily usefull project I've created. I hope you get some value out of it. If you do, [say hi](https://twitter.com/andrew_j_mead). I'd love to hear from you.
+
+# Getting started
 
 Install WPSites as a global composer package.
 
