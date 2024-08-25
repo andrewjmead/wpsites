@@ -26,21 +26,29 @@ This has been the most genuily usefull project I've created. I hope you get some
 
 # Getting started
 
-Install WPSites as a global composer package.
+### Installing
+
+You're gonna want to install WPSites as a global composer package. This will give you access to the `wpsites` command from anywhere on your machine.
+
+I've never installed it locally. I have no ideal what will happen. 🤷‍♂️
 
 ```
 composer global require andrewmead/wpsites
 ```
 
-This will place a `wpsites` PHAR in `~/.composer/vendor/bin/`. Make sure that this directory is in your path, otherwise commands such as `wpsites create` won't work.
+The installation process will place the PHAR executable in `~/.composer/vendor/bin/`. Make sure this directory is part of your PATH, otherwise commands such as `wpsites create` will not work.
 
-From there, run `wpsites create` to generate a configuration file.
+### Creating your first site
+
+You can generate your configuration file and create your first site by running `wpsites create`. The config files that's generated will get saved to `~/.wpsites.php`.
 
 ```
-wpsites create
+$ wpsites create
+
+Show output here
 ```
 
-This will save the default configuration file to `~/.wpsites.php`.
+---
 
 **Note:** On some setups, WPSites won't be able to automatically create the configuration file. If this happens, it'll spit out a command you can run to fix that.
 
@@ -52,6 +60,12 @@ There are two things you'll need to configure in `~/.wpsites.php` before you can
 You can test your configuration file by running `wpsites create` and selecting "Basic WordPress". This will attempt to create a new WordPress site in `sites_directory` and will connect it to the database you configured.
 
 If everything's configured correctly, you should be redirected to the admin panel for your newly created WordPress site!
+
+# Technical Notes
+
+WPSites is a wrapper around WPI-CLI.
+
+WPSites doesn't care how you're serving them up. Herd. MAMP PRO. Something else.
 
 ## Building your own templates
 
