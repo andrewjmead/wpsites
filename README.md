@@ -30,8 +30,6 @@ This has been the most genuily usefull project I've created. I hope you get some
 
 You're gonna want to install WPSites as a global composer package. This will give you access to the `wpsites` command from anywhere on your machine.
 
-I've never installed it locally. I have no ideal what will happen. 🤷‍♂️
-
 ```
 composer global require andrewmead/wpsites
 ```
