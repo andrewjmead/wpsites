@@ -38,7 +38,7 @@ The installation process will place the PHAR executable in `~/.composer/vendor/b
 
 ### Generating a config file
 
-Before you can create your first WordPress site, you'll need to generate a config file. You can do this by running `wpsites config`.
+Before you can create your first WordPress site, you'll need to generate a config file. You can do this by running `wpsites config`. This command will copy the default config file to `~/.wpsites.php`.
 
 ```
 $ wpsites conifg
@@ -48,19 +48,19 @@ $ wpsites conifg
  Config file successfully created!
 ```
 
-This will copy the default config file to `~/.wpsites.php`.
+From here, open the config file in your text editor. There are a couple things you'll need to tweak before you can create your first site.
 
-Open this file in your text editor of choice, as you'll likely need to tweak a couple options before you can create your first site.
+### Configure your sites directory
 
-### Configuring your site directory
+You need to tell WPSites where on your file system you want it to create new sites. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
 
-There are a ton of options you can set in your config file to do all sorts of interesting things. For the moment though, I want to draw your attention to the very first option you'll see. That's `sites_directory`.
+```
+'sites_directory' => '$HOME/Herd',
+```
 
-The value for `sites_directory` should be a path to an existing directory where you want WPSites to create your WordPress sites.
+The default value of `$HOME/Herd` will work if you are using Laravel Herd. If you're using MAMP PRO, you'll need to change the path to `$HOME/Sites`.
 
-So if you're using Laravel Herd, the default value of `$HOME/Herd` will work great. If you're using MAMP PRO, you'll want to change that path to `$HOME/Sites`.
-
-You can store your site anywhere, just make sure that it's a directory that's being server up by whatever localhost server you're using.
+You can store your sites anywhere, but make sure the site directory is being served up by your localhost server.
 
 ### Configuring your database connection
 
