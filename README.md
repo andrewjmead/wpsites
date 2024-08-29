@@ -359,11 +359,9 @@ An array of plugins to install.
 
 Use a slug like `woocommerce` to install a plugin from the WordPress repository.
 
-Use a path like `/plugin/to/symlink` to symlink a local plugin on your machine.
+Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your machine.
 
 # Things to keep in mind
 
 1. WPSites uses WP-CLI behind the scenes
 2. WPSites is not a server and doesn't care how you're localhost sites are being served up
-
-An array of WordPress plugins to install. The plug must either be a plugin available on the WordPress plugin repository, or an absolute path to a local plugin folder to symlink.  
