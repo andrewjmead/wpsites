@@ -242,12 +242,14 @@ return [
 
 While every option (except `name`) can be set as a default or on a site template, it doesn't always make sense to do so. A good example of this are the database connection options. It's likely that all the sites you create are going to use the same values. You might need to customize it from the defaults, but there's no need to do it on a per site basis copying the same values over and over.
 
-## Supported template options
+# Template options
 
-Every option can be set in one of two places. You can set it inside of `defaults` to serve as a default for all site templates, or you can set it inside of a site template in `templates` to have it be specific to just one template.
+Every option can be set in one of two places. You can set it inside of `defaults` to serve as a default for all site templates, or you can set it inside of a site template in `templates` to have it be specific to just one template
+
 ### WordPress version
 
 Option: `wordpress_version`
+
 Default: `'latest'`
 
 The version of WordPress your site will use. Valid values include 'latest', 'nightly', or a WordPress version such as '6.0.0'.
@@ -255,6 +257,7 @@ The version of WordPress your site will use. Valid values include 'latest', 'nig
 ### Database host
 
 Option: `database_host`
+
 Default: `'127.0.0.1:3306'`
 
 The host (and port!) for your sites database connection.
@@ -262,6 +265,7 @@ The host (and port!) for your sites database connection.
 ### Database username
 
 Option: `database_username`
+
 Default: `'root'`
 
 The username for your sites database connection.
@@ -269,6 +273,7 @@ The username for your sites database connection.
 ### Database password
 
 Option: `database_password`
+
 Default: `null`
 
 The password to for your sites database connection. A value of null should be used if there is no password.
@@ -280,6 +285,7 @@ There is no option for defining the database name to create. Instead, the databa
 ### Admin username
 
 Option: `admin_username`
+
 Default: `'admin'`
 
 The username for the admin user.
@@ -287,6 +293,7 @@ The username for the admin user.
 ### Admin email
 
 Option: `admin_email`
+
 Default: `'admin@example.com'`
 
 The email for the admin user.
@@ -294,6 +301,7 @@ The email for the admin user.
 ### Admin password
 
 Option: `admin_password`
+
 Default: `'password'`
 
 The password for the admin user.
@@ -301,6 +309,7 @@ The password for the admin user.
 ### Enable multisite
 
 Option: `enable_multisite`
+
 Default: `false`
 
 Enable to create a multisite. This will also create a second site as part of the multisite network.
@@ -308,6 +317,7 @@ Enable to create a multisite. This will also create a second site as part of the
 ### Enable error logging
 
 Option: `enable_error_logging`
+
 Default: `true`
 
 Enable to setup error logging. This sets WP_DEBUG to true, WP_DEBUG_LOG to true, and WP_DEBUG_DISPLAY to false.
@@ -315,6 +325,7 @@ Enable to setup error logging. This sets WP_DEBUG to true, WP_DEBUG_LOG to true,
 ### Enable automatic login
 
 Option: `enable_automatic_login`
+
 Default: `true`
 
 Enable automatically logging in to the admin panel. This is by installing and configuring the automatic-login plugin.
@@ -322,6 +333,7 @@ Enable automatically logging in to the admin panel. This is by installing and co
 ### Theme
 
 Option: `theme`
+
 Default: `'twentytwentyfour'`
 
 The slug of the WordPress theme to use. This must be a theme available on the WordPress theme repository. Symlinked themes are currently not supported.
@@ -329,8 +341,8 @@ The slug of the WordPress theme to use. This must be a theme available on the Wo
 ### Plugins
 
 Option: `plugins`
-Default: `[]`
 
+Default: `[]`
 
 # Things to keep in mind
 
