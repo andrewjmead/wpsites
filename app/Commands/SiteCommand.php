@@ -4,51 +4,19 @@ namespace App\Commands;
 
 use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Config;
-use Illuminate\Support\Facades\File;
-use LaravelZero\Framework\Commands\Command;
 
-use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\note;
+
+use LaravelZero\Framework\Commands\Command;
 
 abstract class SiteCommand extends Command
 {
-    protected function get_config(): Config
-    {
-        if (ConfigFile::exists()) {
+    protected function get_config(): Config {
+        if ( ConfigFile::exists() ) {
             return ConfigFile::get_config();
         }
 
-        $path = ConfigFile::file_path();
-        $confirm_creation = confirm("No config file found. Create \"{$path}\"?");
-
-        if (! $confirm_creation) {
-            exit(1);
-        }
-
-        info('Creating configuration file...');
-
-        try {
-            $bytesWritten = File::put(ConfigFile::file_path(), ConfigFile::default_configuration());
-
-            if ($bytesWritten === false) {
-                throw new \Exception('Unable to create configuration file');
-            }
-        } catch (\Exception $e) {
-            error("Unable to create configuration file! Please manually create {$path} using the following command:");
-
-            note('curl -o ~/.wpsites.php https://raw.githubusercontent.com/andrewjmead/wpsites/main/config/wpsites.php');
-
-            exit(1);
-        }
-
-        info('Configuration file created! Edit to customize:');
-
-        note(ConfigFile::file_path());
-
-        info('Run "wpsites create" to get started!');
-
-        exit(0);
+        error('Config file not found! Run `wpsites config` to get started.');
+        exit( 1 );
     }
 }

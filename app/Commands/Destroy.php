@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\confirm;
-
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\multiselect;
 
