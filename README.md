@@ -46,7 +46,6 @@ $ wpsites conifg
  Copying default config to `/Users/andrewmead/.wpsites.php`
 
  Config file successfully created!
-
 ```
 
 This will copy the default config file to `~/.wpsites.php`.
@@ -104,27 +103,18 @@ $ wpsites create
  Installing default theme...
 
  Opening site...
-
 ```
 
----
+🥳
 
-**Note:** On some setups, WPSites won't be able to automatically create the configuration file. If this happens, it'll spit out a command you can run to fix that.
+That's it! You should now see your first WordPress site in your browser.
 
-There are two things you'll need to configure in `~/.wpsites.php` before you can start using WPSites.
+This is just the beginning. Read on to see how you can create and customize your site templates.
 
-1. First, you'll need to provide a value for `sites_directory`. This value should be the path to the folder where you want your sites created. The default path of `$HOME/Herd` will work if you're using Herd, otherwise change this path to whatever directory your PHP server is serving up.
-2. Second, you'll need to configure your database connection. Under the defaults associative array, set values for `database_host`, `database_username`, `database_password`, and `database_name`. Checkout out the options documentation below for details on the individual options.
+# Some things worth noting
 
-You can test your configuration file by running `wpsites create` and selecting "Basic WordPress". This will attempt to create a new WordPress site in `sites_directory` and will connect it to the database you configured.
-
-If everything's configured correctly, you should be redirected to the admin panel for your newly created WordPress site!
-
-# Technical Notes
-
-WPSites is a wrapper around WPI-CLI.
-
-WPSites doesn't care how you're serving them up. Herd. MAMP PRO. Something else.
+1. WPSites uses WP-CLI behind the scenes
+2. WPSites is not a server and doesn't care how you're localhost sites are being served up
 
 ## Building your own templates
 
