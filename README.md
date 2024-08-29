@@ -138,6 +138,29 @@ Creating your first site is just the beginning. Read on to learn how you can bui
 
 ### Starting from scratch
 
+```php
+<?php
+
+return [
+    'sites_directory' => '$HOME/Herd',
+    'defaults'        => [
+        'database_host'     => '127.0.0.1:3306',
+        'database_username' => 'root',
+        'database_password' => null,
+    ],
+    'templates' => [
+        [
+            'name' => 'Basic WordPress',
+        ],
+        [
+            'name'             => 'Basic Multisite WordPress',
+            'enable_multisite' => true,
+        ],
+    ],
+];
+
+```
+
 ### Defining defaults 
 
 ### Defining templates
