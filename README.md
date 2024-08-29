@@ -344,6 +344,12 @@ Option: `plugins`
 
 Default: `[]`
 
+An array of plugins to install.
+
+Use a slug like `woocommerce` to install a plugin from the WordPress repository.
+
+Use a path like `/plugin/to/symlink` to symlink a local plugin on your machine.
+
 # Things to keep in mind
 
 1. WPSites uses WP-CLI behind the scenes
