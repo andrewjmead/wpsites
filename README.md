@@ -364,4 +364,4 @@ Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your
 # Things to keep in mind
 
 1. WPSites uses WP-CLI behind the scenes
-2. WPSites is not a server and doesn't care how you're localhost sites are being served up
+2. WPSites is not a server and doesn't care how your localhost sites are being served up
