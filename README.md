@@ -42,6 +42,11 @@ Before you can create your first WordPress site, you'll need to generate a confi
 
 ```
 $ wpsites conifg
+
+ Copying default config to `/Users/andrewmead/.wpsites.php`
+
+ Config file successfully created!
+
 ```
 
 This will copy the default config file to `~/.wpsites.php`.
@@ -60,14 +65,46 @@ You can store your site anywhere, just make sure that it's a directory that's be
 
 ### Configuring your database connection
 
+Next, you'll need to setup your database connection. If you take a look inside `defaults`, the options involved here are `database_host`, `database_username`, and `database_password`.
+
+By default WPSites will try to connect to `127.0.0.1:3306` with a username of `root` and without a password. If you're localhost database is running on a different port or uses a different username and password, you'll need to update those options accordingly.
+
 ### Creating your first site
 
-You can generate your configuration file and create your first site by running `wpsites create`. The config files that's generated will get saved to `~/.wpsites.php`.
+You're now ready to create your first site! Doing this will also test that your site directory and databaes connection have been configured correctly.
+
+Create you first site by running `wpsites create`. You'll need to pick a template (more about that later). Just select "Basic WordPress" and you're done!
 
 ```
 $ wpsites create
 
-Show output here
+ ┌ Which template would you like to use? ───────────────────────┐
+ │ › ● Basic WordPress                                          │
+ │   ○ Basic Multisite WordPress                                │
+ │   ○ Symlink plugin example                                   │
+ │   ○ Bug recreation example                                   │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ What slug would you like to use? ────────────────────────────┐
+ │ any-slug-you-like                                            │
+ └──────────────────────────────────────────────────────────────┘
+
+ Downloading core files...
+
+ Creating site...
+
+ Creating database...
+
+ Running installation...
+
+ Enabling error log...
+
+ Enabling automatic login...
+
+ Installing default theme...
+
+ Opening site...
+
 ```
 
 ---
