@@ -134,6 +134,17 @@ $ wpsites create
 
 Creating your first site is just the beginning. Read on to learn how you can build your own templates to create sites specific to your needs!
 
+# Configuring WPSites
+
+### Starting from scratch
+
+### Defining defaults 
+
+### Defining templates
+
+
+---
+
 # Building your own templates
 
 There are three top-level properties in `.wpsites.php`. There's `sites_directory`, `defaults`, and `templates`. This section covers `defaults` and `templates`.
