@@ -111,12 +111,12 @@ That's it! You should now see your first WordPress site in your browser.
 
 This is just the beginning. Read on to see how you can create and customize your site templates.
 
-# Some things worth noting
+# Things to keep in mind
 
 1. WPSites uses WP-CLI behind the scenes
 2. WPSites is not a server and doesn't care how you're localhost sites are being served up
 
-## Building your own templates
+# Creating your own templates
 
 There are three top-level properties in `.wpsites.php`. There's `sites_directory`, `defaults`, and `templates`. This section covers `defaults` and `templates`.
 
