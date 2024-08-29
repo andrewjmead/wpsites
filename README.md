@@ -54,8 +54,14 @@ From here, open the config file in your text editor. There are a couple things y
 
 You need to tell WPSites where on your file system you want it to create new sites. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
 
-```
-'sites_directory' => '$HOME/Herd',
+```php
+// ~/.wpsites.php
+
+return [
+    // ...
+    'sites_directory' => '$HOME/Herd',
+    // ...
+];
 ```
 
 The default value of `$HOME/Herd` will work if you are using Laravel Herd. If you're using MAMP PRO, you'll need to change the path to `$HOME/Sites`.
@@ -64,15 +70,34 @@ You can store your sites anywhere, but make sure the site directory is being ser
 
 ### Configuring your database connection
 
-Next, you'll need to setup your database connection. If you take a look inside `defaults`, the options involved here are `database_host`, `database_username`, and `database_password`.
+Aside from the sites directory, the only other thing you need to configure is your database connection.
 
-By default WPSites will try to connect to `127.0.0.1:3306` with a username of `root` and without a password. If you're localhost database is running on a different port or uses a different username and password, you'll need to update those options accordingly.
+There are three options you can use for this. Inside of `defaults`, you'll want to use `database_host`, `database_username`, and `database_password`.
+
+By default, WPSites will try to connect to `127.0.0.1:3306` as the user `root`. Customize these three values to connect to whatever local MySQL database you're running.
+
+```php
+// ~/.wpsites.php
+
+return [
+    // ...
+    'defaults' => [
+        // ...
+        'database_host'     => '127.0.0.1:3306',
+        'database_username' => 'root',
+        'database_password' => null,
+        // ...
+    ]
+];
+```
+
+You can test your database connection in the next step by trying to create a new site.
 
 ### Creating your first site
 
-You're now ready to create your first site! Doing this will also test that your site directory and databaes connection have been configured correctly.
+You're now ready to create your first site!
 
-Create you first site by running `wpsites create`. You'll need to pick a template (more about that later). Just select "Basic WordPress" and you're done!
+Create your first site by running `wpsites create`. You'll be prompted to pick a template, just select "Basic WordPress" for now. We'll talk more about templates a bit later. From there, pick a slug for your site and in a few seconds you should be looking at your brand new WordPress site!
 
 ```
 $ wpsites create
@@ -107,14 +132,7 @@ $ wpsites create
 
 🥳
 
-That's it! You should now see your first WordPress site in your browser.
-
-This is just the beginning. Read on to see how you can create and customize your site templates.
-
-# Things to keep in mind
-
-1. WPSites uses WP-CLI behind the scenes
-2. WPSites is not a server and doesn't care how you're localhost sites are being served up
+Creating your first site is just the beginning. Read on to learn how you can build your own templates to create sites specific to your needs!
 
 # Creating your own templates
 
@@ -312,5 +330,11 @@ The slug of the WordPress theme to use. This must be a theme available on the Wo
 
 Option: `plugins`
 Default: `[]`
+
+
+# Things to keep in mind
+
+1. WPSites uses WP-CLI behind the scenes
+2. WPSites is not a server and doesn't care how you're localhost sites are being served up
 
 An array of WordPress plugins to install. The plug must either be a plugin available on the WordPress plugin repository, or an absolute path to a local plugin folder to symlink.  
