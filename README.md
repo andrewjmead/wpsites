@@ -36,6 +36,16 @@ composer global require andrewmead/wpsites
 
 The installation process will place the PHAR executable in `~/.composer/vendor/bin/`. Make sure this directory is part of your PATH, otherwise commands such as `wpsites create` will not work.
 
+### Generating a configuration file
+
+TODO 
+
+WPSites is powered by a single PHP configuration file. You can get setup with a default config file using `wpsites config`:
+
+```
+$ wpsites conifg
+```
+
 ### Creating your first site
 
 You can generate your configuration file and create your first site by running `wpsites create`. The config files that's generated will get saved to `~/.wpsites.php`.
