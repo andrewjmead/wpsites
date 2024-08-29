@@ -36,15 +36,29 @@ composer global require andrewmead/wpsites
 
 The installation process will place the PHAR executable in `~/.composer/vendor/bin/`. Make sure this directory is part of your PATH, otherwise commands such as `wpsites create` will not work.
 
-### Generating a configuration file
+### Generating a config file
 
-TODO 
-
-WPSites is powered by a single PHP configuration file. You can get setup with a default config file using `wpsites config`:
+Before you can create your first WordPress site, you'll need to generate a config file. You can do this by running `wpsites config`.
 
 ```
 $ wpsites conifg
 ```
+
+This will copy the default config file to `~/.wpsites.php`.
+
+Open this file in your text editor of choice, as you'll likely need to tweak a couple options before you can create your first site.
+
+### Configuring your site directory
+
+There are a ton of options you can set in your config file to do all sorts of interesting things. For the moment though, I want to draw your attention to the very first option you'll see. That's `sites_directory`.
+
+The value for `sites_directory` should be a path to an existing directory where you want WPSites to create your WordPress sites.
+
+So if you're using Laravel Herd, the default value of `$HOME/Herd` will work great. If you're using MAMP PRO, you'll want to change that path to `$HOME/Sites`.
+
+You can store your site anywhere, just make sure that it's a directory that's being server up by whatever localhost server you're using.
+
+### Configuring your database connection
 
 ### Creating your first site
 
