@@ -93,7 +93,7 @@ return [
 
 You can test your database connection in the next step by trying to create a new site.
 
-### Creating your first site
+### Creating your first site 🚀🤘
 
 You're now ready to create your first site!
 
