@@ -93,7 +93,7 @@ return [
 
 You can test your database connection in the next step by trying to create a new site.
 
-### Creating your first site 🚀🤘
+### Creating your first site
 
 You're now ready to create your first site!
 
@@ -130,9 +130,7 @@ $ wpsites create
  Opening site...
 ```
 
-🥳
-
-Creating your first site is just the beginning. Read on to learn how you can build your own templates to create sites specific to your needs!
+Amazing! Now creating your first site is just the beginning. Read on to learn how you can build your own templates to create sites specific to your needs!
 
 # Configuring WPSites
 
