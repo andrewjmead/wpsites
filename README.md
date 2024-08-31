@@ -134,7 +134,23 @@ Amazing! Now creating your first site is just the beginning. Read on to learn ho
 
 # Configuring WPSites
 
+there are three top level properties
+
+sites_directory is where news sites are created
+
+defaults define default values for all your sites which is great for things like database connections and maybe not so useful for things like x
+
+templates define an array of site templates to use - in here, you can override any value in defaults to make your sites your own. Array values like plugins will be merged so you can define defaults plugins you always want as well as ones you only want for a specific template.
+
+Let's dig in
+
 ### Starting from scratch
+
+The default config files has quite a bit of stuff, but all the defaults properties are only there so you can see all the options you have available.
+
+In reality, you can trim it down quite a bit. Here's the smallest reasonable config file you can get away with. It defines a site directory, a databaes connection, and a couple of simple templates, one a basic site and the other a multisite.
+
+If you liking what you're seeing below, you can absolutely replace your config file with this one. Just make sure to adjust the sites directory and the databae connection options.
 
 ```php
 <?php
@@ -156,7 +172,6 @@ return [
         ],
     ],
 ];
-
 ```
 
 ### Defining defaults 
