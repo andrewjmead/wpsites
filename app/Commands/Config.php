@@ -4,13 +4,12 @@ namespace App\Commands;
 
 use App\Domain\ConfigFile;
 use Illuminate\Support\Facades\File;
+use LaravelZero\Framework\Commands\Command;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
-
-use LaravelZero\Framework\Commands\Command;
 
 class Config extends Command
 {
@@ -33,6 +32,8 @@ class Config extends Command
      */
     public function handle()
     {
+        $config_path = ConfigFile::file_path();
+
         if (ConfigFile::exists()) {
             $confirmed = confirm(
                 label: 'Config file already exists. Do you want to override it?',
@@ -41,23 +42,22 @@ class Config extends Command
 
             if ($confirmed) {
                 info('Removing existing config file');
-                File::delete(ConfigFile::file_path());
+                File::delete($config_path);
             } else {
                 exit(0);
             }
         }
 
-        $path = ConfigFile::file_path();
-        info("Copying default config to `{$path}`");
+        info("Copying default config to `{$config_path}`");
 
         try {
-            $bytesWritten = File::put(ConfigFile::file_path(), ConfigFile::default_configuration());
+            $bytesWritten = File::put($config_path, ConfigFile::default_configuration());
 
             if ($bytesWritten === false) {
                 throw new \Exception('Unable to create configuration file');
             }
         } catch (\Exception $e) {
-            error("Unable to create configuration file! Please manually create {$path} using the following command:");
+            error("Unable to create configuration file! Please manually create {$config_path} using the following command:");
 
             note('curl -o ~/.wpsites.php https://raw.githubusercontent.com/andrewjmead/wpsites/main/config/wpsites.php');
 
