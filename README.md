@@ -293,6 +293,8 @@ While every option (except `name`) can be set as a default or on a site template
 
 Every option can be set in one of two places. You can set it inside of `defaults` to serve as a default for all site templates, or you can set it inside of a site template in `templates` to have it be specific to just one template
 
+Reorder these by most likley to be customizes. Themes and plugins first.
+
 ### WordPress version
 
 Option: `wordpress_version`
