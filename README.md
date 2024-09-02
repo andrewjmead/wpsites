@@ -1,5 +1,7 @@
 # WPSites
 
+# Contents 
+
 [Getting started](#getting-started)
 
 [Configuring WPSites](#configuring-wpsites)
@@ -7,6 +9,8 @@
 [Template options](#template-options)
 
 [Things to keep in mind](#things-to-keep-in-mind)
+
+# WPSites 
 
 WPSites is the fastest way to create a localhost WordPress website.
 
