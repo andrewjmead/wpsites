@@ -4,18 +4,17 @@ WPSites is the fastest way to create a localhost WordPress website.
 
 Just run `wpsites create`, select a site template, and give your site a name. Boom. Done.
 
+https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a
+
 # Contents 
+
+[Why?](#why)
 
 [Getting started](#getting-started)
 
 [Configuring WPSites](#configuring-wpsites)
 
 [Template options](#template-options)
-
-[Things to keep in mind](#things-to-keep-in-mind)
-
-<video src="https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a.mp4"/>|<video src="https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a.mp4"/>
---|--
 
 # Why?
 
@@ -381,8 +380,3 @@ An array of plugins to install.
 Use a slug like `woocommerce` to install a plugin from the WordPress repository.
 
 Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your machine.
-
-# Things to keep in mind
-
-1. WPSites uses WP-CLI behind the scenes
-2. WPSites is not a server and doesn't care how your localhost sites are being served up
