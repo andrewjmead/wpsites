@@ -34,6 +34,8 @@ class Config extends Command
     {
         $config_path = ConfigFile::file_path();
 
+        note("Searching for config file at:\n{$config_path}");
+
         if (ConfigFile::exists()) {
             $confirmed = confirm(
                 label: 'Config file already exists. Do you want to override it?',
