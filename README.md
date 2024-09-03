@@ -273,23 +273,51 @@ return [
 ];
 ```
 
-Right off the top you'll notice that there are no database options defined in `defaults`. Actually, there are no database options defined anywhere. In my case the default values for `database_host`, `database_username`, and `database_password` are the correct values for my connection. So defing the same values as defaults doesn't do anything at all. It's only present in the default config as it's something you might need to tweak and I wanted to make that as easy as possible.
+First up, notice that there are no datbase options defined in `defaults`. Actually, there are no database options defined anywhere.
 
-Every support option has a default value. `enable_multisite` is false, `wordpress_version` is `'latest'`, and `enable_error_logging` is `true`. If you happy with the default value for an option, you don't need to configure it.
+For my machine, which WPSites was built for, the default values for `database_host`, `database_username`, and `database_password` don't need to be changed. Setting `database_host` equal to `127.0.0.1:3306` is unnecessary as that's already the default value for the option. Every option has a default value, and if you're happy with the default value then there's no need to configure it.
 
-The one option I do have in `defaults` is `plugins`. Here I'm telling WPSites that I want the `code-snippets` plugin installed on every site. Don't worry if a template also defines `plugins`. These arrays are merged so the site ends up with the default plugins as well as the template specific plugins.
+You can find the default value for all the options in [template options](#template-options) below.
 
-Below that are the 5 templates I've been using. I still keep around a basic site and a basic multisite, but the final three templates are all specific to my work on Independent Analytics.
+The one option that I have defined in `defaults` in `plugins`. This lets me define a set of plugins that I want to use on all new sites. If a template also defines `plugins`, the default plugins and the template plugins will be merged and all plugins will be installed.
 
-IAWP Dev is a good template for my development site which comes a couple of symlinked plugins as well as a few third-party plugins that we integrate with. There's also IAWP Dev Multisite which is just a multisite version of this dev site.
+Below `defaults` is `templates`, and I have 5 templates I use most often.
 
-Last up is IAWP Latest Stable Release. This is a basic site that install the lastest released version of Independent Analytics form the WordPress plugin repository. This template is useful when I want to recreate a customer bug or see how the behavior I'm changing originally worked.
+The first two are the basic site and multisite templates that come with the default config file. Not super interesting.
+
+The third template is "IAWP Dev". This is the template I use for my main development site as I'm building out Independent Analytics. It symlinks a couple of local plugins and also installs some third-party plugins that we integrate with.
+
+The fourth template is the same as the third, though it's a multisite.
+
+The fifth and final template is a site that installed the latest released version of Independent Analytics. This install the plugin from the WordPress plugin repository, which is convinent when I need to recreate a customers issue with only the feature that have already been released.
 
 # Template options
 
-Every option can be set in one of two places. You can set it inside of `defaults` to serve as a default for all site templates, or you can set it inside of a site template in `templates` to have it be specific to just one template
+Below is every option that WPSites supports. These options can be set inside of `defaults` or inside of a specific template.
 
-Reorder these by most likley to be customizes. Themes and plugins first.
+Options defined in a template will override options defined in `defaults`.
+
+The one exception to this rule in `plugins`. If `plugins` is defined in `defaults` and in a template, the array of plugins to install will be merged together so all plugins are installed.
+
+### Plugins
+
+Option: `plugins`
+
+Default: `[]`
+
+An array of plugins to install.
+
+Use a slug like `woocommerce` to install a plugin from the WordPress repository.
+
+Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your machine.
+
+### Theme
+
+Option: `theme`
+
+Default: `'twentytwentyfour'`
+
+The slug of the WordPress theme to use. This must be a theme available on the WordPress theme repository. Symlinked themes are currently not supported.
 
 ### WordPress version
 
@@ -298,6 +326,30 @@ Option: `wordpress_version`
 Default: `'latest'`
 
 The version of WordPress your site will use. Valid values include 'latest', 'nightly', or a WordPress version such as '6.0.0'.
+
+### Enable multisite
+
+Option: `enable_multisite`
+
+Default: `false`
+
+Enable to create a multisite. This will also create a second site as part of the multisite network.
+
+### Enable error logging
+
+Option: `enable_error_logging`
+
+Default: `true`
+
+Enable to setup error logging. This sets WP_DEBUG to true, WP_DEBUG_LOG to true, and WP_DEBUG_DISPLAY to false.
+
+### Enable automatic login
+
+Option: `enable_automatic_login`
+
+Default: `true`
+
+Enable automatically logging in to the admin panel. This is by installing and configuring the automatic-login plugin.
 
 ### Database host
 
@@ -325,7 +377,7 @@ The password to for your sites database connection. A value of null should be us
 
 ### Database name
 
-There is no option for defining the database name to create. Instead, the database name comes from the unique slug you pick when creating a WordPress site with `wpsites create`.
+There is no option to define the database name. Instead, the slug you provide running `wpsites create` is used as the database name.
 
 ### Admin username
 
@@ -350,47 +402,3 @@ Option: `admin_password`
 Default: `'password'`
 
 The password for the admin user.
-
-### Enable multisite
-
-Option: `enable_multisite`
-
-Default: `false`
-
-Enable to create a multisite. This will also create a second site as part of the multisite network.
-
-### Enable error logging
-
-Option: `enable_error_logging`
-
-Default: `true`
-
-Enable to setup error logging. This sets WP_DEBUG to true, WP_DEBUG_LOG to true, and WP_DEBUG_DISPLAY to false.
-
-### Enable automatic login
-
-Option: `enable_automatic_login`
-
-Default: `true`
-
-Enable automatically logging in to the admin panel. This is by installing and configuring the automatic-login plugin.
-
-### Theme
-
-Option: `theme`
-
-Default: `'twentytwentyfour'`
-
-The slug of the WordPress theme to use. This must be a theme available on the WordPress theme repository. Symlinked themes are currently not supported.
-
-### Plugins
-
-Option: `plugins`
-
-Default: `[]`
-
-An array of plugins to install.
-
-Use a slug like `woocommerce` to install a plugin from the WordPress repository.
-
-Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your machine.
