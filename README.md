@@ -30,7 +30,7 @@ Now I run `wpsites create`, select which of my templates I want to use, and wait
 
 It's sublime.
 
-This has been the most genuily usefull project I've created. I hope you get some value out of it. If you do, [say hi](https://twitter.com/andrew_j_mead). I'd love to hear from you.
+This has been the most genuinely useful project I've created. I hope you get some value out of it. If you do, [say hi](https://twitter.com/andrew_j_mead). I'd love to hear from you.
 
 # Getting started
 
@@ -58,11 +58,11 @@ $ wpsites conifg
  Config file successfully created!
 ```
 
-From here, open the config file in your text editor. There are a couple things you'll need to tweak before you can create your first site.
+From here, open the config file in your text editor. There are a couple of things you'll need to tweak before you can create your first site.
 
-### Configure your sites directory
+### Configure your site's directory
 
-You need to tell WPSites where on your file system you want it to create new sites. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
+You need to tell WPSites where on your file system you want new new sites to be created. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
 
 ```php
 // ~/.wpsites.php
@@ -80,7 +80,7 @@ You can store your sites anywhere, but make sure the site directory is being ser
 
 ### Configuring your database connection
 
-Aside from the sites directory, the only other thing you need to configure is your database connection.
+Aside from the site's directory, the only other thing you need to configure is your database connection.
 
 There are three options you can use for this. Inside of `defaults`, you'll want to use `database_host`, `database_username`, and `database_password`.
 
@@ -107,7 +107,7 @@ You can test your database connection in the next step by trying to create a new
 
 You're now ready to create your first site!
 
-Create your first site by running `wpsites create`. You'll be prompted to pick a template, just select "Basic WordPress" for now. We'll talk more about templates a bit later. From there, pick a slug for your site and in a few seconds you should be looking at your brand new WordPress site!
+Create your first site by running `wpsites create`. You'll be prompted to pick a template, just select "Basic WordPress" for now. We'll talk more about templates a bit later. From there, pick a slug for your site and in a few seconds, you should be looking at your brand-new WordPress site!
 
 ```
 $ wpsites create
@@ -148,9 +148,9 @@ In this section, you'll learn how to customize WPSites to fit your needs. This i
 
 ### Exploring the default config file
 
-To get started, let's take a look at the default config file that got created when you initially ran `wpsites config`.
+To get started, let's take a look at the default config file that was created when you initially ran `wpsites config`.
 
-Here's the entirity of the default config file.
+Here's the entirety of the default config file.
 
 ```php
 <?php
@@ -202,9 +202,9 @@ If you're using Laravel Herd, the default value of `'$HOME/Herd'` should work gr
 
 As you can see in the config file above, the value for `defaults` is an associative array.
 
-On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option can be set on `defaults` can also be overriden on an individual template.
+On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option can be set on `defaults` can also be overridden on an individual template.
 
-The default config file defines the three options that are used to configure the database connection. These are `database_host`, `database_username`, and `database_password`. You may need to tweak these options to matching up with your local MySQL database server.
+The default config file defines the three options that are used to configure the database connection. These are `database_host`, `database_username`, and `database_password`. You may need to tweak these options to match up with your local MySQL database server.
 
 **Last up is `templates`**
 
@@ -212,7 +212,7 @@ The value for `templates` is an array of associated arrays.
 
 Each item in the array represents a template that you can use when creating a new site. The only requirement for a template is that you give it a name by setting a value for `name`. Everything else is optional.
 
-The default config file above has three templates. The first template is a barebones template that just define a name. The second template uses `enable_multisite` to create a WordPress multisite. The final template uses a few more options to customize the WordPress version, theme, and plugins.
+The default config file above has three templates. The first template is a barebones template that just defines a name. The second template uses `enable_multisite` to create a WordPress multisite. The final template uses a few more options to customize the WordPress version, theme, and plugins.
 
 Check out all the [template options](#template-options) below to see what's possible.
 
@@ -273,13 +273,13 @@ return [
 ];
 ```
 
-First up, notice that there are no datbase options defined in `defaults`. Actually, there are no database options defined anywhere.
+First up, notice that there are no database options defined in `defaults`. Actually, there are no database options defined anywhere.
 
 For my machine, which WPSites was built for, the default values for `database_host`, `database_username`, and `database_password` don't need to be changed. Setting `database_host` equal to `127.0.0.1:3306` is unnecessary as that's already the default value for the option. Every option has a default value, and if you're happy with the default value then there's no need to configure it.
 
 You can find the default value for all the options in [template options](#template-options) below.
 
-The one option that I have defined in `defaults` in `plugins`. This lets me define a set of plugins that I want to use on all new sites. If a template also defines `plugins`, the default plugins and the template plugins will be merged and all plugins will be installed.
+The one option that I have defined in `defaults` is `plugins`. This lets me define a set of plugins that I want to use on all new sites. If a template also defines `plugins`, the default plugins and the template plugins will be merged and all plugins will be installed.
 
 Below `defaults` is `templates`, and I have 5 templates I use most often.
 
@@ -289,7 +289,7 @@ The third template is "IAWP Dev". This is the template I use for my main develop
 
 The fourth template is the same as the third, though it's a multisite.
 
-The fifth and final template is a site that installed the latest released version of Independent Analytics. This install the plugin from the WordPress plugin repository, which is convinent when I need to recreate a customers issue with only the feature that have already been released.
+The fifth and final template is a site that installed the latest released version of Independent Analytics. This installs the plugin from the WordPress plugin repository, which is convenient when I need to recreate a customer issue with only the features that have already been released.
 
 # Template options
 
@@ -297,7 +297,7 @@ Below is every option that WPSites supports. These options can be set inside of 
 
 Options defined in a template will override options defined in `defaults`.
 
-The one exception to this rule in `plugins`. If `plugins` is defined in `defaults` and in a template, the array of plugins to install will be merged together so all plugins are installed.
+The one exception to this rule is `plugins`. If `plugins` is defined in `defaults` and in a template, the array of plugins to install will be merged together so all plugins are installed.
 
 ### Plugins
 
@@ -349,7 +349,7 @@ Option: `enable_automatic_login`
 
 Default: `true`
 
-Enable automatically logging in to the admin panel. This is by installing and configuring the automatic-login plugin.
+Enable automatically logging in to the admin panel. This is done by installing and configuring the automatic-login plugin.
 
 ### Database host
 
@@ -357,7 +357,7 @@ Option: `database_host`
 
 Default: `'127.0.0.1:3306'`
 
-The host (and port!) for your sites database connection.
+The host (and port!) for your site's database connection.
 
 ### Database username
 
@@ -365,7 +365,7 @@ Option: `database_username`
 
 Default: `'root'`
 
-The username for your sites database connection.
+The username for your site's database connection.
 
 ### Database password
 
@@ -373,7 +373,7 @@ Option: `database_password`
 
 Default: `null`
 
-The password to for your sites database connection. A value of null should be used if there is no password.
+The password to for your site's database connection. A value of null should be used if there is no password.
 
 ### Database name
 
