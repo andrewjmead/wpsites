@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Domain\Site;
-use Illuminate\Support\Facades\File;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
@@ -35,23 +34,16 @@ class Open extends SiteCommand
 
         info('Checking which sites are WordPress sites...');
 
-        $options = collect(File::directories($sites_directory))->filter(function ($directory) use ($sites_directory) {
-            $site = new Site($sites_directory, basename($directory));
-            [$success, $output] = $site->execute('wp core is-installed');
+        $slugs = Site::get_all_slugs($sites_directory);
 
-            return $success;
-        })->map(function ($directory) {
-            return basename($directory);
-        });
-
-        if ($options->count() === 0) {
+        if ($slugs->count() === 0) {
             info('There are no WordPress sites to open');
             exit(0);
         }
 
         $selected_slug = select(
             label: 'Pick a site to open',
-            options: array_values($options->toArray()),
+            options: $slugs,
         );
 
         exec("open http://{$selected_slug}.test/wp-admin");

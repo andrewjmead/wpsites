@@ -3,16 +3,19 @@
 namespace App\Domain;
 
 use App\Domain\ConfigTypes\Template;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
-
 use function Laravel\Prompts\info;
+
 use function Laravel\Prompts\note;
 
 use Phar;
+
+use Spatie\Fork\Fork;
 
 class Site
 {
@@ -98,6 +101,40 @@ class Site
         } else {
             return base_path('builds/wpsites-wp-cli.phar');
         }
+    }
+
+    /**
+     * @param string $directory
+     *
+     * @return Collection<Site>
+     */
+    public static function get_all_slugs(string $directory): Collection
+    {
+        return self::get_all_sites($directory)->map(fn ($site) => $site->slug);
+    }
+
+    /**
+     * @param string $directory
+     *
+     * @return Collection<Site>
+     */
+    public static function get_all_sites(string $directory): Collection
+    {
+        $callables = collect(File::directories($directory))->map(function ($site_directory) use ($directory) {
+            $site = new Site($directory, basename($site_directory));
+
+            return function () use ($site) {
+                [$success, $output] = $site->execute('wp core is-installed');
+
+                return $success ? $site : null;
+            };
+        });
+
+        $results = Fork::new()->run(
+            ...$callables
+        );
+
+        return collect($results)->filter();
     }
 
     // public function template_validation_errors(): ?array

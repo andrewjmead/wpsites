@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\confirm;
+
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\multiselect;
 
@@ -39,23 +40,16 @@ class Destroy extends SiteCommand
 
         info('Checking which sites are WordPress sites...');
 
-        $options = collect(File::directories($sites_directory))->filter(function ($directory) use ($sites_directory) {
-            $site               = new Site($sites_directory, basename($directory));
-            [$success, $output] = $site->execute('wp core is-installed');
+        $slugs = Site::get_all_slugs($sites_directory);
 
-            return $success;
-        })->map(function ($directory) {
-            return basename($directory);
-        });
-
-        if ($options->count() === 0) {
+        if ($slugs->count() === 0) {
             info('There are no WordPress sites to destroy');
             exit(0);
         }
 
         $selected_slugs = multiselect(
             label: 'Which sites would you like to destroy?',
-            options: array_values($options->toArray()),
+            options: $slugs,
             scroll: 20,
             required: true,
         );
