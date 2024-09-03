@@ -2,13 +2,9 @@
 
 WPSites is the fastest way to create a localhost WordPress website.
 
-1. Run `wpsites create`
-2. Select a template to use
-3. Give your site a name
+All you need to do is run `wpsites create`, select and template, name your site, and—boom! It's created!
 
-That's it.
-
-See it in action below:
+Check it out:
 
 https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a
 
