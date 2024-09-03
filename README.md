@@ -224,16 +224,6 @@ The only property you have to define is `name`. After setting a name, you'll see
 
 Below is the config file I've been using. 
 
-First, notice that there are no database options set in `defaults`. The default values for those options are the value I use, so they can just be removed entirely. Every option documented below also show the default value you get if you don't explicetly set one.
-
-The one option I do have in `defaults` is `plugins`. Here I'm telling WPSites that I want the `code-snippets` plugin installed on every site. Don't worry if a template also defines `plugins`. These arrays are merged so the site ends up with the default plugins as well as the template specific plugins.
-
-Below that are the 5 templates I've been using. I still keep around a basic site and a basic multisite, but the final three templates are all specific to my work on Independent Analytics.
-
-IAWP Dev is a good template for my development site which comes a couple of symlinked plugins as well as a few third-party plugins that we integrate with. There's also IAWP Dev Multisite which is just a multisite version of this dev site.
-
-Last up is IAWP Latest Stable Release. This is a basic site that install the lastest released version of Independent Analytics form the WordPress plugin repository. This template is useful when I want to recreate a customer bug or see how the behavior I'm changing originally worked.
-
 ```php
 <?php
 
@@ -283,6 +273,15 @@ return [
 ];
 ```
 
+First, notice that there are no database options set in `defaults`. The default values for those options are the value I use, so they can just be removed entirely. Every option documented below also show the default value you get if you don't explicetly set one.
+
+The one option I do have in `defaults` is `plugins`. Here I'm telling WPSites that I want the `code-snippets` plugin installed on every site. Don't worry if a template also defines `plugins`. These arrays are merged so the site ends up with the default plugins as well as the template specific plugins.
+
+Below that are the 5 templates I've been using. I still keep around a basic site and a basic multisite, but the final three templates are all specific to my work on Independent Analytics.
+
+IAWP Dev is a good template for my development site which comes a couple of symlinked plugins as well as a few third-party plugins that we integrate with. There's also IAWP Dev Multisite which is just a multisite version of this dev site.
+
+Last up is IAWP Latest Stable Release. This is a basic site that install the lastest released version of Independent Analytics form the WordPress plugin repository. This template is useful when I want to recreate a customer bug or see how the behavior I'm changing originally worked.
 
 # Template options
 
