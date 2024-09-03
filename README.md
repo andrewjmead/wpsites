@@ -34,6 +34,8 @@ This has been the most genuily usefull project I've created. I hope you get some
 
 # Getting started
 
+Please open an issue if you run into any issues with the software or with this guide. I can't test the project on every setup, so I rely on your bug reports to make sure WPSites works on a wide range of machines.
+
 ### Installing
 
 You're gonna want to install WPSites as a global composer package. This will give you access to the `wpsites` command from anywhere on your machine.
@@ -138,7 +140,7 @@ $ wpsites create
  Opening site...
 ```
 
-Amazing! Now creating your first site is just the beginning. Read on to learn how you can build your own templates to create sites specific to your needs!
+Amazing! Now creating your first site is just the beginning. Read on to learn how you can make your own templates to create sites specific to your needs!
 
 # Configuring WPSites
 
@@ -214,11 +216,23 @@ The default config file above has three templates. The first template is a bareb
 
 Check out all the [template options](#template-options) below to see what's possible.
 
-### Building your own templates
+### Making your own templates
 
-You can create your own template by adding a new associative array to the end of the `templates` array. Set a name using `name` and you're all set.
+You can make a new template by adding an associative array to the end of `templates`.
 
-To give you an idea of what you might want to do, here's my current `.wpsites.php` file. While I do comment and uncommand various plugins as needed, this is a pretty good representation of why I find it useful.
+The only property you have to define is `name`. After setting a name, you'll see your new template listed as an option the next time you run `wpsites create`.
+
+Below is the config file I've been using. 
+
+First, notice that there are no database options set in `defaults`. The default values for those options are the value I use, so they can just be removed entirely. Every option documented below also show the default value you get if you don't explicetly set one.
+
+The one option I do have in `defaults` is `plugins`. Here I'm telling WPSites that I want the `code-snippets` plugin installed on every site. Don't worry if a template also defines `plugins`. These arrays are merged so the site ends up with the default plugins as well as the template specific plugins.
+
+Below that are the 5 templates I've been using. I still keep around a basic site and a basic multisite, but the final three templates are all specific to my work on Independent Analytics.
+
+IAWP Dev is a good template for my development site which comes a couple of symlinked plugins as well as a few third-party plugins that we integrate with. There's also IAWP Dev Multisite which is just a multisite version of this dev site.
+
+Last up is IAWP Latest Stable Release. This is a basic site that install the lastest released version of Independent Analytics form the WordPress plugin repository. This template is useful when I want to recreate a customer bug or see how the behavior I'm changing originally worked.
 
 ```php
 <?php
@@ -236,8 +250,7 @@ return [
         ],
         [
             'name'             => 'Basic multisite WordPress',
-            'enable_multisite' => true,
-            'theme'            => 'twentytwentythree',
+            'enable_multisite' => true
         ],
         [
             'name'    => 'IAWP Dev',
