@@ -142,17 +142,69 @@ Amazing! Now creating your first site is just the beginning. Read on to learn ho
 
 # Configuring WPSites
 
-there are three top level properties
+In this section, you'll learn how to customize WPSites to fit your needs. This includes defining a reasonable set of defaults, as well as defining your own templates so you can quickly spin up preconfigured sites.
 
-sites_directory is where news sites are created
+### Exploring the default config file
 
-defaults define default values for all your sites which is great for things like database connections and maybe not so useful for things like x
+To get started, let's take a look at the default config file that got created when you initially ran `wpsites config`.
 
-templates define an array of site templates to use - in here, you can override any value in defaults to make your sites your own. Array values like plugins will be merged so you can define defaults plugins you always want as well as ones you only want for a specific template.
+Here's the entirity of the default config file.
 
-Let's dig in
+```php
+<?php
+
+// Explore every option that you can set:
+// https://github.com/andrewjmead/wpsites#template-options
+
+return [
+    'sites_directory' => '$HOME/Herd',
+    'defaults'        => [
+        'database_host'     => '127.0.0.1:3306',
+        'database_username' => 'root',
+        'database_password' => null,
+    ],
+    'templates' => [
+        [
+            'name' => 'Basic WordPress',
+        ],
+        [
+            'name'             => 'Basic Multisite WordPress',
+            'enable_multisite' => true,
+        ],
+        [
+            'name'              => 'Example with more options',
+            'wordpress_version' => '5.9.10',
+            'plugins'           => [
+                'independent-analytics',
+                '/plugin/path/to/symlink',
+            ],
+            'theme' => 'twentytwentythree'
+        ],
+    ],
+];
+```
+
+The config file is nothing more than a PHP file that returns an associative array. This associative array is where you can customize the options and define your own templates. While you will end up adding a bit more to it, it'll always follow this same simple structure.
+
+There are three top-level properties. The first is `sites_directory`.
+
+The value for `sites_directory` should be a path to a directory on your computer. This directory is where WPSites will create your new sites. Unless you're using Laravel Herd, you'll need to update this value to point to whatever directorty you're serving up. For MAMP PRO, that would be `'$HOME/Sites'`. 
+
+Next up is `defaults`.
+
+The value for `defaults` is an associative array where you can define a set of default options to apply to all your templates. The config file above uses `defaults` to define the database connection, as the connection is the same for all the localhost sites that get created. You might need to change the specific values for `database_host`, `database_username`, and `database_password`, but you should end up in the same situation where you define those three options in `defaults` and not individually for each template.
+
+Keep in mind that any option you can set on 'defaults` can also be set and overriden for a template.
+
+Last up is `templates`
+
+The value for `templates` in an array of associative arrays. Each associative array represents a template that you can use when creating a new site. The only requirement for a template is that you define a `name`. Eveything else is optional.
+
+The default config file above define three templates...
 
 ### Starting from scratch
+
+
 
 The default config files has quite a bit of stuff, but all the defaults properties are only there so you can see all the options you have available.
 
