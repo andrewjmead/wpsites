@@ -188,131 +188,88 @@ The config file is nothing more than a PHP file that returns an associative arra
 
 There are three top-level properties. 
 
-First up is `sites_directory`.
+**First up is `sites_directory`.**
 
-The value for `sites_directory` should be a path to a directory on your computer. This directory is where WPSites will create your new sites. Unless you're using Laravel Herd, you'll need to update this value to point to whatever directorty you're serving up. For MAMP PRO, that would be `'$HOME/Sites'`. 
+The value for this should be the path to an existing directory on your computer.
 
-Next up is `defaults`.
+This directory is where WPSites will create new WordPress sites, so make sure the directory is being served up by whatever PHP server you're running.
 
-The value for `defaults` is an associative array where you can define a set of default options to apply to all your templates. The config file above uses `defaults` to define the database connection, as the connection is the same for all the localhost sites that get created. You might need to change the specific values for `database_host`, `database_username`, and `database_password`, but you should end up in the same situation where you define those three options in `defaults` and not individually for each template.
+If you're using Laravel Herd, the default value of `'$HOME/Herd'` should work great. If you're using MAMP PRO, you'll want to use `'$HOME/Sites'`.
 
-Keep in mind that any option you can set on 'defaults` can also be set and overriden for a template.
+**Next up is `defaults`.**
 
-Last up is `templates`
+As you can see in the config file above, the value for `defaults` is an associative array.
 
-The value for `templates` in an array of associative arrays. Each associative array represents a template that you can use when creating a new site. The only requirement for a template is that you define a `name`. Eveything else is optional.
+On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option can be set on `defaults` can also be overriden on an individual template.
 
-The default config file above define three templates...
+The default config file defines the three options that are used to configure the database connection. These are `database_host`, `database_username`, and `database_password`. You may need to tweak these options to matching up with your local MySQL database server.
 
-you can set `enable_multisite` to 'true` in defaults. That's totally fine, though likely not what you want. While every option can be set in both places, most make more sense in one context or another.
+**Last up is `templates`**
+
+The value for `templates` is an array of associated arrays.
+
+Each item in the array represents a template that you can use when creating a new site. The only requirement for a template is that you give it a name by setting a value for `name`. Everything else is optional.
+
+The default config file above has three templates. The first template is a barebones template that just define a name. The second template uses `enable_multisite` to create a WordPress multisite. The final template uses a few more options to customize the WordPress version, theme, and plugins.
+
+Check out all the [template options](#template-options) below to see what's possible.
 
 ### Building your own templates
 
-There are three top-level properties in `.wpsites.php`. There's `sites_directory`, `defaults`, and `templates`. This section covers `defaults` and `templates`.
+You can create your own template by adding a new associative array to the end of the `templates` array. Set a name using `name` and you're all set.
 
-Let's start with `templates`.
-
-The `templates` property defines an array of WordPress site templates. The default configuration file comes with a few predefined templates, but you'll definitely want to create and customize your own.
-
-You can create a new template by adding an associative array to the end of `templates`. The only thing you have to define is a template name using `name`. All other properties are optional.
-
-Your configuration file as contains `defaults`. `defaults` is an associative array where you can define all of the same properties for a template (except for `name`).
-
-So if you wanted ever template to use a specific version of WordPress, such as `5.9.10`, you could define `'wordpress_version' => '5.9.10'` under `defaults` instead of needing to define it for every template you create. If there a specific site where you want to use the latest version of WordPress instead, you could set `'wordpress_version' => 'latest'` on the one site template to override the default value.
-
-Let's see this in action. Below is the default `.wpsite.php` configuration file. Take a quick look and continue on.
+To give you an idea of what you might want to do, here's my current `.wpsites.php` file. While I do comment and uncommand various plugins as needed, this is a pretty good representation of why I find it useful.
 
 ```php
-<?php  
-  
-return [  
-    'sites_directory' => '$HOME/Herd',  
-  
-    'defaults' => [  
-        'wordpress_version'      => 'latest',  
-        'database_host'          => '127.0.0.1:3306',  
-        'database_username'      => 'root',  
-        'database_password'      => null,  
-        'database_name'          => null,  
-        'admin_username'         => 'admin',  
-        'admin_email'            => 'admin@example.com',  
-        'admin_password'         => 'password',  
-        'enable_multisite'       => false,  
-        'enable_error_logging'   => true,  
-        'enable_automatic_login' => true,  
-        'theme'                  => 'twentytwentyfour',  
-        'plugins'                => []  
-    ],  
+<?php
 
-    'templates' => [  
+return [
+    'sites_directory' => '$HOME/Herd',
+    'defaults'        => [
+        'plugins' => [
+            'code-snippets'
+        ]
+    ],
+    'templates' => [
         [
-            'name' => 'Basic WordPress',  
+            'name' => 'Basic WordPress',
         ],
         [
-            'name'             => 'Basic Multisite WordPress',  
-            'enable_multisite' => true,  
+            'name'             => 'Basic multisite WordPress',
+            'enable_multisite' => true,
+            'theme'            => 'twentytwentythree',
         ],
-        [            
-	        'name'    => 'Symlink plugin example',  
-            'plugins' => [  
-                '/path/to/symlink/folder',  
+        [
+            'name'    => 'IAWP Dev',
+            'plugins' => [
+                '/Users/andrewmead/Projects/independent-analytics/independent-analytics',
+                '/Users/andrewmead/Projects/iawp-developer-niceties',
+                'woocommerce',
+                'woo-order-test',
+                'surecart',
             ],
         ],
-        [            
-			'name'              => 'Bug recreation example',  
-			'wordpress_version' => '5.9.10',
-            'plugins'           => [  
-                'independent-analytics',  
+        [
+            'name'             => 'IAWP Dev Multisite',
+            'enable_multisite' => true,
+            'plugins'          => [
+                '/Users/andrewmead/Projects/independent-analytics/independent-analytics',
+                '/Users/andrewmead/Projects/iawp-developer-niceties',
+                'woocommerce',
+                'woo-order-test',
+                'surecart',
+            ],
+        ],
+        [
+            'name'    => 'IAWP Latest Stable Release',
+            'plugins' => [
+                'independent-analytics',
             ],
         ],
     ],
 ];
 ```
 
-Under `defaults` is every option that you can define. All of these options can be defined on `defaults` and also defined on a site template.
-
-You'll notice that the default value for `wordpress_version` is `latest`. The first 3 site templates don't override this value, so sites created with those templates will use the latest WordPress version.
-
-The last site template overrides the default value for `wordpress_version` by settings it own version of `wordpress_version` to `5.9.10`.
-
-So you can define a set of reasonable defaults and then override those values on a per template basis.
-
-It's important to note that every default value in `defaults` above is the default value for the property. So in this case, the values in `defaults` are only there to show you all the options you can set. Since the default value for `wordpress_version` is already latest, it's a bit redundant. That means the config file above and the one below are actually the same.
-
-```php
-<?php  
-  
-return [  
-    'sites_directory' => '$HOME/Herd',  
-  
-    'defaults' => [],  
-
-    'templates' => [  
-        [
-            'name' => 'Basic WordPress',  
-        ],
-        [
-            'name'             => 'Basic Multisite WordPress',  
-            'enable_multisite' => true,  
-        ],
-        [            
-	        'name'    => 'Symlink plugin example',  
-            'plugins' => [  
-                '/path/to/symlink/folder',  
-            ],
-        ],
-        [            
-			'name'              => 'Bug recreation example',  
-			'wordpress_version' => '5.9.10',
-            'plugins'           => [  
-                'independent-analytics',  
-            ],
-        ],
-    ],
-];
-```
-
-While every option (except `name`) can be set as a default or on a site template, it doesn't always make sense to do so. A good example of this are the database connection options. It's likely that all the sites you create are going to use the same values. You might need to customize it from the defaults, but there's no need to do it on a per site basis copying the same values over and over.
 
 # Template options
 
