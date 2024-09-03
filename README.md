@@ -222,7 +222,7 @@ You can make a new template by adding an associative array to the end of `templa
 
 The only property you have to define is `name`. After setting a name, you'll see your new template listed as an option the next time you run `wpsites create`.
 
-Below is the config file I've been using. 
+Below is my actual config file. Take a moment to check it out then I'll point out some notable things below.
 
 ```php
 <?php
@@ -273,7 +273,9 @@ return [
 ];
 ```
 
-First, notice that there are no database options set in `defaults`. The default values for those options are the value I use, so they can just be removed entirely. Every option documented below also show the default value you get if you don't explicetly set one.
+Right off the top you'll notice that there are no database options defined in `defaults`. Actually, there are no database options defined anywhere. In my case the default values for `database_host`, `database_username`, and `database_password` are the correct values for my connection. So defing the same values as defaults doesn't do anything at all. It's only present in the default config as it's something you might need to tweak and I wanted to make that as easy as possible.
+
+Every support option has a default value. `enable_multisite` is false, `wordpress_version` is `'latest'`, and `enable_error_logging` is `true`. If you happy with the default value for an option, you don't need to configure it.
 
 The one option I do have in `defaults` is `plugins`. Here I'm telling WPSites that I want the `code-snippets` plugin installed on every site. Don't worry if a template also defines `plugins`. These arrays are merged so the site ends up with the default plugins as well as the template specific plugins.
 
