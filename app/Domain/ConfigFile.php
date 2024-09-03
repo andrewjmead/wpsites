@@ -31,6 +31,12 @@ class ConfigFile
         } catch (\CuyZ\Valinor\Mapper\MappingError $error) {
             error('Invalid configuration file!');
             error($error->getMessage());
+
+            // $messages = \CuyZ\Valinor\Mapper\Tree\Message\Messages::flattenFromNode(
+            //     $error->node()
+            // );
+            // dump($messages);
+
             exit(1);
         } catch (\Throwable $error) {
             error('Invalid configuration file! Configuration file must be a PHP file that returns an associative array.');

@@ -64,8 +64,6 @@ class Destroy extends SiteCommand
         $confirmed = confirm(
             label: "Are you sure you want to destroy the {$sites_term} listed above?",
             default: false,
-            yes: 'Yes',
-            no: 'No',
         );
 
         if (! $confirmed) {

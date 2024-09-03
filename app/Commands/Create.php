@@ -4,11 +4,14 @@ namespace App\Commands;
 
 use App\Domain\ConfigTypes\Template;
 use App\Domain\Site;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\text;
 
 class Create extends SiteCommand
@@ -43,9 +46,15 @@ class Create extends SiteCommand
             options: $options,
         );
 
+        /** @var Template $template */
+        $template = collect($config->templates)->first(function (Template $template) use ($selected_template_name) {
+            return $template->name === $selected_template_name;
+        });
+
         $slug = text(
             label: 'What slug would you like to use?',
             placeholder: 'my-site',
+            default: $template->default_slug(),
             required: true,
             validate: function (string $value) {
                 if (Str::slug($value) !== $value) {
@@ -56,11 +65,6 @@ class Create extends SiteCommand
             },
             hint: 'This will be used for the sites folder name, the database name, etc...'
         );
-
-        /** @var Template $template */
-        $template = collect($config->templates)->first(function (Template $template) use ($selected_template_name) {
-            return $template->name === $selected_template_name;
-        });
 
         $site = new Site($config->get_sites_directory(), $slug);
 
@@ -73,8 +77,21 @@ class Create extends SiteCommand
         // }
 
         if (file_exists($site->folder_path())) {
-            error('Site already exists!');
-            exit(1);
+            $should_override_site = confirm(
+                label: 'Site already exists! Override it?',
+                default: false,
+            );
+
+            if($should_override_site) {
+                note('Deleting existing site...');
+                $site->execute_alt('Dropping database...', 'wp db drop', [
+                    'yes' => true,
+                ], true);
+                File::deleteDirectory($site->folder_path());
+                info('Existing site deleted!');
+            } else {
+                exit(1);
+            }
         }
 
         $site->execute_alt('Downloading core files...', 'wp core download', [

@@ -14,6 +14,9 @@ class Template
         /** @var non-empty-string */
         public readonly string $name,
 
+        /** @var ?string */
+        public readonly ?string $slug = null,
+
         /**
          * Defaults
          */
@@ -236,5 +239,14 @@ class Template
         }
 
         return false;
+    }
+
+    public function default_slug(): string
+    {
+        if(is_null($this->slug)) {
+            return '';
+        }
+
+        return $this->slug;
     }
 }
