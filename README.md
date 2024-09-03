@@ -204,6 +204,8 @@ The value for `templates` in an array of associative arrays. Each associative ar
 
 The default config file above define three templates...
 
+you can set `enable_multisite` to 'true` in defaults. That's totally fine, though likely not what you want. While every option can be set in both places, most make more sense in one context or another.
+
 ### Building your own templates
 
 There are three top-level properties in `.wpsites.php`. There's `sites_directory`, `defaults`, and `templates`. This section covers `defaults` and `templates`.
