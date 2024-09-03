@@ -186,7 +186,9 @@ return [
 
 The config file is nothing more than a PHP file that returns an associative array. This associative array is where you can customize the options and define your own templates. While you will end up adding a bit more to it, it'll always follow this same simple structure.
 
-There are three top-level properties. The first is `sites_directory`.
+There are three top-level properties. 
+
+First up is `sites_directory`.
 
 The value for `sites_directory` should be a path to a directory on your computer. This directory is where WPSites will create your new sites. Unless you're using Laravel Herd, you'll need to update this value to point to whatever directorty you're serving up. For MAMP PRO, that would be `'$HOME/Sites'`. 
 
@@ -202,42 +204,9 @@ The value for `templates` in an array of associative arrays. Each associative ar
 
 The default config file above define three templates...
 
-### Starting from scratch
+### Playing with templates
 
-
-
-The default config files has quite a bit of stuff, but all the defaults properties are only there so you can see all the options you have available.
-
-In reality, you can trim it down quite a bit. Here's the smallest reasonable config file you can get away with. It defines a site directory, a databaes connection, and a couple of simple templates, one a basic site and the other a multisite.
-
-If you liking what you're seeing below, you can absolutely replace your config file with this one. Just make sure to adjust the sites directory and the databae connection options.
-
-```php
-<?php
-
-return [
-    'sites_directory' => '$HOME/Herd',
-    'defaults'        => [
-        'database_host'     => '127.0.0.1:3306',
-        'database_username' => 'root',
-        'database_password' => null,
-    ],
-    'templates' => [
-        [
-            'name' => 'Basic WordPress',
-        ],
-        [
-            'name'             => 'Basic Multisite WordPress',
-            'enable_multisite' => true,
-        ],
-    ],
-];
-```
-
-### Defining defaults 
-
-### Defining templates
-
+test
 
 ---
 
