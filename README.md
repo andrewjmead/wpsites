@@ -204,13 +204,7 @@ The value for `templates` in an array of associative arrays. Each associative ar
 
 The default config file above define three templates...
 
-### Playing with templates
-
-test
-
----
-
-# Building your own templates
+### Building your own templates
 
 There are three top-level properties in `.wpsites.php`. There's `sites_directory`, `defaults`, and `templates`. This section covers `defaults` and `templates`.
 
