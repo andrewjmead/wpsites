@@ -295,7 +295,7 @@ The third template is "IAWP Dev". This is the template I use for my main develop
 
 The fourth template is the same as the third, though it's a multisite.
 
-The fifth and final template is a site that installed the latest released version of Independent Analytics. This installs the plugin from the WordPress plugin repository, which is convenient when I need to recreate a customer issue with only the features that have already been released.
+The fifth and final template is a site that installs the last released version of Independent Analytics. This installs the plugin from the WordPress plugin repository, which is convenient when I need to recreate a customer issue with only the features that have already been released.
 
 # Template options
 
