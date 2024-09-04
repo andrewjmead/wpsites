@@ -10,12 +10,13 @@ use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
-
 use function Laravel\Prompts\note;
 
 use Phar;
 
 use Spatie\Fork\Fork;
+
+use WPConfigTransformer;
 
 class Site
 {
@@ -90,6 +91,17 @@ class Site
         }
 
         return [$exit_code === 0, $output];
+    }
+
+    public function set_config_transformer(string $key, mixed $value)
+    {
+        $transformer = new WPConfigTransformer($this->folder_path() . '/wp-config.php');
+
+        if (is_bool($value)) {
+            $transformer->update('constant', $key, true ? 'true' : 'false', ['raw' => true]);
+        }
+
+        $transformer->update('constant', $key, $value);
     }
 
     private function wp_cli_phar_path(): string

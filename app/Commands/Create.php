@@ -14,6 +14,8 @@ use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
+use WPConfigTransformer;
+
 class Create extends SiteCommand
 {
     /**
@@ -132,23 +134,29 @@ class Create extends SiteCommand
         }
 
         if ($template->enable_error_logging()) {
-            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG true');
-            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG_LOG true', [
-                'raw' => true,
-            ], true);
-            $site->execute_alt('Enabling error log...', 'wp config set WP_DEBUG_DISPLAY false', [
-                'raw' => true,
-            ], true);
-            // There are issues with this plugin. I need to fine one that doesn't try to manipulate the values, but just shows the file...
-            // $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
-            //     'activate' => true,
-            // ], true);
+            info('Enabling error logging...');
+            try {
+                $site->set_config_transformer('WP_DEBUG', 'true');
+                $site->set_config_transformer('WP_DEBUG_LOG', 'true');
+                $site->set_config_transformer('WP_DEBUG_DISPLAY', 'false');
+            } catch (\Throwable $e) {
+                // TODO - Roll back
+            }
+            // // There are issues with this plugin. I need to fine one that doesn't try to manipulate the values, but just shows the file...
+            // // $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
+            // //     'activate' => true,
+            // // ], true);
         }
 
         if ($template->enable_automatic_login()) {
-            $site->execute_alt('Enabling automatic login...', "wp config set WP_ENVIRONMENT_TYPE local");
-            $site->execute_alt('Enabling automatic login...', "wp config set AUTOMATIC_LOGIN_USER_LOGIN {$template->get_admin_username()}");
-            $site->execute_alt('Enabling automatic login...', "wp config set AUTOMATIC_LOGIN_USER_PASSWORD {$template->get_admin_password()}");
+            info('Enabling automatic login...');
+            try {
+                $site->set_config_transformer('WP_ENVIRONMENT_TYPE', 'local');
+                $site->set_config_transformer('AUTOMATIC_LOGIN_USER_LOGIN', $template->get_admin_username());
+                $site->set_config_transformer('AUTOMATIC_LOGIN_USER_PASSWORD', $template->get_admin_password());
+            } catch (\Throwable $e) {
+                // TODO - Roll back
+            }
             $site->execute_alt('Enabling automatic login...', 'wp plugin install automatic-login', [
                 'activate' => true,
             ], true);
