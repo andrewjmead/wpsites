@@ -22,25 +22,23 @@ https://github.com/user-attachments/assets/b04fc4d8-7603-4729-b399-db08e4b1da6a
 
 I've been building [Independent Analytics](https://wordpress.org/plugins/independent-analytics/) for the last 2 years, and during that time I've created hundreds (thousands?) of temporary WordPress sites.
 
-I'd create new sites for development. I'd create new sites to test customer issues. I'd create new sites to track down regression.
+I would make a new site for development, to test customer issues, to track down regression in specific versions, and for countless other reasons.
 
-**It was the same process over and over again. I'd create a new site only to configure it exactly the same way as I'd done countless times before. Enable debug mode. Symlink the local build. Install the plugins we integrate with. The list goes on and on.**
+**It was the same process over and over again. I'd create a new site only to configure it exactly the same way I'd done countless times before. Enable debug mode. Symlink the local build. Install the plugins we integrate with. The list goes on and on.**
 
 No more.
 
-Now I run `wpsites create`, select which of my templates I want to use, and wait 10 seconds as the new site is created.
+Now I run `wpsites create`, select the template I want to use, and 10 seconds later I'm looking at the admin panel for my new WordPress site.
 
 It's sublime.
 
-This has been the most genuinely useful project I've created. I hope you get some value out of it. If you do, [say hi](https://twitter.com/andrew_j_mead). I'd love to hear from you.
+This project has been a joy to work on. I hope you get some value out of it. If you run into any problems, please open an issue. I'd like to try and get WPSites working for as many people on as many different setups as possible.
 
 # Getting started
 
-Please open an issue if you run into any issues with the software or with this guide. I can't test the project on every setup, so I rely on your bug reports to make sure WPSites works on a wide range of machines.
-
 ### Installing
 
-You're gonna want to install WPSites as a global composer package. This will give you access to the `wpsites` command from anywhere on your machine.
+You'll want to install WPSites as a global composer package. This will give you access to the `wpsites` command from anywhere on your machine.
 
 ```
 composer global require andrewmead/wpsites
@@ -60,11 +58,11 @@ $ wpsites conifg
  Config file successfully created!
 ```
 
-From here, open the config file in your text editor. There are a couple of things you'll need to tweak before you can create your first site.
+Once your config file is created, open it in your text editor as there are couple of values you'll need to change before you can create your first site.
 
 ### Configure your site's directory
 
-You need to tell WPSites where on your file system you want new new sites to be created. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
+You need to tell WPSites where on your file system you want new sites to be created. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
 
 ```php
 // ~/.wpsites.php
@@ -78,7 +76,7 @@ return [
 
 The default value of `$HOME/Herd` will work if you are using Laravel Herd. If you're using MAMP PRO, you'll need to change the path to `$HOME/Sites`.
 
-You can store your sites anywhere, but make sure the site directory is being served up by your localhost server.
+You can store your sites anywhere, but make sure the site's directory is being served up by your localhost server.
 
 ### Configuring your database connection
 
@@ -86,7 +84,7 @@ Aside from the site's directory, the only other thing you need to configure is y
 
 There are three options you can use for this. Inside of `defaults`, you'll want to use `database_host`, `database_username`, and `database_password`.
 
-By default, WPSites will try to connect to `127.0.0.1:3306` as the user `root`. Customize these three values to connect to whatever local MySQL database you're running.
+By default, WPSites will try to connect to `127.0.0.1:3306` as the user `root` without a password. Change these values to match up with your localhost database server.
 
 ```php
 // ~/.wpsites.php
@@ -109,7 +107,9 @@ You can test your database connection in the next step by trying to create a new
 
 You're now ready to create your first site!
 
-Create your first site by running `wpsites create`. You'll be prompted to pick a template, just select "Basic WordPress" for now. We'll talk more about templates a bit later. From there, pick a slug for your site and in a few seconds, you should be looking at your brand-new WordPress site!
+Create your first site by running `wpsites create`. You'll be prompted to pick a template. Select "Basic WordPress" for now. We'll talk more about templates a bit later. Next, pick a slug for your site.
+
+In a few seconds, you should be looking at your brand-new WordPress site!
 
 ```
 $ wpsites create
@@ -142,11 +142,15 @@ $ wpsites create
  Opening site...
 ```
 
-Amazing! Now creating your first site is just the beginning. Read on to learn how you can make your own templates to create sites specific to your needs!
+Amazing!
+
+Notice that you didn't need to login to the admin panel. This is thanks to the `automatic-login` plugin. New sites have automatic login enabled. They also have the debug log enabled. There are settings in [template options](#template-options) to disable both of these, but I find it's perfect for local development.
+
+Creating your first site is just the beginning. Read on to learn how you can make your own templates to create sites specific to your needs!
 
 # Configuring WPSites
 
-In this section, you'll learn how to customize WPSites to fit your needs. This includes defining a reasonable set of defaults, as well as defining your own templates so you can quickly spin up preconfigured sites.
+In this section, you'll learn how to customize WPSites to fit your needs. This includes defining a reasonable set of defaults, as well as defining your own templates so you can quickly spin up a preconfigured site.
 
 ### Exploring the default config file
 
@@ -188,7 +192,7 @@ return [
 ];
 ```
 
-The config file is nothing more than a PHP file that returns an associative array. This associative array is where you can customize the options and define your own templates. While you will end up adding a bit more to it, it'll always follow this same simple structure.
+The config file is nothing more than a PHP file that returns an associative array. This associative array is where you can customize WPSites and define your own templates.
 
 There are three top-level properties. 
 
@@ -204,7 +208,7 @@ If you're using Laravel Herd, the default value of `'$HOME/Herd'` should work gr
 
 As you can see in the config file above, the value for `defaults` is an associative array.
 
-On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option can be set on `defaults` can also be overridden on an individual template.
+On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option that can be set on `defaults` can also be set on a template. The template value will override whatever default value was set.
 
 The default config file defines the three options that are used to configure the database connection. These are `database_host`, `database_username`, and `database_password`. You may need to tweak these options to match up with your local MySQL database server.
 
@@ -212,11 +216,11 @@ The default config file defines the three options that are used to configure the
 
 The value for `templates` is an array of associated arrays.
 
-Each item in the array represents a template that you can use when creating a new site. The only requirement for a template is that you give it a name by setting a value for `name`. Everything else is optional.
+Each item in the array represents a template that you can use when creating a new site. The only attribute you have to define is `name`. Set `name` equal to a string that describes the site.  
 
-The default config file above has three templates. The first template is a barebones template that just defines a name. The second template uses `enable_multisite` to create a WordPress multisite. The final template uses a few more options to customize the WordPress version, theme, and plugins.
+The default config file above has three templates. The first template is a simple one that only sets a name. The second one is similar to the first, though it sets `enable_multisite` to `true` to create a multisite. The final template uses a few more options to customize the site. It uses `wordpress_version` to change the version of WordPress that's used. It uses `theme` to customize the theme. Finally, it uses `plugins` to define a list of plugins that should be installed.
 
-Check out all the [template options](#template-options) below to see what's possible.
+Take a look at [template options](#template-options) below to see what's possible.
 
 ### Making your own templates
 
@@ -283,7 +287,7 @@ You can find the default value for all the options in [template options](#templa
 
 The one option that I have defined in `defaults` is `plugins`. This lets me define a set of plugins that I want to use on all new sites. If a template also defines `plugins`, the default plugins and the template plugins will be merged and all plugins will be installed.
 
-Below `defaults` is `templates`, and I have 5 templates I use most often.
+Below `defaults` is `templates`. I have 5 templates defined.
 
 The first two are the basic site and multisite templates that come with the default config file. Not super interesting.
 
@@ -291,7 +295,7 @@ The third template is "IAWP Dev". This is the template I use for my main develop
 
 The fourth template is the same as the third, though it's a multisite.
 
-The fifth and final template is a site that installed the latest released version of Independent Analytics. This installs the plugin from the WordPress plugin repository, which is convenient when I need to recreate a customer issue with only the features that have already been released.
+The fifth and final template is a site that installs the last released version of Independent Analytics. This installs the plugin from the WordPress plugin repository, which is convenient when I need to recreate a customer issue with only the features that have already been released.
 
 # Template options
 
