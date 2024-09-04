@@ -43,6 +43,7 @@
         "post-install-cmd": [
             "echo 'Welcome to WPSites! \uD83E\uDD73'",
             "echo 'Run `wpsites config` to get started!'"
-        ]
+        ],
+        "build": "php wpsites app:build --build-version=\"wpsites\" wpsites"
     }
 }
