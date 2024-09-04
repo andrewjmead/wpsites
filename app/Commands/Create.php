@@ -173,7 +173,7 @@ class Create extends SiteCommand
         });
 
         info('Opening site...');
-        sleep(1);
+        
         exec("open http://{$slug}.test/wp-admin");
     }
 }
