@@ -208,7 +208,7 @@ If you're using Laravel Herd, the default value of `'$HOME/Herd'` should work gr
 
 As you can see in the config file above, the value for `defaults` is an associative array.
 
-On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option can be set on `defaults` can also be overridden on an individual template.
+On this array, you can define a set of default options that you want to apply to all sites you create. Keep in mind that any option that can be set on `defaults` can also be set on a template. The template value will override whatever default value was set.
 
 The default config file defines the three options that are used to configure the database connection. These are `database_host`, `database_username`, and `database_password`. You may need to tweak these options to match up with your local MySQL database server.
 
