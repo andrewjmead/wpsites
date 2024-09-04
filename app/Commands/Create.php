@@ -7,11 +7,11 @@ use App\Domain\Site;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
-use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\text;
 
 class Create extends SiteCommand
@@ -82,7 +82,7 @@ class Create extends SiteCommand
                 default: false,
             );
 
-            if($should_override_site) {
+            if ($should_override_site) {
                 note('Deleting existing site...');
                 $site->execute_alt('Dropping database...', 'wp db drop', [
                     'yes' => true,
@@ -96,7 +96,7 @@ class Create extends SiteCommand
 
         $site->execute_alt('Downloading core files...', 'wp core download', [
             'skip-content' => true,
-            'version' => $template->get_wordpress_version(),
+            'version'      => $template->get_wordpress_version(),
         ]);
 
         $site->execute_alt('Creating site...', 'wp config create', [
@@ -110,24 +110,24 @@ class Create extends SiteCommand
 
         if ($template->enable_multisite()) {
             $site->execute_alt('Running installation...', 'wp core multisite-install', [
-                'url' => "http://{$slug}.test",
-                'title' => $template->get_site_title() ?? $selected_template_name,
-                'admin_user' => $template->get_admin_username(),
+                'url'            => "http://{$slug}.test",
+                'title'          => $template->get_site_title() ?? $selected_template_name,
+                'admin_user'     => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
-                'admin_email' => $template->get_admin_email(),
+                'admin_email'    => $template->get_admin_email(),
             ]);
             $site->execute_alt('Creating a second site...', 'wp site create', [
-                'slug' => 'second-site',
+                'slug'  => 'second-site',
                 'title' => 'A second site',
                 'email' => $template->get_admin_email(),
             ]);
         } else {
             $site->execute_alt('Running installation...', 'wp core install', [
-                'url' => "http://{$slug}.test",
-                'title' => $template->get_site_title() ?? $selected_template_name,
-                'admin_user' => $template->get_admin_username(),
+                'url'            => "http://{$slug}.test",
+                'title'          => $template->get_site_title() ?? $selected_template_name,
+                'admin_user'     => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
-                'admin_email' => $template->get_admin_email(),
+                'admin_email'    => $template->get_admin_email(),
             ]);
         }
 
@@ -173,7 +173,7 @@ class Create extends SiteCommand
         });
 
         info('Opening site...');
-        
+
         exec("open http://{$slug}.test/wp-admin");
     }
 }
