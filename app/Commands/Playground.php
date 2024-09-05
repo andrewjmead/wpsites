@@ -24,13 +24,7 @@ class Playground extends Command
     /**
      * Execute the console command.
      */
-    public function handle() {}
-
-    /**
-     * Define the command's schedule.
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
+    public function handle() {
+        // Test something out...
     }
 }
