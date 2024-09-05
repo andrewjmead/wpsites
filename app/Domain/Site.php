@@ -146,7 +146,7 @@ class Site
             ...$callables
         );
 
-        return collect($results)->filter();
+        return collect($results)->filter()->values();
     }
 
     // public function template_validation_errors(): ?array
