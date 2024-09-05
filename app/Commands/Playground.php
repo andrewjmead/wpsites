@@ -19,7 +19,7 @@ class Playground extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'A command to test something out';
 
     /**
      * Execute the console command.
