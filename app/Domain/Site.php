@@ -98,10 +98,10 @@ class Site
         $transformer = new WPConfigTransformer($this->folder_path() . '/wp-config.php');
 
         if (is_bool($value)) {
-            $transformer->update('constant', $key, true ? 'true' : 'false', ['raw' => true]);
+            $transformer->update('constant', $key, $value === true ? 'true' : 'false', ['raw' => true]);
+        } else {
+            $transformer->update('constant', $key, $value);
         }
-
-        $transformer->update('constant', $key, $value);
     }
 
     private function wp_cli_phar_path(): string

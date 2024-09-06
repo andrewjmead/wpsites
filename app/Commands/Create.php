@@ -108,6 +108,7 @@ class Create extends SiteCommand
             'dbpass' => $template->get_database_password(),
         ]);
 
+        // TODO - Database already exists. Drop it?
         $site->execute_alt('Creating database...', 'wp db create');
 
         if ($template->enable_multisite()) {
@@ -136,9 +137,9 @@ class Create extends SiteCommand
         if ($template->enable_error_logging()) {
             info('Enabling error logging...');
             try {
-                $site->set_config_transformer('WP_DEBUG', 'true');
-                $site->set_config_transformer('WP_DEBUG_LOG', 'true');
-                $site->set_config_transformer('WP_DEBUG_DISPLAY', 'false');
+                $site->set_config_transformer('WP_DEBUG', true);
+                $site->set_config_transformer('WP_DEBUG_LOG', true);
+                $site->set_config_transformer('WP_DEBUG_DISPLAY', false);
             } catch (\Throwable $e) {
                 // TODO - Roll back
             }
