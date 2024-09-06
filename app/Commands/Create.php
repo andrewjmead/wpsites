@@ -14,8 +14,6 @@ use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-use WPConfigTransformer;
-
 class Create extends SiteCommand
 {
     /**
@@ -147,6 +145,10 @@ class Create extends SiteCommand
             // // $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
             // //     'activate' => true,
             // // ], true);
+        }
+
+        if (is_string($template->get_timezone())) {
+            $site->execute_alt('Setting timezone...', 'wp option update timezone_string ' . $template->get_timezone(), []);
         }
 
         if ($template->enable_automatic_login()) {

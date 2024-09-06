@@ -2,6 +2,8 @@
 
 namespace App\Domain\ConfigTypes;
 
+use DateTimeZone;
+use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -47,8 +49,14 @@ class Template
         public readonly ?string $theme = null,
         /** @var ?bool */
         public readonly ?bool $enable_multisite = null,
+        /** @var ?string */
+        public readonly ?string $timezone = null,
     ) {
         $this->defaults = new Defaults;
+
+        if(is_string($this->timezone) && !in_array($this->timezone, DateTimeZone::listIdentifiers())) {
+            throw new Error("Invalid timezone \"{$this->timezone}\" in config file");
+        }
     }
 
     public function set_defaults(Defaults $defaults): void
@@ -248,5 +256,17 @@ class Template
         }
 
         return $this->slug;
+    }
+
+    public function get_timezone(): ?string {
+        if (is_string($this->timezone)) {
+            return $this->timezone;
+        }
+
+        if (is_string($this->defaults->timezone)) {
+            return $this->defaults->timezone;
+        }
+
+        return null;
     }
 }

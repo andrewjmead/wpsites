@@ -2,6 +2,9 @@
 
 namespace App\Domain\ConfigTypes;
 
+use DateTimeZone;
+use Error;
+
 class Defaults
 {
     public function __construct(
@@ -31,5 +34,11 @@ class Defaults
         public readonly ?string $theme = null,
         /** @var ?bool */
         public readonly ?bool $enable_multisite = null,
-    ) {}
+        /** @var ?string */
+        public readonly ?string $timezone = null,
+    ) {
+        if(is_string($this->timezone) && !in_array($this->timezone, DateTimeZone::listIdentifiers())) {
+            throw new Error("Invalid timezone \"{$this->timezone}\" in config file");
+        }
+    }
 }

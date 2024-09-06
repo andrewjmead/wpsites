@@ -39,7 +39,7 @@ class ConfigFile
 
             exit(1);
         } catch (\Throwable $error) {
-            error('Invalid configuration file! Configuration file must be a PHP file that returns an associative array.');
+            error('Error: ' . $error->getMessage());
             exit(1);
         }
 
