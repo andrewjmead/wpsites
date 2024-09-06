@@ -151,6 +151,10 @@ class Create extends SiteCommand
             $site->execute_alt('Setting timezone...', 'wp option update timezone_string ' . $template->get_timezone(), []);
         }
 
+        if (is_string($template->get_wordpress_org_favorites_username())) {
+            $site->execute_alt('Setting WordPress.org favorites username...', 'wp user meta add 1 wporg_favorites ' . $template->get_wordpress_org_favorites_username(), []);
+        }
+
         if ($template->enable_automatic_login()) {
             info('Enabling automatic login...');
             try {

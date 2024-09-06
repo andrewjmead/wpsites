@@ -51,6 +51,8 @@ class Template
         public readonly ?bool $enable_multisite = null,
         /** @var ?string */
         public readonly ?string $timezone = null,
+        /** @var ?string */
+        public readonly ?string $wordpress_org_favorites_username = null,
     ) {
         $this->defaults = new Defaults;
 
@@ -265,6 +267,18 @@ class Template
 
         if (is_string($this->defaults->timezone)) {
             return $this->defaults->timezone;
+        }
+
+        return null;
+    }
+
+    public function get_wordpress_org_favorites_username(): ?string {
+        if (is_string($this->wordpress_org_favorites_username)) {
+            return $this->wordpress_org_favorites_username;
+        }
+
+        if (is_string($this->defaults->wordpress_org_favorites_username)) {
+            return $this->defaults->wordpress_org_favorites_username;
         }
 
         return null;

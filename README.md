@@ -422,3 +422,11 @@ Default: `'UTC'`
 The timezone for the site. Examples include `America/New_York`, `America/Denver`, and `Europe/Berlin`.
 
 Take a look at the return value for `DateTimeZone::listIdentifiers()` to see supported timezones.
+
+### Wordpress.org favorites username
+
+Option: `wordpress_org_favorites_username`
+
+Default: `null`
+
+WordPress.org lets logged-in users favorite plugins and themes. You can provide your WordPress.org username here to have your favorites show up under the "Favorites" tab when adding a new plugin or theme.
