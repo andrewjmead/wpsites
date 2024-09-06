@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class Playground extends Command
@@ -24,7 +23,8 @@ class Playground extends Command
     /**
      * Execute the console command.
      */
-    public function handle() {
+    public function handle()
+    {
         // Test something out...
     }
 }

@@ -18,7 +18,7 @@ class ConfigFile
         $config_file_contents = require ConfigFile::file_path();
 
         try {
-            $config = (new \CuyZ\Valinor\MapperBuilder)
+            $config = (new \CuyZ\Valinor\MapperBuilder())
                 ->mapper()
                 ->map(Config::class, \CuyZ\Valinor\Mapper\Source\Source::array($config_file_contents));
 
@@ -63,6 +63,8 @@ class ConfigFile
 
     public static function default_configuration(): string
     {
-        return File::get('config/wpsites.php');
+        return File::get(
+            base_path('wpsites-default-config.php')
+        );
     }
 }
