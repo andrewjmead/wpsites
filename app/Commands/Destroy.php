@@ -52,6 +52,7 @@ class Destroy extends SiteCommand
             options: $slugs,
             scroll: 20,
             required: true,
+            hint: 'Use the space bar to select options.',
         );
         $sites_term = Str::plural('site', count($selected_slugs));
 

@@ -42,8 +42,9 @@ class Open extends SiteCommand
         }
 
         $selected_slug = select(
-            label: 'Pick a site to open',
+            label: 'Which site would you link to open?',
             options: $slugs,
+            scroll: 20,
         );
 
         exec("open http://{$selected_slug}.test/wp-admin");
