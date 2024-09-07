@@ -430,3 +430,13 @@ Option: `wordpress_org_favorites_username`
 Default: `null`
 
 WordPress.org lets logged-in users favorite plugins and themes. You can provide your WordPress.org username here to have your favorites show up under the "Favorites" tab when adding a new plugin or theme.
+
+# Commands
+
+### Config
+
+### Create
+
+### Destroy
+
+### Open
