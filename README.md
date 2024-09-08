@@ -22,6 +22,8 @@ https://github.com/user-attachments/assets/e0452876-9627-452c-a32a-f5b895d71bc1
 
 [Template options](#template-options)
 
+[Commands](#commands)
+
 # Why?
 
 I've been building [Independent Analytics](https://wordpress.org/plugins/independent-analytics/) for the last 2 years, and during that time I've created hundreds (thousands?) of temporary WordPress sites.
