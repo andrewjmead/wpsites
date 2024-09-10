@@ -43,14 +43,14 @@ class Config extends Command
             );
 
             if ($confirmed) {
-                info('Removing existing config file');
+                note('Removing existing config file');
                 File::delete($config_path);
             } else {
                 exit(0);
             }
         }
 
-        info("Copying default config to `{$config_path}`");
+        note("Copying default config to `{$config_path}`");
 
         try {
             $bytesWritten = File::put($config_path, ConfigFile::default_configuration());
@@ -66,7 +66,9 @@ class Config extends Command
             exit(1);
         }
 
-        info('Config file successfully created! Checkout the docs here to learn what you need to change: https://github.com/andrewjmead/wpsites#configure-your-sites-directory');
+        info('Config file successfully created!');
+        note('Checkout the docs here to learn what you need to change: https://github.com/andrewjmead/wpsites#configure-your-sites-directory');
+
         exit(0);
     }
 }
