@@ -66,7 +66,7 @@ class Config extends Command
             exit(1);
         }
 
-        info('Config file successfully created!');
+        info('Config file successfully created! Checkout the docs here to learn what you need to change: https://github.com/andrewjmead/wpsites#configure-your-sites-directory');
         exit(0);
     }
 }

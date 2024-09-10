@@ -1,5 +1,8 @@
 <?php
 
+// Getting started? You'll need to change a few values below. Checkout the docs here:
+// https://github.com/andrewjmead/wpsites#configure-your-sites-directory
+
 // Explore every option that you can set:
 // https://github.com/andrewjmead/wpsites#template-options
 
