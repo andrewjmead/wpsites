@@ -437,8 +437,93 @@ WordPress.org lets logged-in users favorite plugins and themes. You can provide 
 
 ### Config
 
+Run `wpsites config` to create the default config file. You can rerun `wpsites config` to reset the config file back to its default state.
+
+```
+$ wpsites config
+
+ Searching for config file at:
+ /Users/andrewmead/.wpsites.php
+
+ Copying default config to `/Users/andrewmead/.wpsites.php`
+
+ Config file successfully created!
+```
+
 ### Create
+
+Run `wpsites create` to create a new WordPress site based on a template in your config file.
+
+```
+$ wpsites create
+
+ ┌ Which template would you like to use? ───────────────────────┐
+ │ › ● Basic WordPress                                          │
+ │   ○ Basic Multisite WordPress                                │
+ │   ○ Symlink plugin example                                   │
+ │   ○ Bug recreation example                                   │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ What slug would you like to use? ────────────────────────────┐
+ │ any-slug-you-like                                            │
+ └──────────────────────────────────────────────────────────────┘
+
+ Downloading core files...
+
+ Creating site...
+
+ Creating database...
+
+ Running installation...
+
+ Enabling error log...
+
+ Enabling automatic login...
+
+ Installing default theme...
+
+ Opening site...
+```
 
 ### Destroy
 
+Run `wpsites destroy` to destroy one or more sites.
+
+```
+$ wpsites destroy
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Checking which sites are WordPress sites...
+
+ ┌ Which sites would you like to destroy? ──────────────────────┐
+ │ wp-test                                                          │
+ │ iawp                                                           │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ Are you sure you want to destroy the sites listed above? ────┐
+ │ Yes                                                          │
+ └──────────────────────────────────────────────────────────────┘
+
+ Deleting site "wp-test"
+
+ Deleting site "iawp"
+```
+
 ### Open
+
+Run `wpsites open` to open an existing site in your browser.
+
+```
+➜  ~ wpsites open
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Checking which sites are WordPress sites...
+
+ ┌ Which site would you link to open? ──────────────────────────┐
+ │ › ● iawp                                                     │
+ │   ○ latest-production-install                                │
+ │   ○ woocommerce                                              │
+ └──────────────────────────────────────────────────────────────┘
+```
