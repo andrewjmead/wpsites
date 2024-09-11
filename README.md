@@ -7,8 +7,7 @@ All you need to do is run `wpsites create`, select a template, name your site, a
 Check it out:
 
 
-
-https://github.com/user-attachments/assets/e0452876-9627-452c-a32a-f5b895d71bc1
+https://github.com/user-attachments/assets/77ca8ba5-2e6e-45be-9d75-9e16f6056120
 
 
 
