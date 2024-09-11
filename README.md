@@ -24,6 +24,8 @@ https://github.com/user-attachments/assets/e0452876-9627-452c-a32a-f5b895d71bc1
 
 [Commands](#commands)
 
+[Limitations](#limitations)
+
 # Why?
 
 I've been building [Independent Analytics](https://wordpress.org/plugins/independent-analytics/) for the last 2 years, and during that time I've created hundreds (thousands?) of temporary WordPress sites.
@@ -527,3 +529,7 @@ Run `wpsites open` to open an existing site in your browser.
  │   ○ woocommerce                                              │
  └──────────────────────────────────────────────────────────────┘
 ```
+
+# Limitations
+
+I only use macOS, so I haven't verified that WPSites does (or doesn't!) work on Windows or Linux. I hope to get it running in those environments at some point. If you run into problems, please open an issue so I can support those platforms.
