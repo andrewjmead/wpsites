@@ -189,12 +189,12 @@ class Create extends SiteCommand
                 cleanup_on_error: true,
             );
         } else {
-            $theme_slug    = $theme;
-            $version = null;
+            $theme_slug = $theme;
+            $version    = null;
 
             if (Str::contains($theme, '@')) {
-                $theme_slug    = Str::before($theme, '@');
-                $version = Str::after($theme, '@');
+                $theme_slug = Str::before($theme, '@');
+                $version    = Str::after($theme, '@');
             }
 
             $site->execute(
@@ -221,12 +221,12 @@ class Create extends SiteCommand
         });
 
         $template->get_repository_plugins()->each(function ($plugin) use ($site) {
-            $plugin_slug    = $plugin;
-            $version = null;
+            $plugin_slug = $plugin;
+            $version     = null;
 
             if (Str::contains($plugin, '@')) {
-                $plugin_slug    = Str::before($plugin, '@');
-                $version = Str::after($plugin, '@');
+                $plugin_slug = Str::before($plugin, '@');
+                $version     = Str::after($plugin, '@');
             }
 
             $site->execute(
