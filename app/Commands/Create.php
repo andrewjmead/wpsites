@@ -2,15 +2,14 @@
 
 namespace App\Commands;
 
+use App\Command;
 use App\Domain\ConfigTypes\Template;
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
-use function Laravel\Prompts\note;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
@@ -68,123 +67,152 @@ class Create extends SiteCommand
 
         $site = new Site($config->get_sites_directory(), $slug);
 
-        // if ($site->template_validation_errors()) {
-        //     error("The template for {$site->name()} is invalid!");
-        //     collect($site->template_validation_errors())->each(function ($error) {
-        //         error("* {$error}");
-        //     });
-        //     exit(1);
-        // }
-
-        if (file_exists($site->folder_path())) {
+        if (File::isDirectory($site->directory())) {
             $should_override_site = confirm(
                 label: 'Site already exists! Override it?',
                 default: false,
             );
 
             if ($should_override_site) {
-                note('Deleting existing site...');
-                $site->execute_alt('Dropping database...', 'wp db drop', [
-                    'yes' => true,
-                ], true);
-                File::deleteDirectory($site->folder_path());
-                info('Existing site deleted!');
+                info('Destroying existing site');
+                $site->destroy(true);
             } else {
                 exit(1);
             }
         }
 
-        $site->execute_alt('Downloading core files...', 'wp core download', [
-            'skip-content' => true,
-            'version'      => $template->get_wordpress_version(),
-        ]);
+        $site->execute(
+            message: 'Downloading core files',
+            command: 'wp core download',
+            arguments: [
+                'skip-content' => true,
+                'version'      => $template->get_wordpress_version(),
+            ],
+            cleanup_on_error: true,
+        );
 
-        $site->execute_alt('Creating site...', 'wp config create', [
-            'dbhost' => $template->get_database_host(),
-            'dbname' => $slug,
-            'dbuser' => $template->get_database_username(),
-            'dbpass' => $template->get_database_password(),
-        ]);
+        $site->execute(
+            message: 'Creating site',
+            command: 'wp config create',
+            arguments: [
+                'dbhost' => $template->get_database_host(),
+                'dbname' => $slug,
+                'dbuser' => $template->get_database_username(),
+                'dbpass' => $template->get_database_password(),
+            ],
+            cleanup_on_error: true,
+        );
 
-        // TODO - Database already exists. Drop it?
-        $site->execute_alt('Creating database...', 'wp db create');
+        $site->execute(
+            message: 'Creating database',
+            command: 'wp db create',
+            cleanup_on_error: true,
+        );
+
+        $site->execute(
+            message: 'Running installation',
+            command: 'wp core '.($template->enable_multisite() ? 'multisite-install' : 'install'),
+            arguments: [
+                'url'            => "http://{$slug}.test",
+                'title'          => $template->get_site_title() ?? $selected_template_name,
+                'admin_user'     => $template->get_admin_username(),
+                'admin_password' => $template->get_admin_password(),
+                'admin_email'    => $template->get_admin_email(),
+            ],
+            cleanup_on_error: true,
+        );
 
         if ($template->enable_multisite()) {
-            $site->execute_alt('Running installation...', 'wp core multisite-install', [
-                'url'            => "http://{$slug}.test",
-                'title'          => $template->get_site_title() ?? $selected_template_name,
-                'admin_user'     => $template->get_admin_username(),
-                'admin_password' => $template->get_admin_password(),
-                'admin_email'    => $template->get_admin_email(),
-            ]);
-            $site->execute_alt('Creating a second site...', 'wp site create', [
-                'slug'  => 'second-site',
-                'title' => 'A second site',
-                'email' => $template->get_admin_email(),
-            ]);
-        } else {
-            $site->execute_alt('Running installation...', 'wp core install', [
-                'url'            => "http://{$slug}.test",
-                'title'          => $template->get_site_title() ?? $selected_template_name,
-                'admin_user'     => $template->get_admin_username(),
-                'admin_password' => $template->get_admin_password(),
-                'admin_email'    => $template->get_admin_email(),
-            ]);
+            $site->execute(
+                message: 'Creating a second site for the multisite',
+                command: 'wp site create',
+                arguments: [
+                    'slug'  => 'second-site',
+                    'title' => 'A second site',
+                    'email' => $template->get_admin_email(),
+                ],
+                cleanup_on_error: true,
+            );
+        }
+
+        $site->execute(
+            message: "Installing theme \"{$template->get_theme()}\"",
+            command: "wp theme install {$template->get_theme()}",
+            cleanup_on_error: true,
+        );
+
+        if ($template->enable_automatic_login()) {
+            info('Enabling automatic login...');
+
+            $site->set_config('WP_ENVIRONMENT_TYPE', 'local');
+            $site->set_config('AUTOMATIC_LOGIN_USER_LOGIN', $template->get_admin_username());
+            $site->set_config('AUTOMATIC_LOGIN_USER_PASSWORD', $template->get_admin_password());
+
+            $site->execute(
+                message: 'Installing automatic-login',
+                command: 'wp plugin install automatic-login',
+                arguments: [
+                    'activate' => true,
+                ],
+                cleanup_on_error: true,
+            );
         }
 
         if ($template->enable_error_logging()) {
             info('Enabling error logging...');
-            try {
-                $site->set_config_transformer('WP_DEBUG', true);
-                $site->set_config_transformer('WP_DEBUG_LOG', true);
-                $site->set_config_transformer('WP_DEBUG_DISPLAY', false);
-            } catch (\Throwable $e) {
-                // TODO - Roll back
-            }
-            // // There are issues with this plugin. I need to fine one that doesn't try to manipulate the values, but just shows the file...
-            // // $site->execute_alt("Enabling error log...", "wp plugin install wp-debugging", [
-            // //     'activate' => true,
-            // // ], true);
+
+            $site->set_config('WP_DEBUG', true);
+            $site->set_config('WP_DEBUG_LOG', true);
+            $site->set_config('WP_DEBUG_DISPLAY', false);
         }
 
         if (is_string($template->get_timezone())) {
-            $site->execute_alt('Setting timezone...', 'wp option update timezone_string ' . $template->get_timezone(), []);
+            $site->execute(
+                message: "Setting timezone to \"{$template->get_timezone()}\"",
+                command: "wp option update timezone_string {$template->get_timezone()}",
+                cleanup_on_error: true,
+            );
         }
 
         if (is_string($template->get_wordpress_org_favorites_username())) {
-            $site->execute_alt('Setting WordPress.org favorites username...', 'wp user meta add 1 wporg_favorites ' . $template->get_wordpress_org_favorites_username(), []);
+            $site->execute(
+                message: "Setting favorites username to \"{$template->get_wordpress_org_favorites_username()}\"",
+                command: "wp user meta add 1 wporg_favorites {$template->get_wordpress_org_favorites_username()}",
+                cleanup_on_error: true,
+            );
         }
-
-        if ($template->enable_automatic_login()) {
-            info('Enabling automatic login...');
-            try {
-                $site->set_config_transformer('WP_ENVIRONMENT_TYPE', 'local');
-                $site->set_config_transformer('AUTOMATIC_LOGIN_USER_LOGIN', $template->get_admin_username());
-                $site->set_config_transformer('AUTOMATIC_LOGIN_USER_PASSWORD', $template->get_admin_password());
-            } catch (\Throwable $e) {
-                // TODO - Roll back
-            }
-            $site->execute_alt('Enabling automatic login...', 'wp plugin install automatic-login', [
-                'activate' => true,
-            ], true);
-        }
-
-        $site->execute_alt('Installing default theme...', "wp theme install {$template->get_theme()}", [
-            'activate' => true,
-        ]);
 
         $template->get_symlinked_plugins()->each(function ($plugin) use ($site) {
             info("Linking \"{$plugin}\"...");
             $symlink_name = basename($plugin);
-            symlink($plugin, $site->folder_path().'/wp-content/plugins/'.$symlink_name);
+            symlink($plugin, $site->directory().'/wp-content/plugins/'.$symlink_name);
 
-            $site->execute_alt("Linking \"{$plugin}\"...", "wp plugin activate {$symlink_name}", [], true);
+            $site->execute(
+                message: "Linking \"{$plugin}\"...",
+                command: "wp plugin activate {$symlink_name}",
+                print_start_message: false,
+                cleanup_on_error: true,
+            );
         });
 
         $template->get_repository_plugins()->each(function ($plugin) use ($site) {
-            $site->execute_alt("Installing \"{$plugin}\"...", "wp plugin install {$plugin}", [
-                'activate' => true,
-            ]);
+            $slug    = $plugin;
+            $version = null;
+
+            if (Str::contains($plugin, '@')) {
+                $slug    = Str::before($plugin, '@');
+                $version = Str::after($plugin, '@');
+            }
+
+            $site->execute(
+                message: "Installing \"{$plugin}\"",
+                command: "wp plugin install {$slug}",
+                arguments: [
+                    'activate' => true,
+                    'version'  => $version,
+                ],
+                cleanup_on_error: true,
+            );
         });
 
         info('Opening site...');

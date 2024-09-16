@@ -28,7 +28,7 @@ return [
                 'independent-analytics',
                 '/plugin/path/to/symlink',
             ],
-            'theme' => 'twentytwentythree'
+            'theme' => 'twentytwentythree',
         ],
     ],
 ];

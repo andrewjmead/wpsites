@@ -54,9 +54,9 @@ class Template
         /** @var ?string */
         public readonly ?string $wordpress_org_favorites_username = null,
     ) {
-        $this->defaults = new Defaults;
+        $this->defaults = new Defaults();
 
-        if(is_string($this->timezone) && !in_array($this->timezone, DateTimeZone::listIdentifiers())) {
+        if (is_string($this->timezone) && ! in_array($this->timezone, DateTimeZone::listIdentifiers())) {
             throw new Error("Invalid timezone \"{$this->timezone}\" in config file");
         }
     }
@@ -253,14 +253,15 @@ class Template
 
     public function default_slug(): string
     {
-        if(is_null($this->slug)) {
+        if (is_null($this->slug)) {
             return '';
         }
 
         return $this->slug;
     }
 
-    public function get_timezone(): ?string {
+    public function get_timezone(): ?string
+    {
         if (is_string($this->timezone)) {
             return $this->timezone;
         }
@@ -272,7 +273,8 @@ class Template
         return null;
     }
 
-    public function get_wordpress_org_favorites_username(): ?string {
+    public function get_wordpress_org_favorites_username(): ?string
+    {
         if (is_string($this->wordpress_org_favorites_username)) {
             return $this->wordpress_org_favorites_username;
         }

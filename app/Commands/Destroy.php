@@ -3,15 +3,14 @@
 namespace App\Commands;
 
 use App\Domain\Site;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-use function Laravel\Prompts\confirm;
-
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\multiselect;
-
 use LaravelZero\Framework\Commands\Command;
+
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\info;
+
+use function Laravel\Prompts\multiselect;
 
 class Destroy extends SiteCommand
 {
@@ -34,8 +33,7 @@ class Destroy extends SiteCommand
      */
     public function handle()
     {
-        $config = $this->get_config();
-
+        $config          = $this->get_config();
         $sites_directory = $config->get_sites_directory();
 
         info('Checking which sites are WordPress sites...');
@@ -67,14 +65,8 @@ class Destroy extends SiteCommand
 
         foreach ($selected_slugs as $slug) {
             info("Deleting site \"{$slug}\"");
-
             $site = new Site($sites_directory, $slug);
-
-            $site->execute_alt('Dropping database...', 'wp db drop', [
-                'yes' => true,
-            ], true);
-
-            File::deleteDirectory($site->folder_path());
+            $site->destroy();
         }
 
         exit(1);

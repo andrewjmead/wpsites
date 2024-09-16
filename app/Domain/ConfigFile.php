@@ -39,7 +39,7 @@ class ConfigFile
 
             exit(1);
         } catch (\Throwable $error) {
-            error('Error: ' . $error->getMessage());
+            error('Error: '.$error->getMessage());
             exit(1);
         }
 

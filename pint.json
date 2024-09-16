@@ -1,0 +1,60 @@
+{
+    "rules": {
+        "@PSR12": true,
+        "no_unused_imports": true,
+        "method_chaining_indentation": true,
+        "explicit_string_variable": true,
+        "ordered_class_elements": {
+            "order": [
+                "use_trait",
+                "case",
+                "constant_public",
+                "constant_protected",
+                "constant_private",
+                "property_public",
+                "property_protected",
+                "property_private",
+                "construct",
+                "destruct",
+                "magic",
+                "phpunit",
+                "method_abstract",
+                "method_public",
+                "method_protected",
+                "method_private",
+                "method_public_static",
+                "method_protected_static",
+                "method_private_static"
+            ]
+        },
+        "ordered_imports": true,
+        "binary_operator_spaces": {
+            "operators": {
+                "=": "align_single_space_minimal",
+                "=>": "align_single_space_minimal"
+            }
+        },
+        "align_multiline_comment": true,
+        "single_space_around_construct": true,
+        "no_extra_blank_lines": true,
+        "blank_line_before_statement": {
+            "statements": [
+                "return"
+            ]
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "method": "one"
+            }
+        },
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "array_indentation": true,
+        "trailing_comma_in_multiline": {
+            "elements": [
+                "arrays"
+            ]
+        }
+    }
+}
