@@ -34,7 +34,7 @@ class Config extends Command
     {
         $config_path = ConfigFile::file_path();
 
-        note("Searching for config file at:\n{$config_path}");
+        note("Copying default config to `{$config_path}`");
 
         if (ConfigFile::exists()) {
             $confirmed = confirm(
@@ -43,14 +43,13 @@ class Config extends Command
             );
 
             if ($confirmed) {
-                note('Removing existing config file');
+                note('Deleting config file');
                 File::delete($config_path);
+                note("Copying default config to `{$config_path}`");
             } else {
                 exit(0);
             }
         }
-
-        note("Copying default config to `{$config_path}`");
 
         try {
             $bytesWritten = File::put($config_path, ConfigFile::default_configuration());
