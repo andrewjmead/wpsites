@@ -13,7 +13,8 @@ class Config
         public readonly Defaults $defaults,
         /** @var list<Template> */
         public readonly array $templates,
-    ) {}
+    ) {
+    }
 
     public function get_sites_directory(): string
     {

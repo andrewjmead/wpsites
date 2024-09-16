@@ -1,6 +1,10 @@
 {
+    "preset": "empty",
     "rules": {
         "@PSR12": true,
+        "concat_space": {
+            "spacing": "one"
+        },
         "no_unused_imports": true,
         "method_chaining_indentation": true,
         "explicit_string_variable": true,

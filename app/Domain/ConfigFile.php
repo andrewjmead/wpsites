@@ -39,7 +39,7 @@ class ConfigFile
 
             exit(1);
         } catch (\Throwable $error) {
-            error('Error: '.$error->getMessage());
+            error('Error: ' . $error->getMessage());
             exit(1);
         }
 
@@ -58,7 +58,7 @@ class ConfigFile
 
     public static function file_path(): string
     {
-        return getenv('HOME').'/.wpsites.php';
+        return getenv('HOME') . '/.wpsites.php';
     }
 
     public static function default_configuration(): string

@@ -5,12 +5,12 @@ namespace App\Commands;
 use App\Domain\Site;
 use Illuminate\Support\Str;
 
-use LaravelZero\Framework\Commands\Command;
-
 use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\info;
 
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\multiselect;
+
+use LaravelZero\Framework\Commands\Command;
 
 class Destroy extends SiteCommand
 {

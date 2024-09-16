@@ -4,9 +4,10 @@ namespace App\Commands;
 
 use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Config;
-use LaravelZero\Framework\Commands\Command;
 
 use function Laravel\Prompts\error;
+
+use LaravelZero\Framework\Commands\Command;
 
 abstract class SiteCommand extends Command
 {

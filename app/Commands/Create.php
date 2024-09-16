@@ -111,7 +111,7 @@ class Create extends SiteCommand
 
         $site->execute(
             message: 'Running installation',
-            command: 'wp core '.($template->enable_multisite() ? 'multisite-install' : 'install'),
+            command: 'wp core ' . ($template->enable_multisite() ? 'multisite-install' : 'install'),
             arguments: [
                 'url'            => "http://{$slug}.test",
                 'title'          => $template->get_site_title() ?? $selected_template_name,
@@ -185,7 +185,7 @@ class Create extends SiteCommand
         $template->get_symlinked_plugins()->each(function ($plugin) use ($site) {
             info("Linking \"{$plugin}\"...");
             $symlink_name = basename($plugin);
-            symlink($plugin, $site->directory().'/wp-content/plugins/'.$symlink_name);
+            symlink($plugin, $site->directory() . '/wp-content/plugins/' . $symlink_name);
 
             $site->execute(
                 message: "Linking \"{$plugin}\"...",

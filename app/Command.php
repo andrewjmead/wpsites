@@ -7,11 +7,13 @@ use Phar;
 
 class Command
 {
-    public function __construct(private readonly string $command, private readonly array $arguments = []) {}
+    public function __construct(private readonly string $command, private readonly array $arguments = [])
+    {
+    }
 
     public function toString(): string
     {
-        return $this->command().' '.$this->arguments();
+        return $this->command() . ' ' . $this->arguments();
 
     }
 
@@ -20,7 +22,7 @@ class Command
         $command = $this->command;
 
         if (Str::startsWith($command, 'wp ')) {
-            $command = Str::replaceStart('wp ', $this->wp_cli_phar_path().' ', $command);
+            $command = Str::replaceStart('wp ', $this->wp_cli_phar_path() . ' ', $command);
         }
 
         return $command;
@@ -50,7 +52,7 @@ class Command
         if ($phar_path = Phar::running(false)) {
             $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
 
-            return $phar_directory.'/wpsites-wp-cli.phar';
+            return $phar_directory . '/wpsites-wp-cli.phar';
         } else {
             return base_path('builds/wpsites-wp-cli.phar');
         }

@@ -4,12 +4,14 @@ namespace App\Commands;
 
 use App\Domain\ConfigFile;
 use Illuminate\Support\Facades\File;
-use LaravelZero\Framework\Commands\Command;
 
 use function Laravel\Prompts\confirm;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
+
+use LaravelZero\Framework\Commands\Command;
 
 class Config extends Command
 {

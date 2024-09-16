@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
-use Phar;
-use Spatie\Fork\Fork;
-
-use WPConfigTransformer;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
+use Phar;
+
+use Spatie\Fork\Fork;
+use WPConfigTransformer;
+
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug) {}
+    public function __construct(private readonly string $sites_directory, private readonly string $slug)
+    {
+    }
 
     public function directory(): string
     {
-        return Str::rtrim($this->sites_directory, '/').'/'.$this->slug;
+        return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
     }
 
     public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
@@ -39,7 +41,7 @@ class Site
         $process = Process::path($this->directory())->run($command);
 
         if ($process->failed() && $print_error_message) {
-            error('Error '.Str::lower($message));
+            error('Error ' . Str::lower($message));
             error($process->errorOutput());
         }
 
@@ -80,7 +82,7 @@ class Site
     public function set_config(string $key, mixed $value, bool $cleanup_on_error = false): void
     {
         try {
-            $transformer = new WPConfigTransformer($this->directory().'/wp-config.php');
+            $transformer = new WPConfigTransformer($this->directory() . '/wp-config.php');
 
             if (is_bool($value)) {
                 $transformer->update('constant', $key, $value === true ? 'true' : 'false', ['raw' => true]);
@@ -101,7 +103,7 @@ class Site
         if ($phar_path = Phar::running(false)) {
             $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
 
-            return $phar_directory.'/wpsites-wp-cli.phar';
+            return $phar_directory . '/wpsites-wp-cli.phar';
         } else {
             return base_path('builds/wpsites-wp-cli.phar');
         }
