@@ -135,12 +135,6 @@ class Create extends SiteCommand
             );
         }
 
-        $site->execute(
-            message: "Installing theme \"{$template->get_theme()}\"",
-            command: "wp theme install {$template->get_theme()}",
-            cleanup_on_error: true,
-        );
-
         if ($template->enable_automatic_login()) {
             info('Enabling automatic login...');
 
@@ -182,8 +176,39 @@ class Create extends SiteCommand
             );
         }
 
+        $theme = $template->get_theme();
+
+        if (Str::startsWith($theme, '/') && File::isDirectory($theme)) {
+            info("Linking theme at \"{$theme}\"...");
+            $symlink_name = basename($theme);
+            symlink($theme, $site->directory() . '/wp-content/themes/' . $symlink_name);
+            $site->execute(
+                message: "Linking \"{$theme}\"...",
+                command: "wp theme activate {$symlink_name}",
+                print_start_message: false,
+                cleanup_on_error: true,
+            );
+        } else {
+            $theme_slug    = $theme;
+            $version = null;
+
+            if (Str::contains($theme, '@')) {
+                $theme_slug    = Str::before($theme, '@');
+                $version = Str::after($theme, '@');
+            }
+
+            $site->execute(
+                message: "Installing theme \"{$theme}\"",
+                command: "wp theme install {$theme_slug}",
+                arguments: [
+                    'version' => $version,
+                ],
+                cleanup_on_error: true,
+            );
+        }
+
         $template->get_symlinked_plugins()->each(function ($plugin) use ($site) {
-            info("Linking \"{$plugin}\"...");
+            info("Linking plugin at \"{$plugin}\"...");
             $symlink_name = basename($plugin);
             symlink($plugin, $site->directory() . '/wp-content/plugins/' . $symlink_name);
 
@@ -196,17 +221,17 @@ class Create extends SiteCommand
         });
 
         $template->get_repository_plugins()->each(function ($plugin) use ($site) {
-            $slug    = $plugin;
+            $plugin_slug    = $plugin;
             $version = null;
 
             if (Str::contains($plugin, '@')) {
-                $slug    = Str::before($plugin, '@');
+                $plugin_slug    = Str::before($plugin, '@');
                 $version = Str::after($plugin, '@');
             }
 
             $site->execute(
                 message: "Installing \"{$plugin}\"",
-                command: "wp plugin install {$slug}",
+                command: "wp plugin install {$plugin_slug}",
                 arguments: [
                     'activate' => true,
                     'version'  => $version,
