@@ -313,22 +313,38 @@ Options defined in a template will override options defined in `defaults`.
 A few options work a bit differently. For `plugins`, `constants`, and `options`, the template value is mereged with the default value. For `plugins`, this means you can set template specific plugins while also having default plugins that all sites use. For `constants` and `options`, this means that you can set default values and override them in a specific template.
 
 [Plugins](#plugins)
+
 [Theme](#theme)
+
 [WordPress Version](#wordpress-version)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
-[Tes](#temns)
+
+[Enable multisite](#enable-multisite)
+
+[Enable error logging](#enable-error-logging)
+
+[Enable automatic login](#enable-automatic-login)
+
+[Database host](#database-host)
+
+[Database username](#database-username)
+
+[Database password](#database-password)
+
+[Database name](#database-name)
+
+[Admin username](#admin-username)
+
+[Admin email](#admin-email)
+
+[Admin password](#admin-password)
+
+[Timezone](#timezone)
+
+[Wordpress.org favorites username](#wordpressorg-favorites-username)
+
+[Constants](#constants)
+
+[Options](#options)
 
 ### Plugins
 
