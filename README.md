@@ -13,17 +13,12 @@ https://github.com/user-attachments/assets/77ca8ba5-2e6e-45be-9d75-9e16f6056120
 
 # Contents 
 
-[Why?](#why)
-
-[Getting started](#getting-started)
-
-[Configuring WPSites](#configuring-wpsites)
-
-[Template options](#template-options)
-
-[Commands](#commands)
-
-[Limitations](#limitations)
+1. [Why?](#why)
+1. [Getting started](#getting-started)
+1. [Configuring WPSites](#configuring-wpsites)
+1. [Template options](#template-options)
+1. [Commands](#commands)
+1. [Limitations](#limitations)
 
 # Why?
 
@@ -312,39 +307,23 @@ Options defined in a template will override options defined in `defaults`.
 
 A few options work a bit differently. For `plugins`, `constants`, and `options`, the template value is mereged with the default value. For `plugins`, this means you can set template specific plugins while also having default plugins that all sites use. For `constants` and `options`, this means that you can set default values and override them in a specific template.
 
-[Plugins](#plugins)
-
-[Theme](#theme)
-
-[WordPress Version](#wordpress-version)
-
-[Enable multisite](#enable-multisite)
-
-[Enable error logging](#enable-error-logging)
-
-[Enable automatic login](#enable-automatic-login)
-
-[Database host](#database-host)
-
-[Database username](#database-username)
-
-[Database password](#database-password)
-
-[Database name](#database-name)
-
-[Admin username](#admin-username)
-
-[Admin email](#admin-email)
-
-[Admin password](#admin-password)
-
-[Timezone](#timezone)
-
-[Wordpress.org favorites username](#wordpressorg-favorites-username)
-
-[Constants](#constants)
-
-[Options](#options)
+1. [Plugins](#plugins)
+1. [Theme](#theme)
+1. [WordPress Version](#wordpress-version)
+1. [Enable multisite](#enable-multisite)
+1. [Enable error logging](#enable-error-logging)
+1. [Enable automatic login](#enable-automatic-login)
+1. [Database host](#database-host)
+1. [Database username](#database-username)
+1. [Database password](#database-password)
+1. [Database name](#database-name)
+1. [Admin username](#admin-username)
+1. [Admin email](#admin-email)
+1. [Admin password](#admin-password)
+1. [Timezone](#timezone)
+1. [Wordpress.org favorites username](#wordpressorg-favorites-username)
+1. [Constants](#constants)
+1. [Options](#options)
 
 ### Plugins
 
@@ -521,13 +500,10 @@ An array of options to set in the options database table. The value should be an
 
 # Commands
 
-[Config](#config)
-
-[Create](#create)
-
-[Destroy](#destroy)
-
-[Open](#open)
+1. [Config](#config)
+1. [Create](#create)
+1. [Destroy](#destroy)
+1. [Open](#open)
 
 ### Config
 
