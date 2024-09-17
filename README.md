@@ -521,6 +521,14 @@ An array of options to set in the options database table. The value should be an
 
 # Commands
 
+[Config](#config)
+
+[Create](#create)
+
+[Destroy](#destroy)
+
+[Open](#open)
+
 ### Config
 
 Run `wpsites config` to create the default config file. You can rerun `wpsites config` to reset the config file back to its default state.
