@@ -13,7 +13,6 @@ use function Laravel\Prompts\info;
 
 use Phar;
 
-use Spatie\Fork\Fork;
 use WPConfigTransformer;
 
 class Site
@@ -67,18 +66,6 @@ class Site
         File::deleteDirectory($this->directory());
     }
 
-    public function has_wordpress_installed(): bool
-    {
-        if (! File::isDirectory($this->directory())) {
-            return false;
-        }
-
-        $command = Command::from('wp core is-installed');
-        $process = Process::path($this->directory())->run($command);
-
-        return $process->successful();
-    }
-
     public function set_config(string $key, mixed $value, bool $cleanup_on_error = false): void
     {
         try {
@@ -122,18 +109,10 @@ class Site
      */
     public static function get_all_sites(string $directory): Collection
     {
-        $callables = collect(File::directories($directory))->map(function ($site_directory) use ($directory) {
-            $site = new Site($directory, basename($site_directory));
-
-            return function () use ($site) {
-                return $site->has_wordpress_installed() ? $site : null;
-            };
+        return collect(File::directories($directory))->filter(function ($site_directory) {
+            return File::isFile($site_directory . '/wp-config.php');
+        })->map(function ($site_directory) {
+            return new self(dirname($site_directory), basename($site_directory));
         });
-
-        $results = Fork::new()->run(
-            ...$callables
-        );
-
-        return collect($results)->filter()->values();
     }
 }
