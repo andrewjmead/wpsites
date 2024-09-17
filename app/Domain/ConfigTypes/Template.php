@@ -53,6 +53,10 @@ class Template
         public readonly ?string $timezone = null,
         /** @var ?string */
         public readonly ?string $wordpress_org_favorites_username = null,
+        /** @var array<non-empty-string, string|bool|int|float> */
+        public readonly array $constants = [],
+        /** @var array<non-empty-string, string|bool|int|float> */
+        public readonly array $options = [],
     ) {
         $this->defaults = new Defaults();
 
@@ -284,5 +288,35 @@ class Template
         }
 
         return null;
+    }
+
+    public function get_constants(): Collection
+    {
+        $constants = collect();
+
+        if (is_array($this->defaults->constants)) {
+            $constants = $constants->merge($this->defaults->constants);
+        }
+
+        if (is_array($this->constants)) {
+            $constants = $constants->merge($this->constants);
+        }
+
+        return $constants->unique();
+    }
+
+    public function get_options(): Collection
+    {
+        $options = collect();
+
+        if (is_array($this->defaults->options)) {
+            $options = $options->merge($this->defaults->options);
+        }
+
+        if (is_array($this->options)) {
+            $options = $options->merge($this->options);
+        }
+
+        return $options->unique();
     }
 }

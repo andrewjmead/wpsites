@@ -62,7 +62,7 @@ class Create extends SiteCommand
 
                 return null;
             },
-            hint: 'This will be used for the sites folder name, the database name, etc...'
+            hint: 'This will be used for the sites folder name, the database name, etc'
         );
 
         $site = new Site($config->get_sites_directory(), $slug);
@@ -136,7 +136,7 @@ class Create extends SiteCommand
         }
 
         if ($template->enable_automatic_login()) {
-            info('Enabling automatic login...');
+            info('Enabling automatic login');
 
             $site->set_config('WP_ENVIRONMENT_TYPE', 'local');
             $site->set_config('AUTOMATIC_LOGIN_USER_LOGIN', $template->get_admin_username());
@@ -153,7 +153,7 @@ class Create extends SiteCommand
         }
 
         if ($template->enable_error_logging()) {
-            info('Enabling error logging...');
+            info('Enabling error logging');
 
             $site->set_config('WP_DEBUG', true);
             $site->set_config('WP_DEBUG_LOG', true);
@@ -179,11 +179,11 @@ class Create extends SiteCommand
         $theme = $template->get_theme();
 
         if (Str::startsWith($theme, '/') && File::isDirectory($theme)) {
-            info("Linking theme at \"{$theme}\"...");
+            info("Linking theme at \"{$theme}\"");
             $symlink_name = basename($theme);
             symlink($theme, $site->directory() . '/wp-content/themes/' . $symlink_name);
             $site->execute(
-                message: "Linking \"{$theme}\"...",
+                message: "Linking \"{$theme}\"",
                 command: "wp theme activate {$symlink_name}",
                 print_start_message: false,
                 cleanup_on_error: true,
@@ -208,12 +208,12 @@ class Create extends SiteCommand
         }
 
         $template->get_symlinked_plugins()->each(function ($plugin) use ($site) {
-            info("Linking plugin at \"{$plugin}\"...");
+            info("Linking plugin at \"{$plugin}\"");
             $symlink_name = basename($plugin);
             symlink($plugin, $site->directory() . '/wp-content/plugins/' . $symlink_name);
 
             $site->execute(
-                message: "Linking \"{$plugin}\"...",
+                message: "Linking \"{$plugin}\"",
                 command: "wp plugin activate {$symlink_name}",
                 print_start_message: false,
                 cleanup_on_error: true,
@@ -236,6 +236,23 @@ class Create extends SiteCommand
                     'activate' => true,
                     'version'  => $version,
                 ],
+                cleanup_on_error: true,
+            );
+        });
+
+        $template->get_constants()->whenNotEmpty(function () {
+            info('Setting constants');
+        })->each(function (string $value, string $key) use ($site) {
+            $site->set_config($key, $value);
+        });
+
+        $template->get_options()->whenNotEmpty(function () {
+            info('Setting options');
+        })->each(function (string $value, string $key) use ($site) {
+            $site->execute(
+                message: "Setting option \"{$key}\"",
+                command: "wp option update {$key} {$value}",
+                print_start_message: false,
                 cleanup_on_error: true,
             );
         });
