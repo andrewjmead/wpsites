@@ -85,17 +85,6 @@ class Site
         }
     }
 
-    private function wp_cli_phar_path(): string
-    {
-        if ($phar_path = Phar::running(false)) {
-            $phar_directory = pathinfo($phar_path, PATHINFO_DIRNAME);
-
-            return $phar_directory . '/wpsites-wp-cli.phar';
-        } else {
-            return base_path('builds/wpsites-wp-cli.phar');
-        }
-    }
-
     /**
      * @return Collection<Site>
      */
