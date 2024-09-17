@@ -310,7 +310,25 @@ Below is every option that WPSites supports. These options can be set inside of 
 
 Options defined in a template will override options defined in `defaults`.
 
-The one exception to this rule is `plugins`. If `plugins` is defined in `defaults` and in a template, the array of plugins to install will be merged together so all plugins are installed.
+A few options work a bit differently. For `plugins`, `constants`, and `options`, the template value is mereged with the default value. For `plugins`, this means you can set template specific plugins while also having default plugins that all sites use. For `constants` and `options`, this means that you can set default values and override them in a specific template.
+
+[Plugins](#plugins)
+[Theme](#theme)
+[WordPress Version](#wordpress-version)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
+[Tes](#temns)
 
 ### Plugins
 
@@ -320,9 +338,20 @@ Default: `[]`
 
 An array of plugins to install.
 
-Use a slug like `woocommerce` to install a plugin from the WordPress repository.
+Use a slug like `woocommerce` to install a plugin from the WordPress repository. Install a specific version by appending `@` and the version like `woocommerce@9.3.1`.
 
 Use an absolute path like `/plugin/to/symlink` to symlink a local plugin on your machine.
+
+```php
+[
+    'plugins' => [
+        '/Users/andrew/projects/independent-analytics',
+        '/Users/andrew/projects/iawp-developer-niceties',
+        'woocommerce@9.3.1',
+        `woo-order-test`,
+    ]
+]
+```
 
 ### Theme
 
@@ -330,7 +359,11 @@ Option: `theme`
 
 Default: `'twentytwentyfour'`
 
-The slug of the WordPress theme to use. This must be a theme available on the WordPress theme repository. Symlinked themes are currently not supported.
+The theme to install.
+
+Use a slug like `twentytwentyfour` to install a theme from the WordPress repository. Install a specific version by appending `@` and the version like `twentytwentyfour@1.2`.
+
+Use an absolute path like `/theme/to/symlink` to symlink a local theme on your machine.
 
 ### WordPress version
 
@@ -433,6 +466,42 @@ Option: `wordpress_org_favorites_username`
 Default: `null`
 
 WordPress.org lets logged-in users favorite plugins and themes. You can provide your WordPress.org username here to have your favorites show up under the "Favorites" tab when adding a new plugin or theme.
+
+### Constants
+
+Option: `constants`
+
+Default: `[]`
+
+An array of constants to set in `wp-config.php`. The value should be an associative array of key value pairs. The key is the constant name. The value is the constant's value.
+
+```php
+[
+    'constants' => [
+        'MY_CONSTANT'         => 'The value',
+        'MY_CONSTANT_NUMBER'  => 42,
+        'MY_CONSTANT_BOOLEAN' => false,
+    ]
+]
+```
+
+### Options
+
+Option: `options`
+
+Default: `[]`
+
+An array of options to set in the options database table. The value should be an associative array of key value pairs. The key is the option name. The value is the option's value.
+
+```php
+[
+    'options' => [
+        'prefix_option'         => 'The value',
+        'prefix_option_number'  => 42,
+        'prefix_option_boolean' => false,
+    ]
+]
+```
 
 # Commands
 
