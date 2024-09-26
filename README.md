@@ -512,8 +512,7 @@ Run `wpsites config` to create the default config file. You can rerun `wpsites c
 ```
 $ wpsites config
 
- Searching for a config file at:
- /Users/andrewmead/.wpsites.php
+ Loading config file at "/Users/andrewmead/.wpsites.php"
 
  Copying default config to `/Users/andrewmead/.wpsites.php`
 
@@ -527,6 +526,8 @@ Run `wpsites create` to create a new WordPress site based on a template in your 
 ```
 $ wpsites create
 
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+ 
  ┌ Which template would you like to use? ───────────────────────┐
  │ › ● Basic WordPress                                          │
  │   ○ Basic Multisite WordPress                                │
