@@ -34,7 +34,7 @@ Now I run `wpsites create`, select the template I want to use, and 10 seconds la
 
 It's sublime.
 
-This project has been a joy to work on. I hope you get some value out of it. If you run into any problems, please open an issue. I'd like to try and get WPSites working for as many people on as many different setups as possible.
+This project has been a joy to work on. I hope you get some value out of it. If you run into any problems, please open an issue. I'd like to try to get WPSites working for as many people on as many different setups as possible.
 
 # Getting started
 
@@ -53,14 +53,14 @@ The installation process will place the PHAR executable in `~/.composer/vendor/b
 Before you can create your first WordPress site, you'll need to generate a config file. You can do this by running `wpsites config`. This command will copy the default config file to `~/.wpsites.php`.
 
 ```
-$ wpsites conifg
+$ wpsites config
 
  Copying default config to `/Users/andrewmead/.wpsites.php`
 
  Config file successfully created!
 ```
 
-Once your config file is created, open it in your text editor as there are couple of values you'll need to change before you can create your first site.
+Once your config file is created, open it in your text editor as there are a couple of values you'll need to change before you can create your first site.
 
 ### Configure your site's directory
 
@@ -146,7 +146,7 @@ $ wpsites create
 
 Amazing!
 
-Notice that you didn't need to login to the admin panel. This is thanks to the `automatic-login` plugin. New sites have automatic login enabled. They also have the debug log enabled. There are settings in [template options](#template-options) to disable both of these, but I find it's perfect for local development.
+Notice that you didn't need to log in to the admin panel. This is thanks to the `automatic-login` plugin. New sites have automatic login enabled. They also have the debug log enabled. There are settings in [template options](#template-options) to disable both of these, but I find it's perfect for local development.
 
 Creating your first site is just the beginning. Read on to learn how you can make your own templates to create sites specific to your needs!
 
@@ -468,7 +468,7 @@ Option: `constants`
 
 Default: `[]`
 
-An array of constants to set in `wp-config.php`. The value should be an associative array of key value pairs. The key is the constant name. The value is the constant's value.
+An array of constants to set in `wp-config.php`. The value should be an associative array of key-value pairs. The key is the constant name. The value is the constant's value.
 
 ```php
 [
@@ -486,7 +486,7 @@ Option: `options`
 
 Default: `[]`
 
-An array of options to set in the options database table. The value should be an associative array of key value pairs. The key is the option name. The value is the option's value.
+An array of options to set in the options database table. The value should be an associative array of key-value pairs. The key is the option name. The value is the option's value.
 
 ```php
 [
@@ -512,7 +512,7 @@ Run `wpsites config` to create the default config file. You can rerun `wpsites c
 ```
 $ wpsites config
 
- Searching for config file at:
+ Searching for a config file at:
  /Users/andrewmead/.wpsites.php
 
  Copying default config to `/Users/andrewmead/.wpsites.php`
@@ -567,8 +567,8 @@ $ wpsites destroy
  Checking which sites are WordPress sites...
 
  ┌ Which sites would you like to destroy? ──────────────────────┐
- │ wp-test                                                          │
- │ iawp                                                           │
+ │ wp-test                                                      │
+ │ iawp                                                         │
  └──────────────────────────────────────────────────────────────┘
 
  ┌ Are you sure you want to destroy the sites listed above? ────┐
