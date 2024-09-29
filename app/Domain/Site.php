@@ -96,10 +96,13 @@ class Site
      */
     public static function get_all_sites(string $directory): Collection
     {
-        return collect(File::directories($directory))->filter(function ($site_directory) {
-            return File::isFile($site_directory . '/wp-config.php');
-        })->map(function ($site_directory) {
-            return new self(dirname($site_directory), basename($site_directory));
-        });
+        return collect(File::directories($directory))
+            ->filter(function ($site_directory) {
+                return File::isFile($site_directory . '/wp-config.php');
+            })
+            ->map(function ($site_directory) {
+                return new self(dirname($site_directory), basename($site_directory));
+            })
+            ->values();
     }
 }
