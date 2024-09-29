@@ -3,7 +3,6 @@
 namespace App\Domain;
 
 use App\Command;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
@@ -11,14 +10,19 @@ use Illuminate\Support\Str;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
-use Phar;
-
 use WPConfigTransformer;
 
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug)
+    public function __construct(
+        private readonly string $sites_directory,
+        private readonly string $slug
+    ) {
+    }
+
+    public function slug(): string
     {
+        return $this->slug;
     }
 
     public function directory(): string
@@ -83,25 +87,5 @@ class Site
             }
             exit(1);
         }
-    }
-
-    /**
-     * @return Collection<Site>
-     */
-    public static function get_all_slugs(string $directory): Collection
-    {
-        return self::get_all_sites($directory)->map(fn ($site) => $site->slug);
-    }
-
-    /**
-     * @return Collection<Site>
-     */
-    public static function get_all_sites(string $directory): Collection
-    {
-        return collect(File::directories($directory))->filter(function ($site_directory) {
-            return File::isFile($site_directory . '/wp-config.php');
-        })->map(function ($site_directory) {
-            return new self(dirname($site_directory), basename($site_directory));
-        });
     }
 }

@@ -43,10 +43,12 @@ class ConfigFile
             exit(1);
         }
 
-        if (! File::isDirectory($config->get_sites_directory())) {
-            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_sites_directory()}\"");
-            exit(1);
-        }
+        $config->get_sites_directories()->each(function ($directory) {
+            if (! File::isDirectory($directory)) {
+                error("Invalid site directory. The directory \"{$directory}\" does not exit.");
+                exit(1);
+            }
+        });
 
         return $config;
     }

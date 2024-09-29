@@ -41,7 +41,7 @@ class Create extends SiteCommand
         })->toArray();
 
         $selected_template_name = select(
-            label: 'Which template would you like to use?',
+            label: 'Select the site template to use',
             options: $options,
         );
 
@@ -51,7 +51,7 @@ class Create extends SiteCommand
         });
 
         $slug = text(
-            label: 'What slug would you like to use?',
+            label: 'Pick a slug for your site',
             placeholder: 'my-site',
             default: $template->default_slug(),
             required: true,
@@ -65,7 +65,18 @@ class Create extends SiteCommand
             hint: 'This will be used for the sites folder name, the database name, etc'
         );
 
-        $site = new Site($config->get_sites_directory(), $slug);
+        $sites_directory = $config->get_sites_directories();
+
+        if ($sites_directory->count() === 1) {
+            $actual_sites_directory = $sites_directory->first();
+        } else {
+            $actual_sites_directory = select(
+                label: 'Select the site directory to use',
+                options: $sites_directory,
+            );
+        }
+
+        $site = new Site($actual_sites_directory, $slug);
 
         if (File::isDirectory($site->directory())) {
             $should_override_site = confirm(

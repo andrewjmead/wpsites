@@ -2,8 +2,6 @@
 
 namespace App\Commands;
 
-use App\Domain\Site;
-
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 
@@ -30,16 +28,25 @@ class Open extends SiteCommand
     {
         $config = $this->get_config();
 
-        $sites_directory = $config->get_sites_directory();
-
         info('Checking which sites are WordPress sites...');
-
-        $slugs = Site::get_all_slugs($sites_directory);
+        $slugs = $config->get_all_slugs();
 
         if ($slugs->count() === 0) {
             info('There are no WordPress sites to open');
             exit(0);
         }
+
+        // TODO - This would let you see the full path while getting back the slug
+        //  Could I have $site in the key?
+        // $role = select(
+        //     label: 'What role should the user have?',
+        //     options: [
+        //         'member' => 'Member',
+        //         'contributor' => 'Contributor',
+        //         'owner' => 'Owner',
+        //     ],
+        //     default: 'owner'
+        // );
 
         $selected_slug = select(
             label: 'Which site would you link to open?',

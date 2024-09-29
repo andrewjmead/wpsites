@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Domain\ConfigTypes\Config;
 use App\Domain\Site;
 use Illuminate\Support\Str;
 
@@ -34,11 +35,10 @@ class Destroy extends SiteCommand
     public function handle()
     {
         $config          = $this->get_config();
-        $sites_directory = $config->get_sites_directory();
+        $sites_directory = $config->get_sites_directories();
 
         info('Checking which sites are WordPress sites...');
-
-        $slugs = Site::get_all_slugs($sites_directory);
+        $slugs = $config->get_all_slugs();
 
         if ($slugs->count() === 0) {
             info('There are no WordPress sites to destroy');
@@ -65,6 +65,9 @@ class Destroy extends SiteCommand
 
         foreach ($selected_slugs as $slug) {
             info("Deleting site \"{$slug}\"");
+            // TODO - This is wrong
+            // TODO - This is wrong
+            // TODO - This is wrong
             $site = new Site($sites_directory, $slug);
             $site->destroy();
         }
