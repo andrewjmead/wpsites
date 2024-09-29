@@ -11,8 +11,6 @@ use Illuminate\Support\Str;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
-use Phar;
-
 use WPConfigTransformer;
 
 class Site
