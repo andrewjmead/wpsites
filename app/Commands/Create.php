@@ -38,7 +38,7 @@ class Create extends SiteCommand
 
         $options = collect($config->templates)->map(function (Template $template) {
             return $template->name;
-        })->toArray();
+        })->all();
 
         $selected_template_name = select(
             label: 'Which template would you like to use?',
