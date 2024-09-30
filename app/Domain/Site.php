@@ -24,6 +24,11 @@ class Site
         return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
     }
 
+    public function slug(): string
+    {
+        return $this->slug;
+    }
+
     public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
     {
         if ($print_start_message) {

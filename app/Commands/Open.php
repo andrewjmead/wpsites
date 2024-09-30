@@ -28,25 +28,8 @@ class Open extends SiteCommand
      */
     public function handle()
     {
-        $config = $this->get_config();
+        $site = $this->ask_user_for_site('Select a site to open');
 
-        $sites_directory = $config->get_sites_directory();
-
-        info('Checking which sites are WordPress sites...');
-
-        $slugs = Site::get_all_slugs($sites_directory);
-
-        if ($slugs->count() === 0) {
-            info('There are no WordPress sites to open');
-            exit(0);
-        }
-
-        $selected_slug = select(
-            label: 'Which site would you link to open?',
-            options: $slugs,
-            scroll: 20,
-        );
-
-        exec("open http://{$selected_slug}.test/wp-admin");
+        exec("open http://{$site->slug()}.test/wp-admin");
     }
 }

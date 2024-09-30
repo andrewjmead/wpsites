@@ -592,7 +592,7 @@ Run `wpsites open` to open an existing site in your browser.
 
  Checking which sites are WordPress sites...
 
- ┌ Which site would you link to open? ──────────────────────────┐
+ ┌ Select a site to open ───────────────────────────────────────┐
  │ › ● iawp                                                     │
  │   ○ latest-production-install                                │
  │   ○ woocommerce                                              │
