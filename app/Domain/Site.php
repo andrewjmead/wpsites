@@ -24,6 +24,11 @@ class Site
         return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
     }
 
+    public function backup_directory(): string
+    {
+        return getenv('HOME') . '/.wpsites/backups/' . $this->slug;
+    }
+
     public function slug(): string
     {
         return $this->slug;
@@ -35,9 +40,7 @@ class Site
             info($message);
         }
 
-        if (! File::isDirectory($this->directory())) {
-            File::makeDirectory($this->directory());
-        }
+        File::ensureDirectoryExists($this->directory());
 
         $command = Command::from($command, $arguments);
         $process = Process::path($this->directory())->run($command);

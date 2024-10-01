@@ -2,11 +2,6 @@
 
 namespace App\Commands;
 
-use App\Domain\Site;
-
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\select;
-
 class Open extends SiteCommand
 {
     /**

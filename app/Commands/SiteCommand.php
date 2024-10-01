@@ -6,11 +6,13 @@ use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Config;
 
 use App\Domain\Site;
+
 use function Laravel\Prompts\error;
 
-use LaravelZero\Framework\Commands\Command;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
+
+use LaravelZero\Framework\Commands\Command;
 
 abstract class SiteCommand extends Command
 {
@@ -26,7 +28,7 @@ abstract class SiteCommand extends Command
 
     protected function ask_user_for_site(string $prompt = 'Select a site'): Site
     {
-        $config = $this->get_config();
+        $config          = $this->get_config();
         $sites_directory = $config->get_sites_directory();
 
         info('Checking which sites are WordPress sites...');
