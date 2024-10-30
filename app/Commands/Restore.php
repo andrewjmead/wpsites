@@ -35,6 +35,13 @@ class Restore extends SiteCommand
     {
         // TODO This should work even if the current site folder is empty or doesn't exist...
 
+        // This is interesting as it requires you to restore to an existing valid WordPress site. This means that you
+        // could not restore a corrupt site (files not seen as valid WordPress site) and you could not restore
+        // a backup to a new site.
+
+        // You kinda need to pick the backup first, and then decide if you want to wipe an existing site or create
+        // a new one...
+
         $site = $this->ask_user_for_site('Select a site to restore');
         $backups = $site->get_backups();
         $options = $backups->mapWithKeys(function ($backup) {
