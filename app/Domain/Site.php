@@ -74,7 +74,7 @@ class Site
 
     public function backup(string $backup_name): bool
     {
-        $directory = $this->backup_directory() . '/' . time() . '-' . Str::snake($backup_name);
+        $directory = $this->backup_directory() . '/' . time() . '-' . Str::kebab(Str::lower($backup_name));
 
         File::ensureDirectoryExists($directory);
 
