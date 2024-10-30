@@ -33,6 +33,8 @@ class Restore extends SiteCommand
      */
     public function handle()
     {
+        // TODO This should work even if the current site folder is empty or doesn't exist...
+
         $site = $this->ask_user_for_site('Select a site to restore');
         $backups = $site->get_backups();
         $options = $backups->mapWithKeys(function ($backup) {
