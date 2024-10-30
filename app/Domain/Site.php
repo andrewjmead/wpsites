@@ -3,6 +3,7 @@
 namespace App\Domain;
 
 use App\Command;
+use App\Zip;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -59,7 +60,7 @@ class Site
         }
     }
 
-    public function destroy($silent = false): void
+    public function destroy(bool $silent = false): void
     {
         // TODO - Probably shouldn't error out
         $this->execute(
@@ -70,6 +71,47 @@ class Site
             print_error_message: ! $silent,
         );
         File::deleteDirectory($this->directory());
+    }
+
+    public function backup(string $backup_name): bool
+    {
+        $directory = $this->backup_directory() . '/' . time() . '-' . Str::snake($backup_name);
+
+        File::ensureDirectoryExists($directory);
+
+        // TODO I should know if a call to execute succeeded or failed
+        $this->execute(
+            message: 'Exporting database',
+            command: 'wp db export ' . $directory . '/db.sql',
+        );
+
+        info('Exporting WordPress files (give it 30 seconds)');
+        $success = Zip::archive($this->directory(), $directory . '/files.zip');
+
+        if (!$success) {
+            error('Backup failed. Unable to create zip.');
+            File::deleteDirectory($directory);
+
+            return false;
+        }
+
+        info('Backup saved to ' . $directory);
+
+        return true;
+    }
+
+    public function get_backups(): Collection
+    {
+        return collect(File::directories($this->backup_directory()))
+            ->map(function (string $directory) {
+                return basename($directory);
+            });
+    }
+
+    public function restore(string $backup_name): bool
+    {
+        // TODO
+        return true;
     }
 
     public function set_config(string $key, mixed $value, bool $cleanup_on_error = false): void

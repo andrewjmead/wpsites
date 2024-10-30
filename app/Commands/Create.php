@@ -43,6 +43,7 @@ class Create extends SiteCommand
         $selected_template_name = select(
             label: 'Which template would you like to use?',
             options: $options,
+            scroll: 20,
         );
 
         /** @var Template $template */

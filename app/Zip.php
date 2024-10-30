@@ -29,16 +29,23 @@ class Zip
 
         $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::LEAVES_ONLY);
         foreach ($files as $file) {
-            if (!$file->isDir()) {
+            if ($file->isFile()) {
                 $filePath     = $file->getRealPath();
                 $relativePath = substr($filePath, strlen($source) + 1);
 
-                // Add current file to the zip archive
+                // Add current file to the archive
                 $zip->addFile($filePath, $relativePath);
+            } elseif ($file->isLink()) {
+                $filePath     = $file->getPathname();
+                $relativePath = substr($filePath, strlen($source) + 1);
+                $targetPath = readlink($filePath);
+
+                // Recreate the symlinks in the archive
+                $zip->addFromString($relativePath, $targetPath);
+                $zip->setExternalAttributesName($relativePath, ZipArchive::OPSYS_UNIX, 0120777 << 16);
             }
         }
 
-        // Close and save the archive
         $zip->close();
 
         return true;

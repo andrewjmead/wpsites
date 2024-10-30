@@ -38,8 +38,7 @@ class Backup extends SiteCommand
             required: true,
         );
 
-        $backup  = new SiteBackup(site: $site, name: $name);
-        $success = $backup->run();
+        $success = $site->backup($name);
 
         if (!$success) {
             error('Unable to run backup');
