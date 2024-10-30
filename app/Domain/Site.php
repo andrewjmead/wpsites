@@ -110,7 +110,21 @@ class Site
 
     public function restore(string $backup_name): bool
     {
-        // TODO
+        // db.sql and files.zip
+        $directory = $this->backup_directory() . '/' . $backup_name;
+
+        if(!File::isDirectory($directory)) {
+            return false;
+        }
+
+        // TODO I should know if a call to execute succeeded or failed
+        $this->execute(
+            message: 'Importing database',
+            command: 'wp db import ' . $directory . '/db.sql',
+        );
+
+        // TODO Restore the files
+
         return true;
     }
 
