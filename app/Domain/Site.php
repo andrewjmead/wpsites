@@ -3,7 +3,6 @@
 namespace App\Domain;
 
 use App\Command;
-use App\Zip;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -86,9 +85,11 @@ class Site
         );
 
         info('Exporting WordPress files (give it 30 seconds)');
-        $success = Zip::archive($this->directory(), $directory . '/files.zip');
 
-        if (!$success) {
+        // I originally tried with ZipArchive, and it was a mess
+        $process = Process::path($this->directory())->run('zip -vr ' . $directory . '/files.zip * -x "*.DS_Store" --symlinks');
+
+        if ($process->failed()) {
             error('Backup failed. Unable to create zip.');
             File::deleteDirectory($directory);
 
@@ -110,10 +111,20 @@ class Site
 
     public function restore(string $backup_name): bool
     {
-        // db.sql and files.zip
         $directory = $this->backup_directory() . '/' . $backup_name;
 
-        if(!File::isDirectory($directory)) {
+        if (!File::isDirectory($directory)) {
+            return false;
+        }
+
+        File::cleanDirectory($this->directory());
+
+        // I originally tried with ZipArchive, and it was a mess
+        $process = Process::run('unzip ' . $directory . '/files.zip' . ' -d ' . $this->directory());
+
+        if ($process->failed()) {
+            error('Restore failed. Unable to unzip files.');
+
             return false;
         }
 
@@ -122,8 +133,6 @@ class Site
             message: 'Importing database',
             command: 'wp db import ' . $directory . '/db.sql',
         );
-
-        // TODO Restore the files
 
         return true;
     }
