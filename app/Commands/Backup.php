@@ -2,8 +2,6 @@
 
 namespace App\Commands;
 
-use App\Domain\SiteBackup;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\text;
 
@@ -34,8 +32,15 @@ class Backup extends SiteCommand
 
         $name = text(
             label: 'Pick a name for the backup',
-            placeholder: 'Backup name',
+            placeholder: 'backup-name',
             required: true,
+            validate: function (string $value) {
+                if (!$this->is_valid_kebab_name($value)) {
+                    return 'Only lowercase letters, numbers, and hyphens are allowed';
+                }
+
+                return null;
+            },
         );
 
         $success = $site->backup($name);

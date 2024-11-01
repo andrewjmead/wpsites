@@ -47,6 +47,10 @@ abstract class SiteCommand extends Command
         );
 
         return new Site($sites_directory, $selected_slug);
+    }
 
+    protected function is_valid_kebab_name(string $name): bool
+    {
+        return preg_match('/^[a-z0-9-]+$/', $name) === 1;
     }
 }

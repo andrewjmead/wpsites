@@ -57,8 +57,8 @@ class Create extends SiteCommand
             default: $template->default_slug(),
             required: true,
             validate: function (string $value) {
-                if (Str::slug($value) !== $value) {
-                    return 'Site name must be a slug!';
+                if (!$this->is_valid_kebab_name($value)) {
+                    return 'Only lowercase letters, numbers, and hyphens are allowed';
                 }
 
                 return null;

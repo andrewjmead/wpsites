@@ -24,11 +24,6 @@ class Site
         return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
     }
 
-    public function backup_directory(): string
-    {
-        return getenv('HOME') . '/.wpsites/backups/' . $this->slug;
-    }
-
     public function slug(): string
     {
         return $this->slug;
@@ -74,7 +69,11 @@ class Site
 
     public function backup(string $backup_name): bool
     {
-        $directory = $this->backup_directory() . '/' . time() . '-' . Str::kebab(Str::lower($backup_name));
+        $directory = getenv('HOME') . '/.wpsites/backups/' . $backup_name;
+
+        if(Backup::exists($directory)) {
+            return false;
+        }
 
         File::ensureDirectoryExists($directory);
 
@@ -86,43 +85,33 @@ class Site
 
         info('Exporting WordPress files (give it 30 seconds)');
 
-        // I originally tried with ZipArchive, and it was a mess
-        $process = Process::path($this->directory())->run('zip -vr ' . $directory . '/files.zip * -x "*.DS_Store" --symlinks');
+        $zip_process = Process::path($this->directory())->run('zip -vr ' . $directory . '/files.zip * -x "*.DS_Store" --symlinks');
 
-        if ($process->failed()) {
+        if ($zip_process->failed()) {
             error('Backup failed. Unable to create zip.');
             File::deleteDirectory($directory);
 
             return false;
         }
 
+        info('Backup successfully created!');
         info('Backup saved to ' . $directory);
 
         return true;
     }
 
-    public function get_backups(): Collection
+    public function restore(Backup $backup): bool
     {
-        return collect(File::directories($this->backup_directory()))
-            ->map(function (string $directory) {
-                return basename($directory);
-            });
-    }
-
-    public function restore(string $backup_name): bool
-    {
-        $directory = $this->backup_directory() . '/' . $backup_name;
-
-        if (!File::isDirectory($directory)) {
+        if (!$backup->is_valid()) {
             return false;
         }
 
         File::cleanDirectory($this->directory());
 
-        // I originally tried with ZipArchive, and it was a mess
-        $process = Process::run('unzip ' . $directory . '/files.zip' . ' -d ' . $this->directory());
+        info('Restoring files');
+        $zip_process = Process::run('unzip ' . $backup->files_path() . ' -d ' . $this->directory());
 
-        if ($process->failed()) {
+        if ($zip_process->failed()) {
             error('Restore failed. Unable to unzip files.');
 
             return false;
@@ -131,7 +120,7 @@ class Site
         // TODO I should know if a call to execute succeeded or failed
         $this->execute(
             message: 'Importing database',
-            command: 'wp db import ' . $directory . '/db.sql',
+            command: 'wp db import ' . $backup->database_path(),
         );
 
         return true;
@@ -161,13 +150,13 @@ class Site
      */
     public static function get_all_slugs(string $directory): Collection
     {
-        return self::get_all_sites($directory)->map(fn ($site) => $site->slug);
+        return self::get_sites($directory)->map(fn ($site) => $site->slug);
     }
 
     /**
      * @return Collection<Site>
      */
-    public static function get_all_sites(string $directory): Collection
+    public static function get_sites(string $directory): Collection
     {
         return collect(File::directories($directory))
             ->filter(function ($site_directory) {
