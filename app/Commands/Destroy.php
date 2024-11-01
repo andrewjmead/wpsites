@@ -46,7 +46,7 @@ class Destroy extends SiteCommand
         }
 
         $selected_slugs = multiselect(
-            label: 'Which sites would you like to destroy?',
+            label: 'Select sites to destroy',
             options: $slugs,
             scroll: 20,
             required: true,

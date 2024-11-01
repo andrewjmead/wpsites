@@ -41,7 +41,7 @@ class Create extends SiteCommand
         })->all();
 
         $selected_template_name = select(
-            label: 'Which template would you like to use?',
+            label: 'Select a template to use',
             options: $options,
             scroll: 20,
         );
@@ -52,7 +52,7 @@ class Create extends SiteCommand
         });
 
         $slug = text(
-            label: 'What slug would you like to use?',
+            label: 'Pick a slug for the site',
             placeholder: 'my-site',
             default: $template->default_slug(),
             required: true,
