@@ -29,7 +29,7 @@ class Restore extends SiteCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $backups                = \App\Domain\Backup::get_backups();
         $length_of_longest_name = $backups->map(fn (\App\Domain\Backup $backup) => Str::length($backup->name()))->sortDesc()->first();

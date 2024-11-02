@@ -26,7 +26,7 @@ class Backup extends SiteCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $site = $this->ask_user_for_site('Select a site to backup');
         $name = text(
