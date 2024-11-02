@@ -29,7 +29,6 @@ class Backup extends SiteCommand
     public function handle()
     {
         $site = $this->ask_user_for_site('Select a site to backup');
-
         $name = text(
             label: 'Pick a name for the backup',
             placeholder: 'backup-name',
@@ -42,7 +41,6 @@ class Backup extends SiteCommand
                 return null;
             },
         );
-
         $success = $site->backup($name);
 
         if (!$success) {
