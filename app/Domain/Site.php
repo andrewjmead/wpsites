@@ -161,7 +161,7 @@ class Site
     {
         $url = "http://{$this->slug}.test";
 
-        if(is_string($path)) {
+        if (is_string($path)) {
             $url .= Str::start($path, '/');
         }
 

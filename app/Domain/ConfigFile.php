@@ -43,8 +43,9 @@ class ConfigFile
             exit(1);
         }
 
-        if (! File::isDirectory($config->get_sites_directory())) {
-            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_sites_directory()}\"");
+        // TODO Start up here
+        if (! File::isDirectory($config->get_site_directories())) {
+            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_site_directories()}\"");
             exit(1);
         }
 

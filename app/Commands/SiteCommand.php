@@ -29,7 +29,7 @@ abstract class SiteCommand extends Command
     protected function ask_user_for_site(string $prompt = 'Select a site'): Site
     {
         $config          = $this->get_config();
-        $sites_directory = $config->get_sites_directory();
+        $sites_directory = $config->get_site_directories();
 
         info('Checking which sites are WordPress sites...');
 
