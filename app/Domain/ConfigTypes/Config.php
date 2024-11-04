@@ -18,7 +18,7 @@ class Config
     }
 
     /**
-     * An array of folders in which sites may live
+     * Get a list of folders where WordPress sites may live.
      *
      * @return Collection<string>
      */
@@ -26,16 +26,27 @@ class Config
     {
         if (is_string($this->sites_directory)) {
             return collect([
-                Str::trim(
-                    shell_exec("echo {$this->sites_directory}")
-                ),
+                $this->replace_environment_variables($this->sites_directory),
             ]);
         }
 
         return collect($this->sites_directory)->map(function (string $sites_directory) {
-            return Str::trim(
-                shell_exec("echo {$sites_directory}")
-            );
+            return $this->replace_environment_variables($sites_directory);
         });
+    }
+
+    /**
+     * Replace environment variables in a string with their actual values. This will convert a path
+     * like $HOME/Herd into a proper absolute path.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    private function replace_environment_variables(string $string): string
+    {
+        return Str::trim(
+            shell_exec("echo {$string}")
+        );
     }
 }
