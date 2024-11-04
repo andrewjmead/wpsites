@@ -80,17 +80,21 @@ class Site
 
         File::ensureDirectoryExists($path);
 
-        // TODO I should know if a call to execute succeeded or failed
-        $this->execute(
-            message: 'Exporting database',
-            command: 'wp db export ' . $backup->database_path(),
-        );
+        info('Backing up database');
+        $export_process = Process::path($this->directory())->run('wp db export ' . $backup->database_path());
 
-        info('Exporting WordPress files (give it 30 seconds)');
+        if ($export_process->failed()) {
+            error('Backup failed. Unable to backup database!');
+            File::deleteDirectory($path);
+
+            return false;
+        }
+
+        info('Backing up files');
         $zip_process = Process::path($this->directory())->run('zip -vr ' . $backup->files_path() . ' * -x "*.DS_Store" --symlinks');
 
         if ($zip_process->failed()) {
-            error('Backup failed. Unable to create zip.');
+            error('Backup failed. Unable to backup files!');
             File::deleteDirectory($path);
 
             return false;
