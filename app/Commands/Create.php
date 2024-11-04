@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Command;
 use App\Domain\ConfigTypes\Template;
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
