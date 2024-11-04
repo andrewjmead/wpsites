@@ -263,6 +263,10 @@ Run `wpsites open` to open an existing site in your browser.
 
 Run `wpsites backup` to create a backup of an existing site.
 
+Backups are created in `~/.wpsites/backups/`. Each backup contains `db.sql` and `files.zip`.
+
+These backups are not created in a proprietary format. The database export is created using WP CLI's [`wp db export`](https://developer.wordpress.org/cli/commands/db/export/). The file export is just a zip of the WordPress files. That means you can take them with you if you decide to stop using WPSites.
+
 ```
 ➜  ~ wpsites backup
 
