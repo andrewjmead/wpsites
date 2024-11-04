@@ -25,6 +25,6 @@ class Open extends SiteCommand
     {
         $site = $this->ask_user_for_site('Select a site to open');
 
-        exec("open http://{$site->slug()}.test/wp-admin");
+        exec("open {$site->url('/wp-admin')}");
     }
 }
