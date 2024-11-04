@@ -123,10 +123,21 @@ class Site
             return false;
         }
 
-        // TODO I should know if a call to execute succeeded or failed
+        $this->set_config('DB_NAME', $this->slug);
+
         $this->execute(
             message: 'Importing database',
             command: 'wp db import ' . $backup->database_path(),
+        );
+
+        $this->execute(
+            message: "Setting option \"siteurl\"",
+            command: "wp option update siteurl {$this->url()}",
+        );
+
+        $this->execute(
+            message: "Setting option \"home\"",
+            command: "wp option update home {$this->url()}",
         );
 
         return true;
@@ -149,6 +160,17 @@ class Site
             }
             exit(1);
         }
+    }
+
+    public function url(?string $path = null): string
+    {
+        $url = "http://{$this->slug}.test";
+
+        if(is_string($path)) {
+            $url .= Str::start($path, '/');
+        }
+
+        return $url;
     }
 
     /**

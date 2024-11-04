@@ -113,7 +113,7 @@ class Create extends SiteCommand
             message: 'Running installation',
             command: 'wp core ' . ($template->enable_multisite() ? 'multisite-install' : 'install'),
             arguments: [
-                'url'            => "http://{$slug}.test",
+                'url'            => $site->url(),
                 'title'          => $template->get_site_title() ?? $selected_template_name,
                 'admin_user'     => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
@@ -259,6 +259,6 @@ class Create extends SiteCommand
 
         info('Opening site...');
 
-        exec("open http://{$slug}.test/wp-admin");
+        exec("open {$site->url('/wp-admin')}");
     }
 }
