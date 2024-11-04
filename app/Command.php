@@ -55,6 +55,12 @@ readonly class Command
         return $string_arguments;
     }
 
+    /**
+     * If it's running as a phar, look for wp cli in the phar's directory. If it's not running as phar,
+     * look for wp cli in the builds for of the local development setup.
+     *
+     * @return string
+     */
     private function wp_cli_phar_path(): string
     {
         if ($phar_path = Phar::running(false)) {
