@@ -9,7 +9,9 @@ use Phar;
  * Transform a command and associative array of arguments into a single string command. WP CLI commands
  * that start with "wp " will be modified to use wpsites-wp-cli.phar that ships with the project.
  *
- * $command = Command::from('wp some command', [ 'argument' => 'value' ]);
+ * The public API is limited to the "from" static method:
+ * $string = Command::from('wp some command', [ 'argument' => 'value' ]);
+ *
  */
 readonly class Command
 {
