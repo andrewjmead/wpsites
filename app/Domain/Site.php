@@ -24,15 +24,18 @@ class Site
         return Str::rtrim($this->sites_directory, '/') . '/' . $this->slug;
     }
 
+    public function slug(): string
+    {
+        return $this->slug;
+    }
+
     public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
     {
         if ($print_start_message) {
             info($message);
         }
 
-        if (! File::isDirectory($this->directory())) {
-            File::makeDirectory($this->directory());
-        }
+        File::ensureDirectoryExists($this->directory());
 
         $command = Command::from($command, $arguments);
         $process = Process::path($this->directory())->run($command);
@@ -51,7 +54,7 @@ class Site
         }
     }
 
-    public function destroy($silent = false): void
+    public function destroy(bool $silent = false): void
     {
         // TODO - Probably shouldn't error out
         $this->execute(
@@ -62,6 +65,71 @@ class Site
             print_error_message: ! $silent,
         );
         File::deleteDirectory($this->directory());
+    }
+
+    public function backup(string $backup_name): bool
+    {
+        $path   = getenv('HOME') . '/.wpsites/backups/' . $backup_name;
+        $backup = new Backup($path);
+
+        // Do nothing if the backup folder is already there, regardless of whether it's a valid
+        // backup, an empty folder, or anything else.
+        if (File::isDirectory($path)) {
+            return false;
+        }
+
+        File::ensureDirectoryExists($path);
+
+        info('Backing up database');
+        $export_process = Process::path($this->directory())->run('wp db export ' . $backup->database_path());
+
+        if ($export_process->failed()) {
+            error('Backup failed. Unable to backup database!');
+            File::deleteDirectory($path);
+
+            return false;
+        }
+
+        info('Backing up files');
+        $zip_process = Process::path($this->directory())->run('zip -vr ' . $backup->files_path() . ' * -x "*.DS_Store" --symlinks');
+
+        if ($zip_process->failed()) {
+            error('Backup failed. Unable to backup files!');
+            File::deleteDirectory($path);
+
+            return false;
+        }
+
+        info('Backup successfully created!');
+        info('Backup saved to ' . $path);
+
+        return true;
+    }
+
+    public function restore(Backup $backup): bool
+    {
+        if (!$backup->is_valid()) {
+            return false;
+        }
+
+        File::cleanDirectory($this->directory());
+
+        info('Restoring files');
+        $zip_process = Process::run('unzip ' . $backup->files_path() . ' -d ' . $this->directory());
+
+        if ($zip_process->failed()) {
+            error('Restore failed. Unable to unzip files.');
+
+            return false;
+        }
+
+        // TODO I should know if a call to execute succeeded or failed
+        $this->execute(
+            message: 'Importing database',
+            command: 'wp db import ' . $backup->database_path(),
+        );
+
+        return true;
     }
 
     public function set_config(string $key, mixed $value, bool $cleanup_on_error = false): void
@@ -88,13 +156,13 @@ class Site
      */
     public static function get_all_slugs(string $directory): Collection
     {
-        return self::get_all_sites($directory)->map(fn ($site) => $site->slug);
+        return self::get_sites($directory)->map(fn ($site) => $site->slug);
     }
 
     /**
      * @return Collection<Site>
      */
-    public static function get_all_sites(string $directory): Collection
+    public static function get_sites(string $directory): Collection
     {
         return collect(File::directories($directory))
             ->filter(function ($site_directory) {

@@ -15,9 +15,15 @@ https://github.com/user-attachments/assets/77ca8ba5-2e6e-45be-9d75-9e16f6056120
 
 1. [Why?](#why)
 1. [Getting started](#getting-started)
+1. [Commands](#commands)
+    1. [Config](#config)
+    1. [Create](#create)
+    1. [Destroy](#destroy)
+    1. [Open](#open)
+    1. [Backup](#backup)
+    1. [Restore](#restore)
 1. [Configuring WPSites](#configuring-wpsites)
 1. [Template options](#template-options)
-1. [Commands](#commands)
 1. [Limitations](#limitations)
 
 # Why?
@@ -149,6 +155,167 @@ Amazing!
 Notice that you didn't need to log in to the admin panel. This is thanks to the `automatic-login` plugin. New sites have automatic login enabled. They also have the debug log enabled. There are settings in [template options](#template-options) to disable both of these, but I find it's perfect for local development.
 
 Creating your first site is just the beginning. Read on to learn how you can make your own templates to create sites specific to your needs!
+
+# Commands
+
+1. [Config](#config)
+1. [Create](#create)
+1. [Destroy](#destroy)
+1. [Open](#open)
+1. [Backup](#backup)
+1. [Restore](#restore)
+
+### Config
+
+Run `wpsites config` to create the default config file. You can rerun `wpsites config` to reset the config file back to its default state.
+
+```
+$ wpsites config
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Copying default config to `/Users/andrewmead/.wpsites.php`
+
+ Config file successfully created!
+```
+
+### Create
+
+Run `wpsites create` to create a new WordPress site based on a template in your config file.
+
+```
+$ wpsites create
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+ 
+ ┌ Which template would you like to use? ───────────────────────┐
+ │ › ● Basic WordPress                                          │
+ │   ○ Basic Multisite WordPress                                │
+ │   ○ Symlink plugin example                                   │
+ │   ○ Bug recreation example                                   │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ What slug would you like to use? ────────────────────────────┐
+ │ any-slug-you-like                                            │
+ └──────────────────────────────────────────────────────────────┘
+
+ Downloading core files...
+
+ Creating site...
+
+ Creating database...
+
+ Running installation...
+
+ Enabling error log...
+
+ Enabling automatic login...
+
+ Installing default theme...
+
+ Opening site...
+```
+
+### Destroy
+
+Run `wpsites destroy` to destroy one or more sites.
+
+```
+$ wpsites destroy
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Checking which sites are WordPress sites...
+
+ ┌ Which sites would you like to destroy? ──────────────────────┐
+ │ wp-test                                                      │
+ │ iawp                                                         │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ Are you sure you want to destroy the sites listed above? ────┐
+ │ Yes                                                          │
+ └──────────────────────────────────────────────────────────────┘
+
+ Deleting site "wp-test"
+
+ Deleting site "iawp"
+```
+
+### Open
+
+Run `wpsites open` to open an existing site in your browser.
+
+```
+➜  ~ wpsites open
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Checking which sites are WordPress sites...
+
+ ┌ Select a site to open ───────────────────────────────────────┐
+ │ › ● iawp                                                     │
+ │   ○ latest-production-install                                │
+ │   ○ woocommerce                                              │
+ └──────────────────────────────────────────────────────────────┘
+```
+
+### Backup
+
+Run `wpsites backup` to create a backup of an existing site.
+
+Backups are created in `~/.wpsites/backups/`. Each backup contains `db.sql` and `files.zip`.
+
+These backups are not created in a proprietary format. The database export is created using WP CLI's [`wp db export`](https://developer.wordpress.org/cli/commands/db/export/). The file export is just a zip of the WordPress files. That means you can take them with you if you decide to stop using WPSites.
+
+```
+➜  ~ wpsites backup
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ Checking which sites are WordPress sites...
+
+ ┌ Select a site to backup ─────────────────────────────────────┐
+ │ iawp                                                         │
+ └──────────────────────────────────────────────────────────────┘
+
+ ┌ Pick a name for the backup ──────────────────────────────────┐
+ │ before-migration                                             │
+ └──────────────────────────────────────────────────────────────┘
+
+ Backing up database
+
+ Backing up files
+
+ Backup successfully created!
+
+ Backup saved to /Users/andrewmead/.wpsites/backups/before-migration
+```
+
+### Restore
+
+Run `wpsites restore` to restore a backup.
+
+```
+➜  ~ wpsites restore
+
+ Loading config file at "/Users/andrewmead/.wpsites.php"
+
+ ┌ Select a backup to use ──────────────────────────────────────┐
+ │ before-migration (2024-11-04 2:51 pm)                        │
+ └──────────────────────────────────────────────────────────────┘
+
+ Checking which sites are WordPress sites...
+
+ ┌ Select a site to restore ────────────────────────────────────┐
+ │ iawp                                                         │
+ └──────────────────────────────────────────────────────────────┘
+
+ Restoring files
+
+ Importing database
+
+ Backup successfully restored!
+```
 
 # Configuring WPSites
 
@@ -496,107 +663,6 @@ An array of options to set in the options database table. The value should be an
         'prefix_option_boolean' => false,
     ]
 ]
-```
-
-# Commands
-
-1. [Config](#config)
-1. [Create](#create)
-1. [Destroy](#destroy)
-1. [Open](#open)
-
-### Config
-
-Run `wpsites config` to create the default config file. You can rerun `wpsites config` to reset the config file back to its default state.
-
-```
-$ wpsites config
-
- Loading config file at "/Users/andrewmead/.wpsites.php"
-
- Copying default config to `/Users/andrewmead/.wpsites.php`
-
- Config file successfully created!
-```
-
-### Create
-
-Run `wpsites create` to create a new WordPress site based on a template in your config file.
-
-```
-$ wpsites create
-
- Loading config file at "/Users/andrewmead/.wpsites.php"
- 
- ┌ Which template would you like to use? ───────────────────────┐
- │ › ● Basic WordPress                                          │
- │   ○ Basic Multisite WordPress                                │
- │   ○ Symlink plugin example                                   │
- │   ○ Bug recreation example                                   │
- └──────────────────────────────────────────────────────────────┘
-
- ┌ What slug would you like to use? ────────────────────────────┐
- │ any-slug-you-like                                            │
- └──────────────────────────────────────────────────────────────┘
-
- Downloading core files...
-
- Creating site...
-
- Creating database...
-
- Running installation...
-
- Enabling error log...
-
- Enabling automatic login...
-
- Installing default theme...
-
- Opening site...
-```
-
-### Destroy
-
-Run `wpsites destroy` to destroy one or more sites.
-
-```
-$ wpsites destroy
-
- Loading config file at "/Users/andrewmead/.wpsites.php"
-
- Checking which sites are WordPress sites...
-
- ┌ Which sites would you like to destroy? ──────────────────────┐
- │ wp-test                                                      │
- │ iawp                                                         │
- └──────────────────────────────────────────────────────────────┘
-
- ┌ Are you sure you want to destroy the sites listed above? ────┐
- │ Yes                                                          │
- └──────────────────────────────────────────────────────────────┘
-
- Deleting site "wp-test"
-
- Deleting site "iawp"
-```
-
-### Open
-
-Run `wpsites open` to open an existing site in your browser.
-
-```
-➜  ~ wpsites open
-
- Loading config file at "/Users/andrewmead/.wpsites.php"
-
- Checking which sites are WordPress sites...
-
- ┌ Which site would you link to open? ──────────────────────────┐
- │ › ● iawp                                                     │
- │   ○ latest-production-install                                │
- │   ○ woocommerce                                              │
- └──────────────────────────────────────────────────────────────┘
 ```
 
 # Limitations

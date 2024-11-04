@@ -5,13 +5,19 @@ namespace App;
 use Illuminate\Support\Str;
 use Phar;
 
-class Command
+/**
+ * Transform a command and associative array of arguments into a single string command. WP CLI commands
+ * that start with "wp " will be modified to use wpsites-wp-cli.phar that ships with the project.
+ *
+ * $command = Command::from('wp some command', [ 'argument' => 'value' ]);
+ */
+readonly class Command
 {
-    public function __construct(private readonly string $command, private readonly array $arguments = [])
+    private function __construct(private string $command, private array $arguments = [])
     {
     }
 
-    public function toString(): string
+    private function toString(): string
     {
         return $this->command() . ' ' . $this->arguments();
 

@@ -40,7 +40,7 @@ class Config extends Command
 
         if (ConfigFile::exists()) {
             $confirmed = confirm(
-                label: 'Config file already exists. Do you want to override it?',
+                label: 'Config file already exists. Override it?',
                 default: false,
             );
 
