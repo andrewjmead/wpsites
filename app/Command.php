@@ -19,7 +19,7 @@ readonly class Command
     {
     }
 
-    private function toString(): string
+    private function to_string(): string
     {
         return $this->command() . ' ' . $this->arguments();
 
@@ -74,6 +74,6 @@ readonly class Command
 
     public static function from(string $command, array $arguments = []): string
     {
-        return (new self($command, $arguments))->toString();
+        return (new self($command, $arguments))->to_string();
     }
 }
