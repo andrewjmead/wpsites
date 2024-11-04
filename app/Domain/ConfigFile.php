@@ -31,23 +31,19 @@ class ConfigFile
         } catch (\CuyZ\Valinor\Mapper\MappingError $error) {
             error('Invalid configuration file!');
             error($error->getMessage());
-
-            // $messages = \CuyZ\Valinor\Mapper\Tree\Message\Messages::flattenFromNode(
-            //     $error->node()
-            // );
-            // dump($messages);
-
             exit(1);
         } catch (\Throwable $error) {
             error('Error: ' . $error->getMessage());
             exit(1);
         }
 
-        // TODO Start up here
-        if (! File::isDirectory($config->get_site_directories())) {
-            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_site_directories()}\"");
-            exit(1);
-        }
+        // Validate that all site directories exist
+        $config->get_site_directories()->each(function ($directory) {
+            if (! File::isDirectory($directory)) {
+                error("The following \"sites_directory\" does not exist: \"{$directory}\"");
+                exit(1);
+            }
+        });
 
         return $config;
     }
