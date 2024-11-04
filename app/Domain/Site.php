@@ -69,33 +69,35 @@ class Site
 
     public function backup(string $backup_name): bool
     {
-        $directory = getenv('HOME') . '/.wpsites/backups/' . $backup_name;
+        $path   = getenv('HOME') . '/.wpsites/backups/' . $backup_name;
+        $backup = new Backup($path);
 
-        if(Backup::exists($directory)) {
+        // Do nothing if the backup folder is already there, regardless of whether it's a valid
+        // backup, an empty folder, or anything else.
+        if (File::isDirectory($path)) {
             return false;
         }
 
-        File::ensureDirectoryExists($directory);
+        File::ensureDirectoryExists($path);
 
         // TODO I should know if a call to execute succeeded or failed
         $this->execute(
             message: 'Exporting database',
-            command: 'wp db export ' . $directory . '/db.sql',
+            command: 'wp db export ' . $backup->database_path(),
         );
 
         info('Exporting WordPress files (give it 30 seconds)');
-
-        $zip_process = Process::path($this->directory())->run('zip -vr ' . $directory . '/files.zip * -x "*.DS_Store" --symlinks');
+        $zip_process = Process::path($this->directory())->run('zip -vr ' . $backup->files_path() . ' * -x "*.DS_Store" --symlinks');
 
         if ($zip_process->failed()) {
             error('Backup failed. Unable to create zip.');
-            File::deleteDirectory($directory);
+            File::deleteDirectory($path);
 
             return false;
         }
 
         info('Backup successfully created!');
-        info('Backup saved to ' . $directory);
+        info('Backup saved to ' . $path);
 
         return true;
     }

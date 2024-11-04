@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use function Symfony\Component\Translation\t;
 
-class Backup
+readonly class Backup
 {
-    private readonly string $path;
+    private string $path;
 
     public function __construct(string $path)
     {
@@ -52,11 +53,6 @@ class Backup
         );
     }
 
-    public static function exists(string $path): bool
-    {
-        return (new self($path))->is_valid();
-    }
-
     /**
      * @return Collection<self>
      */
@@ -71,7 +67,7 @@ class Backup
             ->filter(function (self $backup) {
                 return $backup->is_valid();
             })
-            ->sortByDesc(function (Backup $backup) {
+            ->sortByDesc(function (self $backup) {
                 return $backup->created_at()->getTimestamp();
             });
     }

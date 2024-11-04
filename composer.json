@@ -5,8 +5,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "ext-zip": "*"
+        "php": "^8.2"
     },
     "require-dev": {
         "cuyz/valinor": "^1.12",

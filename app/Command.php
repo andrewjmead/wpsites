@@ -5,9 +5,9 @@ namespace App;
 use Illuminate\Support\Str;
 use Phar;
 
-class Command
+readonly class Command
 {
-    public function __construct(private readonly string $command, private readonly array $arguments = [])
+    public function __construct(private string $command, private array $arguments = [])
     {
     }
 
