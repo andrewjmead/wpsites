@@ -65,7 +65,18 @@ class Create extends SiteCommand
             hint: 'This will be used for the sites folder name, the database name, etc'
         );
 
-        $site = new Site($config->get_site_directories(), $slug);
+        $sites_directory = $config->get_site_directories()->first();
+
+        // If there are multiple site directories, have the user pick which they want to use.
+        if ($config->get_site_directories()->count() > 1) {
+            $sites_directory = select(
+                label: 'Select a site directory to use',
+                options: $config->get_site_directories(),
+                scroll: 20,
+            );
+        }
+
+        $site = new Site($sites_directory, $slug);
 
         if (File::isDirectory($site->directory())) {
             $should_override_site = confirm(

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class Config
 {
     public function __construct(
-        /** @var string|list<string> */
+        /** @var string|non-empty-list<string> */
         protected $sites_directory,
         /** @var Defaults */
         public readonly Defaults $defaults,
