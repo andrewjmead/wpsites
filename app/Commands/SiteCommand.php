@@ -19,7 +19,7 @@ abstract class SiteCommand extends Command
     protected function get_config(): Config
     {
         if (ConfigFile::exists()) {
-            return ConfigFile::get_config();
+            return ConfigFile::parse();
         }
 
         error('Config file not found! Run `wpsites config` to get started.');

@@ -8,10 +8,21 @@ use Illuminate\Support\Facades\File;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\note;
 
+// TODO This class should honestly be merged with Config. It would be awesome to have it as a singleton
+// or just cache the value with a property
+
+// Config::get()->some_method
+
 class ConfigFile
 {
-    public static function get_config(): Config
+    public static ?Config $config = null;
+
+    public static function parse(): Config
     {
+        if (is_a(self::$config, Config::class)) {
+            return self::$config;
+        }
+
         $config_file_path = ConfigFile::file_path();
         note("Loading config file at \"{$config_file_path}\"");
 
@@ -44,6 +55,8 @@ class ConfigFile
                 exit(1);
             }
         });
+
+        self::$config = $config;
 
         return $config;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Domain;
 
-use App\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -13,43 +12,70 @@ use function Laravel\Prompts\info;
 
 use WPConfigTransformer;
 
-class Site
-{
-    public function __construct(private readonly string $sites_directory, private readonly string $slug)
-    {
+class Site {
+    public function __construct( private readonly string $sites_directory, private readonly string $slug ) {
     }
 
-    public function directory(): string
-    {
-        return Str::finish($this->sites_directory, '/') . $this->slug;
+    public function directory(): string {
+        return Str::finish( $this->sites_directory, '/' ) . $this->slug;
     }
 
-    public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
-    {
-        if ($print_start_message) {
-            info($message);
+    public function slug(): string {
+        return $this->slug;
+    }
+
+    public function execute( string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false ): void {
+        if ( $print_start_message ) {
+            info( $message );
         }
 
-        File::ensureDirectoryExists($this->directory());
+        File::ensureDirectoryExists( $this->directory() );
 
+        $command = Command::from( $command, $arguments );
+        $process = Process::path( $this->directory() )->run( $command );
+
+        if ( $process->failed() && $print_error_message ) {
+            error( 'Error ' . Str::lower( $message ) );
+            error( $process->errorOutput() );
+        }
+
+        if ( $process->failed() && $cleanup_on_error ) {
+            $this->destroy( true );
+        }
+
+        if ( $process->failed() ) {
+            exit( 1 );
+        }
+    }
+
+    public function run(string $command, array $arguments = []): bool {
+        File::ensureDirectoryExists($this->directory());
         $command = Command::from($command, $arguments);
         $process = Process::path($this->directory())->run($command);
 
-        if ($process->failed() && $print_error_message) {
-            error('Error ' . Str::lower($message));
-            error($process->errorOutput());
-        }
-
-        if ($process->failed() && $cleanup_on_error) {
-            $this->destroy(true);
-        }
-
-        if ($process->failed()) {
-            exit(1);
-        }
+        return $process->successful();
     }
 
-    public function destroy(bool $silent = false): void
+    // public function drop(): bool
+    // {
+    //     return $this->run('wp db check');
+    // }
+
+    public function destroy( bool $silent = false ): void
+    {
+        $has_database = $this->run('wp db check');
+
+        if($has_database) {
+            info( "Dropping database for \"{$this->slug}\"");
+            $this->run('wp db drop', [ 'yes' => true ]);
+        } else {
+            info( "No database found for \"{$this->slug}\"");
+        }
+
+        File::deleteDirectory($this->directory());
+    }
+
+    public function og_destroy(bool $silent = false): void
     {
         // TODO - Probably shouldn't error out
         $this->execute(
@@ -168,20 +194,27 @@ class Site
         return $url;
     }
 
-    /**
-     * @return Collection<Site>
-     */
-    public static function get_all_slugs(string $directory): Collection
-    {
-        return self::get_sites($directory)->map(fn ($site) => $site->slug);
-    }
+    // /**
+    //  * @return Collection<Site>
+    //  */
+    // public static function get_all_slugs(Collection $directories): Collection
+    // {
+    //     return $directories->map(fn ($directory) => self::get_sites($directory))
+    //         ->flatten()
+    //         ->map(fn ($site) => $site->slug);
+    // }
 
     /**
+     * @param Collection<string> $directories
+     *
      * @return Collection<Site>
      */
-    public static function get_sites(string $directory): Collection
+    public static function get_sites(Collection $directories): Collection
     {
-        return collect(File::directories($directory))
+        return $directories
+            ->flatMap(function (string $directory) {
+                return collect(File::directories($directory));
+            })
             ->filter(function ($site_directory) {
                 return File::isFile($site_directory . '/wp-config.php');
             })

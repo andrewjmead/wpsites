@@ -3,14 +3,13 @@
 namespace App\Commands;
 
 use App\Domain\Site;
+use App\Domain\SiteOption;
+use App\Domain\SiteOptions;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\confirm;
-
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\multiselect;
-
-use LaravelZero\Framework\Commands\Command;
 
 class Destroy extends SiteCommand
 {
@@ -33,29 +32,29 @@ class Destroy extends SiteCommand
      */
     public function handle()
     {
-        $config          = $this->get_config();
-        $sites_directory = $config->get_site_directories();
+        $config           = $this->get_config();
+        $site_directories = $config->get_site_directories();
+        $sites            = Site::get_sites($site_directories);
 
-        info('Checking which sites are WordPress sites...');
-
-        $slugs = Site::get_all_slugs($sites_directory);
-
-        if ($slugs->count() === 0) {
+        if ($sites->count() === 0) {
             info('There are no WordPress sites to destroy');
             exit(0);
         }
 
-        $selected_slugs = multiselect(
+        $selected_options = multiselect(
             label: 'Select sites to destroy',
-            options: $slugs,
+            options: SiteOptions::from($sites),
             scroll: 20,
             required: true,
             hint: 'Use the space bar to select options.',
         );
-        $sites_term = Str::plural('site', count($selected_slugs));
+        $selected_sites = collect($selected_options)->map(function (SiteOption $option) {
+            return $option->site();
+        });
+        $sites_string = Str::plural('site', $selected_sites->count());
 
         $confirmed = confirm(
-            label: "Are you sure you want to destroy the {$sites_term} listed above?",
+            label: "Are you sure you want to destroy the {$sites_string} listed above?",
             default: false,
         );
 
@@ -63,12 +62,11 @@ class Destroy extends SiteCommand
             exit(0);
         }
 
-        foreach ($selected_slugs as $slug) {
-            info("Deleting site \"{$slug}\"");
-            $site = new Site($sites_directory, $slug);
+        $selected_sites->each(function (Site $site) {
+            info("Deleting site at \"{$site->directory()}\"");
             $site->destroy();
-        }
+        });
 
-        exit(1);
+        exit(0);
     }
 }
