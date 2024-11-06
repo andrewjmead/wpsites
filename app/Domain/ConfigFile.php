@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\File;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\note;
 
-// TODO This class should honestly be merged with Config. It would be awesome to have it as a singleton
-// or just cache the value with a property
-
-// Config::get()->some_method
-
 class ConfigFile
 {
     public static ?Config $config = null;
@@ -33,9 +28,6 @@ class ConfigFile
                 ->mapper()
                 ->map(Config::class, \CuyZ\Valinor\Mapper\Source\Source::array($config_file_contents));
 
-            // TODO - An alternative to this would be to parse the defaults, and then parse the templates
-            //  and use a customized mapper to pass in the defaults to the constructor instead of using
-            //  the set_defaults method.
             foreach ($config->templates as $template) {
                 $template->set_defaults($config->defaults);
             }

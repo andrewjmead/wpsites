@@ -12,43 +12,49 @@ use function Laravel\Prompts\info;
 
 use WPConfigTransformer;
 
-class Site {
-    public function __construct( private readonly string $sites_directory, private readonly string $slug ) {
+class Site
+{
+    public function __construct(private readonly string $sites_directory, private readonly string $slug)
+    {
     }
 
-    public function directory(): string {
-        return Str::finish( $this->sites_directory, '/' ) . $this->slug;
+    public function directory(): string
+    {
+        return Str::finish($this->sites_directory, '/') . $this->slug;
     }
 
-    public function slug(): string {
+    public function slug(): string
+    {
         return $this->slug;
     }
 
-    public function execute( string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false ): void {
-        if ( $print_start_message ) {
-            info( $message );
+    public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
+    {
+        if ($print_start_message) {
+            info($message);
         }
 
-        File::ensureDirectoryExists( $this->directory() );
+        File::ensureDirectoryExists($this->directory());
 
-        $command = Command::from( $command, $arguments );
-        $process = Process::path( $this->directory() )->run( $command );
+        $command = Command::from($command, $arguments);
+        $process = Process::path($this->directory())->run($command);
 
-        if ( $process->failed() && $print_error_message ) {
-            error( 'Error ' . Str::lower( $message ) );
-            error( $process->errorOutput() );
+        if ($process->failed() && $print_error_message) {
+            error('Error ' . Str::lower($message));
+            error($process->errorOutput());
         }
 
-        if ( $process->failed() && $cleanup_on_error ) {
-            $this->destroy( true );
+        if ($process->failed() && $cleanup_on_error) {
+            $this->destroy();
         }
 
-        if ( $process->failed() ) {
-            exit( 1 );
+        if ($process->failed()) {
+            exit(1);
         }
     }
 
-    public function run(string $command, array $arguments = []): bool {
+    public function run(string $command, array $arguments = []): bool
+    {
         File::ensureDirectoryExists($this->directory());
         $command = Command::from($command, $arguments);
         $process = Process::path($this->directory())->run($command);
@@ -56,35 +62,14 @@ class Site {
         return $process->successful();
     }
 
-    // public function drop(): bool
-    // {
-    //     return $this->run('wp db check');
-    // }
-
-    public function destroy( bool $silent = false ): void
+    public function destroy(): void
     {
         $has_database = $this->run('wp db check');
 
-        if($has_database) {
-            info( "Dropping database for \"{$this->slug}\"");
+        if ($has_database) {
             $this->run('wp db drop', [ 'yes' => true ]);
-        } else {
-            info( "No database found for \"{$this->slug}\"");
         }
 
-        File::deleteDirectory($this->directory());
-    }
-
-    public function og_destroy(bool $silent = false): void
-    {
-        // TODO - Probably shouldn't error out
-        $this->execute(
-            message: "Dropping database for \"{$this->slug}\"",
-            command: 'wp db drop',
-            arguments: ['yes' => true],
-            print_start_message: ! $silent,
-            print_error_message: ! $silent,
-        );
         File::deleteDirectory($this->directory());
     }
 
@@ -177,7 +162,7 @@ class Site {
         } catch (\Exception $e) {
             error('Unable to make changes to wp-config.php');
             if ($cleanup_on_error) {
-                $this->destroy(true);
+                $this->destroy();
             }
             exit(1);
         }

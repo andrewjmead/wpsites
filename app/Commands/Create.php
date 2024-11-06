@@ -79,7 +79,7 @@ class Create extends SiteCommand
         $site = new Site($sites_directory, $slug);
 
         // TODO Site slugs need to be unique across all site directories as the database name might conflict
-        // either that or just detect conflicts as the site is created...
+        //  either that or just detect conflicts as the site is created...
         if (File::isDirectory($site->directory())) {
             $should_override_site = confirm(
                 label: 'Site already exists! Override it?',
@@ -88,7 +88,7 @@ class Create extends SiteCommand
 
             if ($should_override_site) {
                 info('Destroying existing site');
-                $site->destroy(true);
+                $site->destroy();
             } else {
                 exit(1);
             }
