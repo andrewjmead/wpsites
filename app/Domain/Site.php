@@ -179,16 +179,6 @@ class Site
         return $url;
     }
 
-    // /**
-    //  * @return Collection<Site>
-    //  */
-    // public static function get_all_slugs(Collection $directories): Collection
-    // {
-    //     return $directories->map(fn ($directory) => self::get_sites($directory))
-    //         ->flatten()
-    //         ->map(fn ($site) => $site->slug);
-    // }
-
     /**
      * @param Collection<string> $directories
      *
