@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Template;
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
@@ -33,7 +34,7 @@ class Create extends SiteCommand
      */
     public function handle()
     {
-        $config = $this->get_config();
+        $config = ConfigFile::parse();
 
         $options = collect($config->templates)->map(function (Template $template) {
             return $template->name;

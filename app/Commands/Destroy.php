@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Domain\ConfigFile;
 use App\Domain\Site;
 use App\Domain\SiteOption;
 use App\Domain\SiteOptions;
@@ -32,8 +33,7 @@ class Destroy extends SiteCommand
      */
     public function handle()
     {
-        $config           = $this->get_config();
-        $site_directories = $config->get_site_directories();
+        $site_directories = ConfigFile::parse()->get_site_directories();
         $sites            = Site::get_sites($site_directories);
 
         if ($sites->count() === 0) {

@@ -18,6 +18,11 @@ class ConfigFile
             return self::$config;
         }
 
+        if (!self::exists()) {
+            error('Config file not found! Run `wpsites config` to get started.');
+            exit(1);
+        }
+
         $config_file_path = ConfigFile::file_path();
         note("Loading config file at \"{$config_file_path}\"");
 
