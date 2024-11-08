@@ -52,6 +52,21 @@ readonly class Backup
         );
     }
 
+    public static function get_backup(string $backup_name): ?self
+    {
+        $backups_path = getenv('HOME') . '/.wpsites/backups/';
+        $backup_path = collect(File::directories($backups_path))->first(function (string $directory) use ($backup_name) {
+            return basename($directory) === $backup_name;
+
+        });
+
+        if($backup_path === null) {
+            return null;
+        }
+
+        return new self($backup_path);
+    }
+
     /**
      * @return Collection<self>
      */
