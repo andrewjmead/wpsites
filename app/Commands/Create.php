@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Template;
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
@@ -33,7 +34,7 @@ class Create extends SiteCommand
      */
     public function handle()
     {
-        $config = $this->get_config();
+        $config = ConfigFile::parse();
 
         $options = collect($config->templates)->map(function (Template $template) {
             return $template->name;
@@ -65,8 +66,21 @@ class Create extends SiteCommand
             hint: 'This will be used for the sites folder name, the database name, etc'
         );
 
-        $site = new Site($config->get_sites_directory(), $slug);
+        $sites_directory = $config->get_site_directories()->first();
 
+        // If there are multiple site directories, have the user pick which they want to use.
+        if ($config->get_site_directories()->count() > 1) {
+            $sites_directory = select(
+                label: 'Select a site directory to use',
+                options: $config->get_site_directories(),
+                scroll: 20,
+            );
+        }
+
+        $site = new Site($sites_directory, $slug);
+
+        // TODO Site slugs need to be unique across all site directories as the database name might conflict
+        //  either that or just detect conflicts as the site is created...
         if (File::isDirectory($site->directory())) {
             $should_override_site = confirm(
                 label: 'Site already exists! Override it?',
@@ -75,7 +89,7 @@ class Create extends SiteCommand
 
             if ($should_override_site) {
                 info('Destroying existing site');
-                $site->destroy(true);
+                $site->destroy();
             } else {
                 exit(1);
             }

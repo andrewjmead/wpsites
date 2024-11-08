@@ -3,11 +3,8 @@
 namespace App\Commands;
 
 use App\Domain\ConfigFile;
-use App\Domain\ConfigTypes\Config;
-
 use App\Domain\Site;
-
-use function Laravel\Prompts\error;
+use App\Domain\SiteOption;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
@@ -16,37 +13,30 @@ use LaravelZero\Framework\Commands\Command;
 
 abstract class SiteCommand extends Command
 {
-    protected function get_config(): Config
+    protected function ask_user_for_site(string $prompt): Site
     {
-        if (ConfigFile::exists()) {
-            return ConfigFile::get_config();
-        }
+        $site_directories = ConfigFile::parse()->get_site_directories();
+        $sites            = Site::get_sites($site_directories);
 
-        error('Config file not found! Run `wpsites config` to get started.');
-        exit(1);
-    }
-
-    protected function ask_user_for_site(string $prompt = 'Select a site'): Site
-    {
-        $config          = $this->get_config();
-        $sites_directory = $config->get_sites_directory();
-
-        info('Checking which sites are WordPress sites...');
-
-        $slugs = Site::get_all_slugs($sites_directory);
-
-        if ($slugs->count() === 0) {
+        if ($sites->isEmpty()) {
             info('There are no WordPress sites to open');
             exit(0);
         }
 
-        $selected_slug = select(
+        // Laravel prompts returns the label value for options that pass array_is_list. This isn't
+        // helpful. We offset all indexes by 1 to have it return the key (index + 1) instead.
+        $options = $sites->mapWithKeys(function (Site $site, int $index) {
+            return [ $index + 1 => new SiteOption($site) ];
+        });
+
+        $selected_site_index = select(
             label: $prompt,
-            options: $slugs,
+            options: $options,
             scroll: 20,
         );
 
-        return new Site($sites_directory, $selected_slug);
+        // Reduce the index by 1 to account for increase in index above
+        return $sites->get($selected_site_index - 1);
     }
 
     protected function is_valid_kebab_name(string $name): bool

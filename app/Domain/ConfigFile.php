@@ -10,8 +10,19 @@ use function Laravel\Prompts\note;
 
 class ConfigFile
 {
-    public static function get_config(): Config
+    public static ?Config $config = null;
+
+    public static function parse(): Config
     {
+        if (is_a(self::$config, Config::class)) {
+            return self::$config;
+        }
+
+        if (!self::exists()) {
+            error('Config file not found! Run `wpsites config` to get started.');
+            exit(1);
+        }
+
         $config_file_path = ConfigFile::file_path();
         note("Loading config file at \"{$config_file_path}\"");
 
@@ -22,31 +33,27 @@ class ConfigFile
                 ->mapper()
                 ->map(Config::class, \CuyZ\Valinor\Mapper\Source\Source::array($config_file_contents));
 
-            // TODO - An alternative to this would be to parse the defaults, and then parse the templates
-            //  and use a customized mapper to pass in the defaults to the constructor instead of using
-            //  the set_defaults method.
             foreach ($config->templates as $template) {
                 $template->set_defaults($config->defaults);
             }
         } catch (\CuyZ\Valinor\Mapper\MappingError $error) {
             error('Invalid configuration file!');
             error($error->getMessage());
-
-            // $messages = \CuyZ\Valinor\Mapper\Tree\Message\Messages::flattenFromNode(
-            //     $error->node()
-            // );
-            // dump($messages);
-
             exit(1);
         } catch (\Throwable $error) {
             error('Error: ' . $error->getMessage());
             exit(1);
         }
 
-        if (! File::isDirectory($config->get_sites_directory())) {
-            error("The \"sites_directory\" in your configuration file does not exist! Unable to find \"{$config->get_sites_directory()}\"");
-            exit(1);
-        }
+        // Validate that all site directories exist
+        $config->get_site_directories()->each(function ($directory) {
+            if (! File::isDirectory($directory)) {
+                error("The following \"sites_directory\" does not exist: \"{$directory}\"");
+                exit(1);
+            }
+        });
+
+        self::$config = $config;
 
         return $config;
     }

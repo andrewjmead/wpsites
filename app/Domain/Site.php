@@ -2,7 +2,6 @@
 
 namespace App\Domain;
 
-use App\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -24,6 +23,11 @@ class Site
         return Str::finish($this->sites_directory, '/') . $this->slug;
     }
 
+    public function slug(): string
+    {
+        return $this->slug;
+    }
+
     public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
     {
         if ($print_start_message) {
@@ -41,7 +45,7 @@ class Site
         }
 
         if ($process->failed() && $cleanup_on_error) {
-            $this->destroy(true);
+            $this->destroy();
         }
 
         if ($process->failed()) {
@@ -49,16 +53,23 @@ class Site
         }
     }
 
-    public function destroy(bool $silent = false): void
+    public function run(string $command, array $arguments = []): bool
     {
-        // TODO - Probably shouldn't error out
-        $this->execute(
-            message: "Dropping database for \"{$this->slug}\"",
-            command: 'wp db drop',
-            arguments: ['yes' => true],
-            print_start_message: ! $silent,
-            print_error_message: ! $silent,
-        );
+        File::ensureDirectoryExists($this->directory());
+        $command = Command::from($command, $arguments);
+        $process = Process::path($this->directory())->run($command);
+
+        return $process->successful();
+    }
+
+    public function destroy(): void
+    {
+        $has_database = $this->run('wp db check');
+
+        if ($has_database) {
+            $this->run('wp db drop', [ 'yes' => true ]);
+        }
+
         File::deleteDirectory($this->directory());
     }
 
@@ -151,7 +162,7 @@ class Site
         } catch (\Exception $e) {
             error('Unable to make changes to wp-config.php');
             if ($cleanup_on_error) {
-                $this->destroy(true);
+                $this->destroy();
             }
             exit(1);
         }
@@ -161,27 +172,34 @@ class Site
     {
         $url = "http://{$this->slug}.test";
 
-        if(is_string($path)) {
+        if (is_string($path)) {
             $url .= Str::start($path, '/');
         }
 
         return $url;
     }
 
-    /**
-     * @return Collection<Site>
-     */
-    public static function get_all_slugs(string $directory): Collection
-    {
-        return self::get_sites($directory)->map(fn ($site) => $site->slug);
-    }
+    // /**
+    //  * @return Collection<Site>
+    //  */
+    // public static function get_all_slugs(Collection $directories): Collection
+    // {
+    //     return $directories->map(fn ($directory) => self::get_sites($directory))
+    //         ->flatten()
+    //         ->map(fn ($site) => $site->slug);
+    // }
 
     /**
+     * @param Collection<string> $directories
+     *
      * @return Collection<Site>
      */
-    public static function get_sites(string $directory): Collection
+    public static function get_sites(Collection $directories): Collection
     {
-        return collect(File::directories($directory))
+        return $directories
+            ->flatMap(function (string $directory) {
+                return collect(File::directories($directory));
+            })
             ->filter(function ($site_directory) {
                 return File::isFile($site_directory . '/wp-config.php');
             })

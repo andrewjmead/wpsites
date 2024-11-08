@@ -7,6 +7,7 @@
         },
         "no_unused_imports": true,
         "method_chaining_indentation": true,
+        "blank_line_between_import_groups": false,
         "explicit_string_variable": true,
         "ordered_class_elements": {
             "order": [

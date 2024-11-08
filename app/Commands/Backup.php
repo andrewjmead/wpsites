@@ -38,6 +38,10 @@ class Backup extends SiteCommand
                     return 'Only lowercase letters, numbers, and hyphens are allowed';
                 }
 
+                if (\App\Domain\Backup::get_backup($value) !== null) {
+                    return 'Backup already exists';
+                }
+
                 return null;
             },
         );
