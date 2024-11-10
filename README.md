@@ -68,7 +68,7 @@ $ wpsites config
 
 Once your config file is created, open it in your text editor as there are a couple of values you'll need to change before you can create your first site.
 
-### Configure your site's directory
+### Configuring your site's directory
 
 You need to tell WPSites where on your file system you want new sites to be created. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
 
