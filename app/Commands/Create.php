@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use App\Domain\ConfigFile;
 use App\Domain\ConfigTypes\Template;
+use App\Domain\Render;
 use App\Domain\Site;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -12,6 +13,7 @@ use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
+use function Termwind\render;
 
 class Create extends SiteCommand
 {
@@ -34,6 +36,7 @@ class Create extends SiteCommand
      */
     public function handle()
     {
+        Render::green(text: 'WPSites');
         $config = ConfigFile::parse();
 
         $options = collect($config->templates)->map(function (Template $template) {
@@ -270,6 +273,18 @@ class Create extends SiteCommand
                 cleanup_on_error: true,
             );
         });
+
+        // TODO Output full path
+        // What was that tailwind console thing? Start using that...
+
+        render(<<<'HTML'
+            <div>
+                <div class="px-1 bg-green-600">Termwind</div>
+                <em class="ml-1">
+                  Give your CLI apps a unique look
+                </em>
+            </div>
+        HTML);
 
         info('Opening site...');
 
