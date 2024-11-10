@@ -34,7 +34,7 @@ class Restore extends SiteCommand
         $backups                = \App\Domain\Backup::get_backups();
         $length_of_longest_name = $backups->map(fn (\App\Domain\Backup $backup) => Str::length($backup->name()))->sortDesc()->first();
         // TODO Create a BackupOption
-        $options                = $backups->mapWithKeys(function (\App\Domain\Backup $backup, int $index) use ($length_of_longest_name) {
+        $options = $backups->mapWithKeys(function (\App\Domain\Backup $backup, int $index) use ($length_of_longest_name) {
             return [
                 $backup->path() => Str::padRight($backup->name(), $length_of_longest_name) . ' (' . $backup->created_at()->format('Y-m-d g:i a') . ')',
             ];
