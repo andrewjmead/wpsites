@@ -373,6 +373,8 @@ This directory is where WPSites will create new WordPress sites, so make sure th
 
 If you're using Laravel Herd, the default value of `'$HOME/Herd'` should work great. If you're using MAMP PRO, you'll want to use `'$HOME/Sites'`.
 
+You can also set `sites_directory` to an array of directories. This will let you create and manage sites from multiple directories, such as having a "work" directory for work sites and a "personal" directory for person sites.
+
 **Next up is `defaults`.**
 
 As you can see in the config file above, the value for `defaults` is an associative array.
