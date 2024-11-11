@@ -271,8 +271,13 @@ class Create extends SiteCommand
             );
         });
 
-        info('Opening site...');
+        info('Site created!');
+        info('Directory: ' . $site->directory());
+        info('URL: ' . $site->url());
 
-        exec("open {$site->url('/wp-admin')}");
+        if($config->should_open_new_site()) {
+            info('Opening site...');
+            exec("open {$site->url('/wp-admin')}");
+        }
     }
 }

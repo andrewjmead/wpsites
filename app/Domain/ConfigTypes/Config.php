@@ -14,7 +14,14 @@ class Config
         public readonly Defaults $defaults,
         /** @var list<Template> */
         public readonly array $templates,
+        /** @var bool */
+        protected readonly bool $should_open_new_site = true,
     ) {
+    }
+
+    public function should_open_new_site(): bool
+    {
+        return $this->should_open_new_site;
     }
 
     /**
