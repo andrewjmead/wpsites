@@ -114,6 +114,11 @@ class Site
 
     public function restore(Backup $backup): bool
     {
+        // This value needs to be fetched before the site files are overridden with the backup files.
+        // That means you can't just call get_database_name below, as that would fetch the database
+        // name from the backup.
+        $original_database_name = $this->get_database_name();
+
         if (!$backup->is_valid()) {
             return false;
         }
@@ -129,7 +134,7 @@ class Site
             return false;
         }
 
-        $this->set_config('DB_NAME', $this->slug);
+        $this->set_config('DB_NAME', $original_database_name);
 
         $this->execute(
             message: 'Importing database',
@@ -166,6 +171,14 @@ class Site
             }
             exit(1);
         }
+    }
+
+    public function get_database_name(): string
+    {
+        $transformer = new WPConfigTransformer($this->directory() . '/wp-config.php');
+        $value       = $transformer->get_value('constant', 'DB_NAME');
+
+        return Str::trim($value, "\"'");
     }
 
     public function url(?string $path = null): string
