@@ -302,7 +302,7 @@ class Template
             $constants = $constants->merge($this->constants);
         }
 
-        return $constants->unique();
+        return $constants;
     }
 
     public function get_options(): Collection
@@ -317,6 +317,6 @@ class Template
             $options = $options->merge($this->options);
         }
 
-        return $options->unique();
+        return $options;
     }
 }
