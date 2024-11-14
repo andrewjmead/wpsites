@@ -22,7 +22,7 @@ class ConfigFile
         // If there's no config file, welcome the user and direct them towards the config command
         if (!self::exists()) {
             render(<<<'HTML'
-            <div>
+            <div class="mx-1 my-1">
                 <h1 class="px-1 bg-purple-400 font-bold">Welcome to WPSites!</h1>
                 <p class="my-0">
                     To get started, you'll need to generate a config file. This is where you can customize your database connections, site templates, and more. Run the config command to get started:
