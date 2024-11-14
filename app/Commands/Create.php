@@ -264,7 +264,6 @@ class Create extends SiteCommand
             info('Setting options');
         })->each(function (string $value, string $key) use ($site) {
             $format = $this->is_json($value) ? '--format=json' : '';
-            // --format=json
             $site->execute(
                 message: "Setting option \"{$key}\"",
                 command: "wp option update {$key} {$value} {$format}",
