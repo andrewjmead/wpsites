@@ -196,9 +196,9 @@ class Site
     {
         $format = '';
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             $format = '--format=json';
-            $value  = json_encode( $value );
+            $value  = json_encode($value);
         }
 
         $this->execute(
