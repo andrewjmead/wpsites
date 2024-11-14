@@ -262,30 +262,17 @@ class Create extends SiteCommand
 
         $template->get_options()->whenNotEmpty(function () {
             info('Setting options');
-        })->each(function (string $value, string $key) use ($site) {
-            $format = $this->is_json($value) ? '--format=json' : '';
-            $site->execute(
-                message: "Setting option \"{$key}\"",
-                command: "wp option update {$key} {$value} {$format}",
-                print_start_message: false,
-                cleanup_on_error: true,
-            );
+        })->each(function (mixed $value, string $key) use ($site) {
+            $site->set_option($key, $value);
         });
 
         info('Site created!');
         info('Directory: ' . $site->directory());
         info('URL: ' . $site->url());
 
-        if($config->should_open_new_site()) {
+        if ($config->should_open_new_site()) {
             info('Opening site...');
             exec("open {$site->url('/wp-admin')}");
         }
-    }
-
-    private function is_json(string $value): bool
-    {
-        json_decode($value);
-
-        return (json_last_error() === JSON_ERROR_NONE);
     }
 }

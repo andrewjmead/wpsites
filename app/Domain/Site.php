@@ -192,6 +192,23 @@ class Site
         return $url;
     }
 
+    public function set_option(string $key, mixed $value): void
+    {
+        $format = '';
+
+        if(is_array($value)) {
+            $format = '--format=json';
+            $value  = json_encode( $value );
+        }
+
+        $this->execute(
+            message: "Setting option \"{$key}\"",
+            command: "wp option update {$key} {$value} {$format}",
+            print_start_message: false,
+            cleanup_on_error: true, // TODO Dangerous. If an option is set outside of creation it could delete the site
+        );
+    }
+
     /**
      * @param Collection<string> $directories
      *

@@ -30,6 +30,7 @@ class ConfigFile
 
         try {
             $config = (new \CuyZ\Valinor\MapperBuilder())
+                ->allowPermissiveTypes()
                 ->mapper()
                 ->map(Config::class, \CuyZ\Valinor\Mapper\Source\Source::array($config_file_contents));
 

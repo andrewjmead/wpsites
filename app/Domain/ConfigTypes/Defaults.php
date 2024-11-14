@@ -40,7 +40,7 @@ class Defaults
         public readonly ?string $wordpress_org_favorites_username = null,
         /** @var array<non-empty-string, string|bool|int|float> */
         public readonly array $constants = [],
-        /** @var array<non-empty-string, string|bool|int|float> */
+        /** @var array<non-empty-string, string|bool|int|float|array> */
         public readonly array $options = [],
     ) {
         if (is_string($this->timezone) && !in_array($this->timezone, DateTimeZone::listIdentifiers())) {
