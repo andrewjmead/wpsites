@@ -213,7 +213,7 @@ class Create extends SiteCommand
 
             $site->execute(
                 message: "Installing theme \"{$theme}\"",
-                command: "wp theme install {$theme_slug}",
+                command: "wp theme install {$theme_slug} --activate",
                 arguments: [
                     'version' => $version,
                 ],
@@ -282,8 +282,10 @@ class Create extends SiteCommand
         }
     }
 
-    private function is_json(string $value): bool {
+    private function is_json(string $value): bool
+    {
         json_decode($value);
+
         return (json_last_error() === JSON_ERROR_NONE);
     }
 }

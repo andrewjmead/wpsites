@@ -239,7 +239,7 @@ class Template
             return $this->defaults->theme;
         }
 
-        return 'twentytwentyfour';
+        return 'twentytwentyfive';
     }
 
     public function enable_multisite(): bool
