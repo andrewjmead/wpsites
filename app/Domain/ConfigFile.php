@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\note;
+use function Termwind\render;
 
 class ConfigFile
 {
@@ -18,8 +19,17 @@ class ConfigFile
             return self::$config;
         }
 
+        // If there's no config file, welcome the user and direct them towards the config command
         if (!self::exists()) {
-            error('Config file not found! Run `wpsites config` to get started.');
+            render(<<<'HTML'
+            <div>
+                <h1 class="px-1 bg-purple-400 font-bold">Welcome to WPSites!</h1>
+                <p class="my-0">
+                    To get started, you'll need to generate a config file. This is where you can customize your database connections, site templates, and more. Run the config command to get started:
+                </p>
+                <p class="my-0 font-bold">wpsites config</p>
+            </div>
+            HTML);
             exit(1);
         }
 
