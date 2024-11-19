@@ -393,6 +393,12 @@ The default config file above has three templates. The first template is a simpl
 
 Take a look at [template options](#template-options) below to see what's possible.
 
+**Another option is `should_open_new_site`**
+
+When a new site is created, WPSites tries to open the site in the browser.
+
+You can turn off this behavior by setting `should_open_new_site` to `false`.
+
 ### Making your own templates
 
 You can make a new template by adding an associative array to the end of `templates`.
