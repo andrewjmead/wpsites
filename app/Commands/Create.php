@@ -256,7 +256,7 @@ class Create extends SiteCommand
 
         $template->get_constants()->whenNotEmpty(function () {
             info('Setting constants');
-        })->each(function (string $value, string $key) use ($site) {
+        })->each(function (mixed $value, string $key) use ($site) {
             $site->set_config($key, $value);
         });
 
