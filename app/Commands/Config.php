@@ -68,7 +68,7 @@ class Config extends Command
         }
 
         info('Config file successfully created!');
-        note('Checkout the docs here to learn what you need to change: https://github.com/andrewjmead/wpsites#configure-your-sites-directory');
+        note('Checkout the docs here to learn what you need to change: https://github.com/andrewjmead/wpsites#configuring-your-sites-directory');
 
         exit(0);
     }
