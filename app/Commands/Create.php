@@ -128,6 +128,7 @@ class Create extends SiteCommand
             command: 'wp core ' . ($template->enable_multisite() ? 'multisite-install' : 'install'),
             arguments: [
                 'url'            => $site->url(),
+                'subdomains'     => $template->enable_multisite ? true : null,
                 'title'          => $template->get_site_title() ?? $selected_template_name,
                 'admin_user'     => $template->get_admin_username(),
                 'admin_password' => $template->get_admin_password(),
