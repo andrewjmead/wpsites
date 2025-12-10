@@ -218,12 +218,12 @@ class Template
 
     public function enable_automatic_login(): bool
     {
-        if (is_bool($this->enable_error_logging)) {
-            return $this->enable_error_logging;
+        if (is_bool($this->enable_automatic_login)) {
+            return $this->enable_automatic_login;
         }
 
-        if (is_bool($this->defaults->enable_error_logging)) {
-            return $this->defaults->enable_error_logging;
+        if (is_bool($this->defaults->enable_automatic_login)) {
+            return $this->defaults->enable_automatic_login;
         }
 
         return true;
