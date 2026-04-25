@@ -267,6 +267,8 @@ class Create extends SiteCommand
             $site->set_option($key, $value);
         });
 
+        $site->secure();
+
         info('Site created!');
         info('Directory: ' . $site->directory());
         info('URL: ' . $site->url());

@@ -14,13 +14,11 @@ use WPConfigTransformer;
 
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug)
-    {
-    }
+    public function __construct(private readonly string $sites_directory, private readonly string $slug) {}
 
     public function directory(): string
     {
-        return Str::finish($this->sites_directory, '/') . $this->slug;
+        return Str::finish($this->sites_directory, "/") . $this->slug;
     }
 
     public function slug(): string
@@ -28,8 +26,14 @@ class Site
         return $this->slug;
     }
 
-    public function execute(string $message, string $command, array $arguments = [], bool $print_start_message = true, bool $print_error_message = true, bool $cleanup_on_error = false): void
-    {
+    public function execute(
+        string $message,
+        string $command,
+        array $arguments = [],
+        bool $print_start_message = true,
+        bool $print_error_message = true,
+        bool $cleanup_on_error = false,
+    ): void {
         if ($print_start_message) {
             info($message);
         }
@@ -40,7 +44,7 @@ class Site
         $process = Process::path($this->directory())->run($command);
 
         if ($process->failed() && $print_error_message) {
-            error('Error ' . Str::lower($message));
+            error("Error " . Str::lower($message));
             error($process->errorOutput());
         }
 
@@ -64,10 +68,10 @@ class Site
 
     public function destroy(): void
     {
-        $has_database = $this->run('wp db check');
+        $has_database = $this->run("wp db check");
 
         if ($has_database) {
-            $this->run('wp db drop', [ 'yes' => true ]);
+            $this->run("wp db drop", ["yes" => true]);
         }
 
         File::deleteDirectory($this->directory());
@@ -75,7 +79,7 @@ class Site
 
     public function backup(string $backup_name): bool
     {
-        $path   = getenv('HOME') . '/.wpsites/backups/' . $backup_name;
+        $path = getenv("HOME") . "/.wpsites/backups/" . $backup_name;
         $backup = new Backup($path);
 
         // Do nothing if the backup folder is already there, regardless of whether it's a valid
@@ -86,28 +90,28 @@ class Site
 
         File::ensureDirectoryExists($path);
 
-        info('Backing up database');
-        $export_process = Process::path($this->directory())->run('wp db export ' . $backup->database_path());
+        info("Backing up database");
+        $export_process = Process::path($this->directory())->run("wp db export " . $backup->database_path());
 
         if ($export_process->failed()) {
-            error('Backup failed. Unable to backup database!');
+            error("Backup failed. Unable to backup database!");
             File::deleteDirectory($path);
 
             return false;
         }
 
-        info('Backing up files');
-        $zip_process = Process::path($this->directory())->run('zip -vr ' . $backup->files_path() . ' * -x "*.DS_Store" --symlinks');
+        info("Backing up files");
+        $zip_process = Process::path($this->directory())->run("zip -vr " . $backup->files_path() . ' * -x "*.DS_Store" --symlinks');
 
         if ($zip_process->failed()) {
-            error('Backup failed. Unable to backup files!');
+            error("Backup failed. Unable to backup files!");
             File::deleteDirectory($path);
 
             return false;
         }
 
-        info('Backup successfully created!');
-        info('Backup saved to ' . $path);
+        info("Backup successfully created!");
+        info("Backup saved to " . $path);
 
         return true;
     }
@@ -125,31 +129,22 @@ class Site
 
         File::cleanDirectory($this->directory());
 
-        info('Restoring files');
-        $zip_process = Process::run('unzip ' . $backup->files_path() . ' -d ' . $this->directory());
+        info("Restoring files");
+        $zip_process = Process::run("unzip " . $backup->files_path() . " -d " . $this->directory());
 
         if ($zip_process->failed()) {
-            error('Restore failed. Unable to unzip files.');
+            error("Restore failed. Unable to unzip files.");
 
             return false;
         }
 
-        $this->set_config('DB_NAME', $original_database_name);
+        $this->set_config("DB_NAME", $original_database_name);
 
-        $this->execute(
-            message: 'Importing database',
-            command: 'wp db import ' . $backup->database_path(),
-        );
+        $this->execute(message: "Importing database", command: "wp db import " . $backup->database_path());
 
-        $this->execute(
-            message: "Setting option \"siteurl\"",
-            command: "wp option update siteurl {$this->url()}",
-        );
+        $this->execute(message: "Setting option \"siteurl\"", command: "wp option update siteurl {$this->url()}");
 
-        $this->execute(
-            message: "Setting option \"home\"",
-            command: "wp option update home {$this->url()}",
-        );
+        $this->execute(message: "Setting option \"home\"", command: "wp option update home {$this->url()}");
 
         return true;
     }
@@ -157,15 +152,15 @@ class Site
     public function set_config(string $key, mixed $value, bool $cleanup_on_error = false): void
     {
         try {
-            $transformer = new WPConfigTransformer($this->directory() . '/wp-config.php');
+            $transformer = new WPConfigTransformer($this->directory() . "/wp-config.php");
 
             if (is_bool($value)) {
-                $transformer->update('constant', $key, $value === true ? 'true' : 'false', ['raw' => true]);
+                $transformer->update("constant", $key, $value === true ? "true" : "false", ["raw" => true]);
             } else {
-                $transformer->update('constant', $key, $value);
+                $transformer->update("constant", $key, $value);
             }
         } catch (\Exception $e) {
-            error('Unable to make changes to wp-config.php');
+            error("Unable to make changes to wp-config.php");
             if ($cleanup_on_error) {
                 $this->destroy();
             }
@@ -175,8 +170,8 @@ class Site
 
     public function get_database_name(): string
     {
-        $transformer = new WPConfigTransformer($this->directory() . '/wp-config.php');
-        $value       = $transformer->get_value('constant', 'DB_NAME');
+        $transformer = new WPConfigTransformer($this->directory() . "/wp-config.php");
+        $value = $transformer->get_value("constant", "DB_NAME");
 
         return Str::trim($value, "\"'");
     }
@@ -186,19 +181,30 @@ class Site
         $url = "http://{$this->slug}.test";
 
         if (is_string($path)) {
-            $url .= Str::start($path, '/');
+            $url .= Str::start($path, "/");
         }
 
         return $url;
     }
 
+    public function secure(): bool
+    {
+        $is_herd = $this->run("herd site-information");
+
+        if (!$is_herd) {
+            return $is_herd;
+        }
+
+        return $this->run('herd secure');
+    }
+
     public function set_option(string $key, mixed $value): void
     {
-        $format = '';
+        $format = "";
 
         if (is_array($value)) {
-            $format = '--format=json';
-            $value  = json_encode($value);
+            $format = "--format=json";
+            $value = json_encode($value);
         }
 
         $this->execute(
@@ -221,7 +227,7 @@ class Site
                 return collect(File::directories($directory));
             })
             ->filter(function ($site_directory) {
-                return File::isFile($site_directory . '/wp-config.php');
+                return File::isFile($site_directory . "/wp-config.php");
             })
             ->map(function ($site_directory) {
                 return new self(dirname($site_directory), basename($site_directory));
