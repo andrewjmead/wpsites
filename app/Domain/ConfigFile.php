@@ -66,7 +66,13 @@ class ConfigFile
 
     public static function file_path(): string
     {
-        return getenv('HOME') . '/.wpsites.php';
+        $path = getenv('WPSITES_CONFIG');
+
+        if(!$path) {
+           $path = getenv('HOME') . '/.wpsites.php';
+        }
+
+        return $path;
     }
 
     public static function default_configuration(): string

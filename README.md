@@ -68,6 +68,8 @@ $ wpsites config
 
 Once your config file is created, open it in your text editor as there are a couple of values you'll need to change before you can create your first site.
 
+You can use the `WPSITES_CONFIG` environment variable to customize the location and name of the config file. The value should include both the path and the file name such as `/my/custom/location/theconfig.php`.
+
 ### Configuring your site's directory
 
 You need to tell WPSites where on your file system you want new sites to be created. This can be done by changing the value for `sites_directory` near the top of `~/.wpsites.php`.
