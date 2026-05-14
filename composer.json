@@ -44,7 +44,10 @@
             "echo 'Welcome to WPSites! \uD83E\uDD73'",
             "echo 'Run `wpsites config` to get started!'"
         ],
-        "build": "php wpsites app:build --build-version=\"wpsites\" wpsites",
+        "build": [
+            "php -r \"copy('box', 'vendor/laravel-zero/framework/bin/box'); chmod('vendor/laravel-zero/framework/bin/box', 0755);\"",
+            "php wpsites app:build --build-version=\"wpsites\" wpsites"
+        ],
         "format": "./vendor/bin/pint"
     }
 }
