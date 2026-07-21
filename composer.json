@@ -46,7 +46,7 @@
         ],
         "build": [
             "php -r \"copy('box', 'vendor/laravel-zero/framework/bin/box'); chmod('vendor/laravel-zero/framework/bin/box', 0755);\"",
-            "php wpsites app:build --build-version=\"wpsites\" wpsites"
+            "php wpsites app:build --build-version=\"unreleased\" wpsites"
         ],
         "format": "./vendor/bin/pint"
     }
