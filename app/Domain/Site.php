@@ -14,7 +14,9 @@ use WPConfigTransformer;
 
 class Site
 {
-    public function __construct(private readonly string $sites_directory, private readonly string $slug) {}
+    public function __construct(private readonly string $sites_directory, private readonly string $slug)
+    {
+    }
 
     public function directory(): string
     {
@@ -68,18 +70,14 @@ class Site
 
     public function destroy(): void
     {
-        $has_database = $this->run("wp db check");
-
-        if ($has_database) {
-            $this->run("wp db drop", ["yes" => true]);
-        }
+        $this->run("wp db drop", ["yes" => true]);
 
         File::deleteDirectory($this->directory());
     }
 
     public function backup(string $backup_name): bool
     {
-        $path = getenv("HOME") . "/.wpsites/backups/" . $backup_name;
+        $path   = getenv("HOME") . "/.wpsites/backups/" . $backup_name;
         $backup = new Backup($path);
 
         // Do nothing if the backup folder is already there, regardless of whether it's a valid
@@ -171,7 +169,7 @@ class Site
     public function get_database_name(): string
     {
         $transformer = new WPConfigTransformer($this->directory() . "/wp-config.php");
-        $value = $transformer->get_value("constant", "DB_NAME");
+        $value       = $transformer->get_value("constant", "DB_NAME");
 
         return Str::trim($value, "\"'");
     }
@@ -204,7 +202,7 @@ class Site
 
         if (is_array($value)) {
             $format = "--format=json";
-            $value = json_encode($value);
+            $value  = json_encode($value);
         }
 
         $this->execute(

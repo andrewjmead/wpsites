@@ -2,6 +2,7 @@
 <?php
 
 define('LARAVEL_START', microtime(true));
+define('ARTISAN_BINARY', basename($_SERVER['argv'][0]));
 
 /*
 |--------------------------------------------------------------------------

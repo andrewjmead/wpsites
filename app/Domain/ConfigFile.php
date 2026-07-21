@@ -68,8 +68,8 @@ class ConfigFile
     {
         $path = getenv('WPSITES_CONFIG');
 
-        if(!$path) {
-           $path = getenv('HOME') . '/.wpsites.php';
+        if (!$path) {
+            $path = getenv('HOME') . '/.wpsites.php';
         }
 
         return $path;
