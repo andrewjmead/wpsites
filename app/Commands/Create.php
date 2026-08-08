@@ -267,6 +267,16 @@ class Create extends SiteCommand
             $site->set_option($key, $value);
         });
 
+        $template->get_scripts()->whenNotEmpty(function () {
+            info('Running post-install scripts');
+        })->each(function (string $script) use ($site) {
+            $site->execute(
+                message: "Running script: \"{$script}\"",
+                command: $script,
+                cleanup_on_error: false,
+            );
+        });
+
         $site->secure();
 
         info('Site created!');
