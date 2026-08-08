@@ -57,6 +57,8 @@ class Template
         public readonly array $constants = [],
         /** @var array<non-empty-string, string|bool|int|float|array> */
         public readonly array $options = [],
+        /** @var list<string> */
+        public readonly array $scripts = [],
     ) {
         $this->defaults = new Defaults();
 
@@ -318,5 +320,10 @@ class Template
         }
 
         return $options;
+    }
+
+    public function get_scripts(): Collection
+    {
+        return collect($this->scripts);
     }
 }
